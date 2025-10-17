@@ -12,6 +12,7 @@ use App\Http\Controllers\PersonalLetter\SuratMemoController;
 use App\Http\Controllers\PersonalLetter\SuratPengumumanController;  
 use App\Http\Controllers\PersonalLetter\SuratNotulenController;
 use App\Http\Controllers\PersonalLetter\SuratBeritaAcaraController;
+use App\Http\Controllers\PersonalLetter\SuratDisposisiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +144,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('beritaacara/{id}/preview', [SuratBeritaAcaraController::class, 'preview'])->name('beritaacara.preview');
         Route::get('beritaacara/{id}/download', [SuratBeritaAcaraController::class, 'download'])->name('beritaacara.download');
 
+        // ==================== SURAT DISPOSISI ====================
+        Route::resource('disposisi', \App\Http\Controllers\PersonalLetter\SuratDisposisiController::class)
+            ->parameters(['disposisi' => 'personal']);
+        Route::get('disposisi/{id}/preview', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'preview'])->name('disposisi.preview');
+        Route::get('disposisi/{id}/download', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'download'])->name('disposisi.download');
     });
     // ==========================================================
 

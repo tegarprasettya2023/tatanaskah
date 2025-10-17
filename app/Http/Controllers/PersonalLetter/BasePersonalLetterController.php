@@ -14,6 +14,7 @@ use App\Models\PersonalLetterMemo;
 use App\Models\PersonalLetterPengumuman;
 use App\Models\PersonalLetterNotulen;
 use App\Models\PersonalLetterBeritaAcara;
+use App\Models\PersonalLetterDisposisi;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -128,6 +129,17 @@ class BasePersonalLetterController extends Controller
             $item->jenis = 'berita_acara';
             return $item;
         });
+        
+        // Ambil semua surat disposisi
+        $disposisi = PersonalLetterDisposisi::query();
+        if ($request->filled('search')) {
+            $disposisi->search($request->search);
+        }
+        $disposisi = $disposisi->get()->map(function ($item) {
+            $item->jenis = 'disposisi';
+            return $item;
+        });
+
         // Gabungkan semua data
         $all = $perjanjian
             ->concat($dinas)
@@ -140,6 +152,7 @@ class BasePersonalLetterController extends Controller
             ->concat($pengumuman)
             ->concat($notulen)
             ->concat($berita_acara)
+            ->concat($disposisi)
             ->sortByDesc('created_at')
             ->values();
 

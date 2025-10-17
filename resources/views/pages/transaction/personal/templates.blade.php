@@ -236,6 +236,28 @@
                 </div>
             </div>
         </div>
+        <!-- Template Formulir Disposisi -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-danger">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-file-earmark-text fs-1 text-danger"></i>
+                    </div>
+                    <h5 class="card-title">Formulir Disposisi</h5>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Logo Custom (Klinik/Lab/PT)</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Nomor Dokumen LD Auto</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Diteruskan Kepada Dinamis</li>
+                    </ul>
+                    <a href="{{ route('transaction.personal.disposisi.create') }}" 
+                       class="btn btn-danger">
+                       <i class="bi bi-plus-circle"></i> Buat Formulir
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <div class="card mt-4">
