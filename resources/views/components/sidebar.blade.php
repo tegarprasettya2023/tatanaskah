@@ -45,7 +45,7 @@
                   <!-- Tambahan Surat Pribadi -->
                 <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('transaction.personal.*') ? 'active' : '' }}">
             <a href="{{ route('transaction.personal.index') }}" class="menu-link">
-                <div data-i18n="Surat Pribadi">Surat Pribadi</div>
+                <div data-i18n="Surat Pribadi">Tata Naskah</div>
             </a>
             </li>
 

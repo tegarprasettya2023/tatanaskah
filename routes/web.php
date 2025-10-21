@@ -13,6 +13,7 @@ use App\Http\Controllers\PersonalLetter\SuratPengumumanController;
 use App\Http\Controllers\PersonalLetter\SuratNotulenController;
 use App\Http\Controllers\PersonalLetter\SuratBeritaAcaraController;
 use App\Http\Controllers\PersonalLetter\SuratDisposisiController;
+use App\Http\Controllers\PersonalLetter\SuratKeputusanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,7 +150,20 @@ Route::middleware(['auth'])->group(function () {
             ->parameters(['disposisi' => 'personal']);
         Route::get('disposisi/{id}/preview', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'preview'])->name('disposisi.preview');
         Route::get('disposisi/{id}/download', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'download'])->name('disposisi.download');
+
+        // ==================== SURAT KEPUTUSAN ====================
+        Route::resource('suratkeputusan', \App\Http\Controllers\PersonalLetter\SuratKeputusanController::class)
+            ->parameters(['suratkeputusan' => 'personal']);
+
+        Route::get('suratkeputusan/{id}/preview', [\App\Http\Controllers\PersonalLetter\SuratKeputusanController::class, 'preview'])
+            ->name('suratkeputusan.preview');
+
+        Route::get('suratkeputusan/{id}/download', [\App\Http\Controllers\PersonalLetter\SuratKeputusanController::class, 'download'])
+            ->name('suratkeputusan.download');
+
+
     });
+
     // ==========================================================
 
     Route::prefix('agenda')->as('agenda.')->group(function () {

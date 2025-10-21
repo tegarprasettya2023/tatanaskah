@@ -496,6 +496,35 @@
                                                     <i class="bi bi-trash fs-5"></i>
                                                 </button>
                                             </form>
+                                            @elseif($item->jenis === 'surat_keputusan')
+                                            <a href="{{ route('transaction.personal.suratkeputusan.show', $item->id) }}" 
+                                            class="btn btn-outline-info me-2" title="Lihat Detail">
+                                            <i class="bi bi-eye fs-5"></i>
+                                            </a>
+                                            <a href="{{ route('transaction.personal.suratkeputusan.edit', $item->id) }}" 
+                                            class="btn btn-outline-warning me-2" title="Edit">
+                                            <i class="bi bi-pencil fs-5"></i>
+                                            </a>
+                                            @if($item->generated_file)
+                                                <a href="{{ route('transaction.personal.suratkeputusan.preview', $item->id) }}" 
+                                                class="btn btn-outline-primary me-2" title="Preview PDF" target="_blank">
+                                                    <i class="bi bi-file-pdf fs-5"></i>
+                                                </a>
+                                                <a href="{{ route('transaction.personal.suratkeputusan.download', $item->id) }}" 
+                                                class="btn btn-outline-success me-2" title="Download PDF" target="_blank">
+                                                    <i class="bi bi-download fs-5"></i>
+                                                </a>
+                                            @endif
+                                            <form action="{{ route('transaction.personal.suratkeputusan.destroy', $item->id) }}" 
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-outline-danger" 
+                                                        onclick="return confirm('Hapus surat keputusan ini?')"
+                                                        title="Hapus">
+                                                    <i class="bi bi-trash fs-5"></i>
+                                                </button>
+                                            </form>
                                             @endif
                                     </div>
                                 </td>

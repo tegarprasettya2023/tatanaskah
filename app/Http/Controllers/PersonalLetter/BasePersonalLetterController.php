@@ -15,6 +15,7 @@ use App\Models\PersonalLetterPengumuman;
 use App\Models\PersonalLetterNotulen;
 use App\Models\PersonalLetterBeritaAcara;
 use App\Models\PersonalLetterDisposisi;
+use App\Models\PersonalLetterKeputusan;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -140,6 +141,21 @@ class BasePersonalLetterController extends Controller
             return $item;
         });
 
+        $keputusan = PersonalLetterKeputusan::with('user')
+        ->where('user_id', auth()->id())
+        ->select('id', 'user_id', 'nomor_sk', 'tanggal_sk', 'tentang', 'generated_file')
+        ->latest()
+        ->get()
+        ->map(function ($item) {
+            $item->jenis = 'surat_keputusan';
+            $item->judul = 'Surat Keputusan';
+            $item->tanggal = $item->tanggal_sk;
+            $item->nomor = $item->nomor_sk;
+            $item->perihal = $item->tentang;
+            return $item;
+        });
+
+
         // Gabungkan semua data
         $all = $perjanjian
             ->concat($dinas)
@@ -153,6 +169,7 @@ class BasePersonalLetterController extends Controller
             ->concat($notulen)
             ->concat($berita_acara)
             ->concat($disposisi)
+            ->concat($keputusan)
             ->sortByDesc('created_at')
             ->values();
 
