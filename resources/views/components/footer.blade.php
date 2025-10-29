@@ -6,7 +6,7 @@
                 document.write(new Date().getFullYear());
             </script>
             , {{ __('footer.made_by') }}
-            <a href="#" target="_blank" class="footer-link fw-bolder">PTGM</a>
+            <a href="https://www.instagram.com/gleneaglessurabaya/" target="_blank" class="footer-link fw-bolder">Gleneagles</a>
         </div>
     </div>
 </footer>

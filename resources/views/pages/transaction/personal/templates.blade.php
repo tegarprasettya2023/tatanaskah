@@ -252,31 +252,32 @@
                     </ul>
                     <a href="{{ route('transaction.personal.disposisi.create') }}" 
                        class="btn btn-danger">
-                       <i class="bi bi-plus-circle"></i> Buat Formulir
+                       <i class="bi bi-plus-circle"></i> Buat Surat
                     </a>
                 </div>
             </div>
         </div>
         <!-- Template Surat Keputusan -->
-<div class="col-md-6 col-lg-4 mb-4">
-    <div class="card h-100 border-primary">
-        <div class="card-body text-center">
-            <div class="mb-3">
-                <i class="bi bi-file-earmark-break fs-1 text-primary"></i>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-info">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-file-earmark-check fs-1 text-info"></i>
+                    </div>
+                    <h5 class="card-title">Surat Keputusan</h5>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Menimbang & Mengingat Dinamis</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Isi Keputusan Fleksibel</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Lampiran Opsional</li>
+                    </ul>
+                    <a href="{{ route('transaction.personal.surat_keputusan.create') }}" 
+                    class="btn btn-info">
+                    <i class="bi bi-plus-circle"></i> Buat Surat
+                    </a>
+                </div>
             </div>
-            <h5 class="card-title">Surat Keputusan</h5>
-            <ul class="list-unstyled text-start small">
-                <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
-                <li><i class="bi bi-check-circle text-success"></i> Nomor SK & Tentang Otomatis</li>
-                <li><i class="bi bi-check-circle text-success"></i> Menimbang, Mengingat, dan Menetapkan</li>
-            </ul>
-            <a href="{{ route('transaction.personal.suratkeputusan.create') }}" 
-               class="btn btn-primary">
-               <i class="bi bi-plus-circle"></i> Buat Surat
-            </a>
         </div>
-    </div>
-</div>
 
     </div>
     </div>

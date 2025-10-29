@@ -9,9 +9,9 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            font-size: 12px;
-            line-height: 1.6;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 10px;
+            line-height: 1.4;
             margin: 0;
             padding: 0;
         }
@@ -19,8 +19,8 @@
         .header {
             position: fixed;
             top: -120px;
-            left: -40px;
-            right: 30px;
+            left: -30;
+            right: 30;
             width: 113%;
             height: 100px;
             text-align: center;
@@ -55,95 +55,136 @@
         .title {
             text-align: center;
             font-weight: bold;
+            font-size: 12px;
             margin-bottom: 5px;
-        }
-
-        .subtitle {
-            text-align: center;
-            margin-bottom: 3px;
         }
 
         .nomor {
             text-align: center;
             font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .tentang {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: -10px;
+        }
+
+        .data-tentang {
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: -20px;
+            margin-top: 20px;
         }
 
         .section-title {
-            text-align: center;
-            font-weight: bold;
-            margin: 15px 0 10px 0;
+            font-size: 10px;
+            margin-top: 15px;
+            margin-bottom: 8px;
         }
 
-        .indent-text {
-            text-align: justify;
-            margin-left: 40px;
-            margin-right: 40px;
+        .section-content {
+            font-size: 10px;
             margin-bottom: 15px;
+            text-align: justify;
         }
 
         .list-item {
-            margin-left: 60px;
-            margin-right: 40px;
-            text-align: justify;
             margin-bottom: 8px;
+            text-align: justify;
         }
 
         .memutuskan {
             text-align: center;
-            font-weight: bold;
+            font-size: 10px;
             margin: 20px 0;
         }
 
         .menetapkan-title {
-            margin-left: 40px;
-            margin-bottom: 5px;
-        }
-
-        .keputusan-item {
-            margin-left: 40px;
-            margin-right: 40px;
-            text-align: justify;
+            font-size: 10px;
             margin-bottom: 10px;
         }
 
-        .penutup {
-            margin-top: 30px;
+        .keputusan-item {
+            margin-bottom: 12px;
+            font-size: 10px;
+        }
+
+        .keputusan-label {
+            margin-bottom: 3px;
+        }
+
+        .keputusan-isi {
             margin-left: 40px;
+            text-align: justify;
         }
 
-        .signature {
-            margin-top: 80px;
-            margin-left: 40px;
-        }
-
-        .signature-name {
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .tembusan {
+        .signature-wrapper {
+            width: 100%;
             margin-top: 40px;
-            margin-left: 40px;
+        }
+
+        .signature-right {
+            text-align: left;
+            font-size: 10px;
+        }
+
+        .sig-role {
+            margin-bottom: 6px;
+        }
+
+        .sig-placeholder {
+            display: block;
+            height: 50px;
+        }
+
+        .sig-name {
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .sig-nik {
+            margin-top: 4px;
+            font-size: 10px;
+        }
+
+        .tembusan-section {
+            margin-top: 40px;
+            font-size: 10px;
         }
 
         .tembusan-title {
-            font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+        }
+
+        .tembusan-list {
+            margin-left: 0;
+            padding-left: 20px;
+        }
+
+        .tembusan-list li {
+            margin-bottom: 3px;
         }
 
         .page-break {
             page-break-before: always;
         }
 
-        /* Lampiran Page */
-        .lampiran-header {
-            text-align: right;
+        .lampiran-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
             margin-bottom: 20px;
         }
 
         .lampiran-content {
-            margin: 20px 40px;
+            font-size: 10px;
+            text-align: justify;
+            white-space: pre-line;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -153,7 +194,7 @@
 <div class="header">
     @php
         $headerPath = '';
-        $kopType = $letter->kop_type ?? 'lab';
+        $kopType = $data->kop_type ?? 'lab';
         if($kopType === 'klinik') $headerPath = public_path('kop/header_klinik.png');
         elseif($kopType === 'lab') $headerPath = public_path('kop/header_lab.png');
         elseif($kopType === 'pt') $headerPath = public_path('kop/header_pt.png');
@@ -184,125 +225,145 @@
 
 {{-- CONTENT --}}
 <div class="content">
-    {{-- Title --}}
-    <div class="subtitle">{{ strtoupper($letter->judul_setelah_sk ?? 'LABORATORIUM MEDIS KHUSUS PATOLOGI KLINIK UTAMA TRISENSA') }}</div>
-    <div class="nomor">NOMOR: {{ $letter->generateNomorSK() }}</div>
+    <div class="title" style="text-align:center; font-weight:bold;">
+        {{ strtoupper($data->judul) }}
+    </div>
 
-    {{-- TENTANG --}}
-    <div class="section-title">TENTANG</div>
-    <div class="indent-text">{{ strtoupper($letter->tentang ?? '') }}</div>
+    <div class="nomor">
+        <strong>NOMOR: {{ $data->nomor ?? 'SK/nomor/bulan/tahun' }}</strong>
+    </div>
 
-    {{-- MENIMBANG --}}
-    @if(!empty($letter->menimbang) && is_array($letter->menimbang))
-    <div class="menetapkan-title"><strong>Menimbang:</strong></div>
-    @foreach($letter->menimbang as $index => $item)
-        @if(!empty($item))
-        <div class="list-item">
-            {{ chr(97 + $index) }}. bahwa {{ $item }}
-        </div>
-        @endif
+    <div class="tentang">
+        <strong>TENTANG</strong>
+    </div>
+
+    <div class="data-tentang">
+        {{ strtoupper($data->tentang ?? '...') }}
+    </div>
+
+    {{-- Menimbang --}}
+    @if(!empty($data->menimbang) && count($data->menimbang) > 0)
+    <div class="section-title">Menimbang :</div>
+    <div class="section-content">
+        <table style="width: 100%; border: none;">
+            @foreach($data->menimbang as $i => $item)
+            <tr>
+                <td style="width: 30px; vertical-align: top; border: none;">{{ chr(97 + $i) }}.</td>
+                <td style="vertical-align: top; text-align: justify; border: none;">{{ $item }}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+    @endif
+
+    {{-- Mengingat --}}
+    @if(!empty($data->mengingat) && count($data->mengingat) > 0)
+    <div class="section-title">Mengingat :</div>
+    <div class="section-content">
+        <table style="width: 100%; border: none;">
+            @foreach($data->mengingat as $i => $item)
+            <tr>
+                <td style="width: 30px; vertical-align: top; border: none;">{{ chr(97 + $i) }}.</td>
+                <td style="vertical-align: top; text-align: justify; border: none;">{{ $item }}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+    @endif
+
+    <div class="memutuskan">
+        <strong>MEMUTUSKAN:</strong>
+    </div>
+
+    <div class="menetapkan-title">
+        Menetapkan : <strong>{{ strtoupper($data->menetapkan ?? '...') }}</strong>
+    </div>
+
+    {{-- Isi Keputusan --}}
+    @if(!empty($data->isi_keputusan) && count($data->isi_keputusan) > 0)
+    @foreach($data->isi_keputusan as $keputusan)
+    <div class="keputusan-item">
+        <div class="keputusan-label"><strong>{{ $keputusan['label'] ?? '' }} :</strong></div>
+        <div class="keputusan-isi">{{ $keputusan['isi'] ?? '' }}</div>
+    </div>
     @endforeach
     @endif
 
-    {{-- MENGINGAT --}}
-    @if(!empty($letter->mengingat) && is_array($letter->mengingat))
-    <div class="menetapkan-title" style="margin-top: 15px;"><strong>Mengingat:</strong></div>
-    @foreach($letter->mengingat as $index => $item)
-        @if(!empty($item))
-        <div class="list-item">
-            {{ chr(97 + $index) }}. Undang-undang {{ $item }}
-        </div>
-        @endif
-    @endforeach
-    @endif
-
-    {{-- MEMUTUSKAN --}}
-    <div class="memutuskan">MEMUTUSKAN:</div>
-
-    {{-- MENETAPKAN --}}
-    <div class="menetapkan-title"><strong>Menetapkan:</strong></div>
-    <div class="list-item"> {{ strtoupper($letter->menetapkan ?? 'KEPUTUSAN KEPALA LABORATORIUM MEDIS KHUSUS PATOLOGI KLINIK UTAMA TRISENSA TENTANG') }}{{ strtoupper($letter->tentang ?? '') }}.</div>
-
-    {{-- KEPUTUSAN (Kesatu, Kedua, dst) --}}
-    @if(!empty($letter->keputusan) && is_array($letter->keputusan))
-        @php
-            $angkaTerbilang = ['', 'Kesatu', 'Kedua', 'Ketiga', 'Keempat', 'Kelima', 'Keenam', 'Ketujuh', 'Kedelapan', 'Kesembilan', 'Kesepuluh'];
-        @endphp
-        @foreach($letter->keputusan as $index => $item)
-            @if(!empty($item))
-            <div class="keputusan-item">
-                <strong>{{ $angkaTerbilang[$index + 1] ?? ($index + 1) }}</strong>
-                <span style="margin-left: 20px;">:</span> {{ $item }}
-            </div>
-            @endif
-        @endforeach
-    @endif
-
-    {{-- PENUTUP --}}
-    <div class="penutup">
-        <!-- <div style="margin-bottom: 5px;">Ditetapkan di:</div>
-        <div style="margin-bottom: 5px;">pada tanggal:</div> -->
-        <div style="margin-bottom: 5px;">{{ $letter->ditetapkan_di ?? '........................................' }}</div>
-        <div style="margin-bottom: 5px;">{{ $letter->tanggal_ditetapkan ? $letter->tanggal_ditetapkan->translatedFormat('d F Y') : '........................................' }}</div>
-        <div style="margin-bottom: 5px;">{{ $letter->nama_jabatan ?? '' }}</div>
+    <div class="keputusan-item">
+        <div class="keputusan-label"><strong>{{ !empty($data->isi_keputusan) ? (count($data->isi_keputusan) == 1 ? 'Kedua' : (count($data->isi_keputusan) == 2 ? 'Ketiga' : 'Terakhir')) : 'Kedua' }} :</strong></div>
     </div>
 
-    {{-- SIGNATURE --}}
-    <div class="signature">
-        <div style="height: 60px;"></div>
-        <div class="signature-name">{{ $letter->nama_lengkap ?? '(Nama Lengkap)' }}</div>
-        <div>{{ $letter->nik_kepegawaian ? 'NIKepegawaian: ' . $letter->nik_kepegawaian : '' }}</div>
-    </div>
+    {{-- Signature --}}
+    <table class="signature-wrapper">
+        <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">
+                <div class="signature-right">
+                    <div class="sig-role">Ditetapkan di: {{ $data->tempat_penetapan ?? 'Surabaya' }}</div>
+                    <div class="sig-role">pada tanggal: {{ $data->tanggal_penetapan ? $data->tanggal_penetapan->translatedFormat('d F Y') : '..................' }}</div>
+                    <div class="sig-role">{{ $data->jabatan_pejabat ?? 'Nama jabatan,' }}</div>
+                    <span class="sig-placeholder"></span>
+                    <div class="sig-name">{{ $data->nama_pejabat ?? 'Nama Lengkap' }}</div>
+                    @if($data->nik_pejabat)
+                    <div class="sig-nik">NIKepegawaian: {{ $data->nik_pejabat }}</div>
+                    @else
+                    <div class="sig-nik">NIKepegawaian</div>
+                    @endif
+                </div>
+            </td>
+        </tr>
+    </table>
 
-    {{-- TEMBUSAN --}}
-    @if(!empty($letter->tembusan) && is_array($letter->tembusan))
-    <div class="tembusan">
-        <div class="tembusan-title">Tembusan</div>
-        @foreach($letter->tembusan as $index => $item)
-            @if(!empty($item))
-            <div>{{ $index + 1 }}. {{ $item }}</div>
-            @endif
-        @endforeach
+    {{-- Tembusan --}}
+    @if(!empty($data->tembusan) && count($data->tembusan) > 0)
+    <div class="tembusan-section">
+        <div class="tembusan-title"><strong>Tembusan</strong></div>
+        <ol class="tembusan-list">
+            @foreach($data->tembusan as $item)
+            <li>{{ $item }}</li>
+            @endforeach
+        </ol>
     </div>
     @endif
 </div>
 
-{{-- HALAMAN 2 - LAMPIRAN --}}
+{{-- LAMPIRAN (Halaman 2) --}}
+@if(!empty($data->lampiran))
 <div class="page-break"></div>
 <div class="content">
-    <div class="lampiran-header">
-        <div>Lampiran</div>
-        <div>{{ $letter->keputusan_dari ?? 'Keputusan Kepala Laboratorium Medis' }}</div>
-        <div>{{ $letter->keputusan_dari ?? 'Khusus Patologi Klinik Utama Trisensa' }}</div>
-        <div>Nomor: {{ $letter->generateNomorSK() }}</div>
-        <div>Tentang: {{ $letter->lampiran_tentang ?? $letter->tentang ?? '........................................' }}</div>
-        <div>Tanggal: {{ $letter->getFormattedTanggalSK() }}</div>
+    <div class="lampiran-title">
+        Lampiran<br>
+        Keputusan Kepala Laboratorium<br>
+        Laboratorium Medis Khusus Patologi Klinik Utama Trisensa<br>
+        Nomor: {{ $data->nomor ?? 'SK/nomor/bulan/tahun' }}<br>
+        Tanggal: {{ $data->tanggal_penetapan ? $data->tanggal_penetapan->translatedFormat('d F Y') : '..................' }}
     </div>
 
     <div class="lampiran-content">
-        {{-- Space untuk konten lampiran --}}
-        <div style="height: 400px; border: 1px dashed #ccc; padding: 20px;">
-            <em>Konten lampiran (jika ada)</em>
-        </div>
+        {{ $data->lampiran }}
     </div>
 
-    {{-- SIGNATURE LAMPIRAN --}}
-    <div class="penutup">
-        <div style="margin-bottom: 5px;">Ditetapkan di:</div>
-        <div style="margin-bottom: 5px;">pada tanggal:</div>
-        <div style="margin-bottom: 5px;">{{ $letter->ditetapkan_di ?? '........................................' }}</div>
-        <div style="margin-bottom: 5px;">{{ $letter->tanggal_ditetapkan ? $letter->tanggal_ditetapkan->translatedFormat('d F Y') : '........................................' }}</div>
-        <div style="margin-bottom: 5px;">Nama jabatan,</div>
-        <div style="margin-bottom: 5px;">{{ $letter->nama_jabatan ?? '' }}</div>
-    </div>
-
-    <div class="signature">
-        <div style="height: 60px;"></div>
-        <div style="margin-bottom: 5px;">Tanda Tangan dan Stempel</div>
-        <div class="signature-name">{{ $letter->nama_lengkap ?? '(Nama Lengkap)' }}</div>
-        <div>{{ $letter->nik_kepegawaian ? 'NIKepegawaian: ' . $letter->nik_kepegawaian : '' }}</div>
-    </div>
+    {{-- Signature untuk Lampiran --}}
+    <table class="signature-wrapper" style="margin-top: 60px;">
+        <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">
+                <div class="signature-right">
+                    <div class="sig-role">{{ $data->jabatan_pejabat ?? 'Nama jabatan,' }}</div>
+                    <span class="sig-placeholder"></span>
+                    <div class="sig-role">Tanda Tangan dan Stempel</div>
+                    <div class="sig-name">{{ $data->nama_pejabat ?? 'Nama Lengkap' }}</div>
+                    @if($data->nik_pejabat)
+                    <div class="sig-nik">NIKepegawaian: {{ $data->nik_pejabat }}</div>
+                    @else
+                    <div class="sig-nik">NIKepegawaian</div>
+                    @endif
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
+@endif
 
 </body>
 </html>

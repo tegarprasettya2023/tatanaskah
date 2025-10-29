@@ -141,21 +141,16 @@ class BasePersonalLetterController extends Controller
             return $item;
         });
 
-        $keputusan = PersonalLetterKeputusan::with('user')
-        ->where('user_id', auth()->id())
-        ->select('id', 'user_id', 'nomor_sk', 'tanggal_sk', 'tentang', 'generated_file')
-        ->latest()
-        ->get()
-        ->map(function ($item) {
+        // Surat Keputusan
+        $keputusan = PersonalLetterKeputusan::query();
+        if ($request->filled('search')) {
+            $keputusan->search($request->search);
+        }
+        $keputusan = $keputusan->get()->map(function ($item) {
             $item->jenis = 'surat_keputusan';
-            $item->judul = 'Surat Keputusan';
-            $item->tanggal = $item->tanggal_sk;
-            $item->nomor = $item->nomor_sk;
-            $item->perihal = $item->tentang;
             return $item;
         });
-
-
+        
         // Gabungkan semua data
         $all = $perjanjian
             ->concat($dinas)

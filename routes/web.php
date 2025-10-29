@@ -146,42 +146,34 @@ Route::middleware(['auth'])->group(function () {
         Route::get('beritaacara/{id}/download', [SuratBeritaAcaraController::class, 'download'])->name('beritaacara.download');
 
         // ==================== SURAT DISPOSISI ====================
-        Route::resource('disposisi', \App\Http\Controllers\PersonalLetter\SuratDisposisiController::class)
-            ->parameters(['disposisi' => 'personal']);
+        Route::resource('disposisi', \App\Http\Controllers\PersonalLetter\SuratDisposisiController::class)->parameters(['disposisi' => 'personal']);
         Route::get('disposisi/{id}/preview', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'preview'])->name('disposisi.preview');
         Route::get('disposisi/{id}/download', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'download'])->name('disposisi.download');
-
         // ==================== SURAT KEPUTUSAN ====================
-        Route::resource('suratkeputusan', \App\Http\Controllers\PersonalLetter\SuratKeputusanController::class)
-            ->parameters(['suratkeputusan' => 'personal']);
-
-        Route::get('suratkeputusan/{id}/preview', [\App\Http\Controllers\PersonalLetter\SuratKeputusanController::class, 'preview'])
-            ->name('suratkeputusan.preview');
-
-        Route::get('suratkeputusan/{id}/download', [\App\Http\Controllers\PersonalLetter\SuratKeputusanController::class, 'download'])
-            ->name('suratkeputusan.download');
-
+        Route::resource('surat_keputusan', SuratKeputusanController::class)->parameters(['surat_keputusan' => 'personal']);
+        Route::get('surat_keputusan/{id}/preview', [SuratKeputusanController::class, 'preview'])->name('surat_keputusan.preview');
+        Route::get('surat_keputusan/{id}/download', [SuratKeputusanController::class, 'download'])->name('surat_keputusan.download');
 
     });
 
     // ==========================================================
 
-    Route::prefix('agenda')->as('agenda.')->group(function () {
-        Route::get('incoming', [\App\Http\Controllers\IncomingLetterController::class, 'agenda'])->name('incoming');
-        Route::get('incoming/print', [\App\Http\Controllers\IncomingLetterController::class, 'print'])->name('incoming.print');
-        Route::get('outgoing', [\App\Http\Controllers\OutgoingLetterController::class, 'agenda'])->name('outgoing');
-        Route::get('outgoing/print', [\App\Http\Controllers\OutgoingLetterController::class, 'print'])->name('outgoing.print');
-    });
+    // Route::prefix('agenda')->as('agenda.')->group(function () {
+    //     Route::get('incoming', [\App\Http\Controllers\IncomingLetterController::class, 'agenda'])->name('incoming');
+    //     Route::get('incoming/print', [\App\Http\Controllers\IncomingLetterController::class, 'print'])->name('incoming.print');
+    //     Route::get('outgoing', [\App\Http\Controllers\OutgoingLetterController::class, 'agenda'])->name('outgoing');
+    //     Route::get('outgoing/print', [\App\Http\Controllers\OutgoingLetterController::class, 'print'])->name('outgoing.print');
+    // });
 
-    Route::prefix('gallery')->as('gallery.')->group(function () {
-        Route::get('incoming', [\App\Http\Controllers\LetterGalleryController::class, 'incoming'])->name('incoming');
-        Route::get('outgoing', [\App\Http\Controllers\LetterGalleryController::class, 'outgoing'])->name('outgoing');
-    });
+    // Route::prefix('gallery')->as('gallery.')->group(function () {
+    //     Route::get('incoming', [\App\Http\Controllers\LetterGalleryController::class, 'incoming'])->name('incoming');
+    //     Route::get('outgoing', [\App\Http\Controllers\LetterGalleryController::class, 'outgoing'])->name('outgoing');
+    // });
 
-    Route::prefix('reference')->as('reference.')->middleware(['role:admin'])->group(function () {
-        Route::resource('classification', \App\Http\Controllers\ClassificationController::class)->except(['show', 'create', 'edit']);
-        Route::resource('status', \App\Http\Controllers\LetterStatusController::class)->except(['show', 'create', 'edit']);
-    });
+    // Route::prefix('reference')->as('reference.')->middleware(['role:admin'])->group(function () {
+    //     Route::resource('classification', \App\Http\Controllers\ClassificationController::class)->except(['show', 'create', 'edit']);
+    //     Route::resource('status', \App\Http\Controllers\LetterStatusController::class)->except(['show', 'create', 'edit']);
+    // });
 
     Route::get('/test-image', function() {
         $paths = [
