@@ -236,27 +236,28 @@
                 </div>
             </div>
         </div>
-        <!-- Template Formulir Disposisi -->
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card h-100 border-danger">
-                <div class="card-body text-center">
-                    <div class="mb-3">
-                        <i class="bi bi-file-earmark-text fs-1 text-danger"></i>
-                    </div>
-                    <h5 class="card-title">Formulir Disposisi</h5>
-                    <ul class="list-unstyled text-start small">
-                        <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
-                        <li><i class="bi bi-check-circle text-success"></i> Logo Custom (Klinik/Lab/PT)</li>
-                        <li><i class="bi bi-check-circle text-success"></i> Nomor Dokumen LD Auto</li>
-                        <li><i class="bi bi-check-circle text-success"></i> Diteruskan Kepada Dinamis</li>
-                    </ul>
-                    <a href="{{ route('transaction.personal.disposisi.create') }}" 
-                       class="btn btn-danger">
-                       <i class="bi bi-plus-circle"></i> Buat Surat
-                    </a>
-                </div>
+<!-- Template Formulir Disposisi -->
+<div class="col-md-6 col-lg-4 mb-4">
+    <div class="card h-100 border-dark">
+        <div class="card-body text-center">
+            <div class="mb-3">
+                <i class="bi bi-file-earmark-ruled fs-1 text-dark"></i>
             </div>
+            <h5 class="card-title">Formulir Disposisi</h5>
+            <ul class="list-unstyled text-start small">
+                <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
+                <li><i class="bi bi-check-circle text-success"></i> Logo Customizable (Klinik/Lab/PT)</li>
+                <li><i class="bi bi-check-circle text-success"></i> 2 Kolom (Pembuat & Disposisi)</li>
+                <li><i class="bi bi-check-circle text-success"></i> Diteruskan Kepada Dinamis</li>
+            </ul>
+            <a href="{{ route('transaction.personal.suratdisposisi.create') }}" 
+               class="btn btn-dark">
+               <i class="bi bi-plus-circle"></i> Buat Surat
+            </a>
         </div>
+    </div>
+</div>
+
         <!-- Template Surat Keputusan -->
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 border-info">
@@ -278,6 +279,28 @@
                 </div>
             </div>
         </div>
+
+<!-- Template Instruksi Kerja -->
+<div class="col-md-6 col-lg-4 mb-4">
+    <div class="card h-100 border-secondary">
+        <div class="card-body text-center">
+            <div class="mb-3">
+                <i class="bi bi-journal-check fs-1 text-secondary"></i>
+            </div>
+            <h5 class="card-title">Instruksi Kerja</h5>
+            <ul class="list-unstyled text-start small">
+                <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
+                <li><i class="bi bi-check-circle text-success"></i> 2 Logo (Kiri & Kanan)</li>
+                <li><i class="bi bi-check-circle text-success"></i> Prosedur Kerja Dinamis</li>
+                <li><i class="bi bi-check-circle text-success"></i> Rekaman Histori Perubahan</li>
+            </ul>
+            <a href="{{ route('transaction.personal.suratinstruksikerja.create') }}" 
+               class="btn btn-secondary">
+               <i class="bi bi-plus-circle"></i> Buat Instruksi Kerja
+            </a>
+        </div>
+    </div>
+</div>
 
     </div>
     </div>

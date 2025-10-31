@@ -4,228 +4,133 @@
     <meta charset="UTF-8">
     <title>Formulir Disposisi</title>
     <style>
-        @page {
-            margin: 120px 40px 100px 40px;
-        }
+        @page { margin: 0; }
 
         body {
-            font-family: 'Century Gothic', sans-serif;
-            font-size: 12px;
+            font-family: 'Arial', sans-serif;
+            font-size: 9px;
             line-height: 1.3;
             margin: 0;
             padding: 0;
         }
 
-        .header {
-            position: fixed;
-            top: -120px;
-            left: -30px;
-            right: 30px;
-            width: 113%;
-            height: 100px;
+        .header { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0;
+            width: 100%; 
+            height: 90px; 
             text-align: center;
+            z-index: 1000;
         }
-
-        .header img {
-            width: 100%;
-            height: 100px;
-            object-fit: contain;
+        .header img { 
+            width: 100%; 
+            height: 90px; 
+            object-fit: cover; 
+            display: block; 
         }
 
         .footer {
-            position: fixed;
-            bottom: -80px;
-            left: 0;
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
             right: 0;
-            width: 100%;
-            height: 40px;
+            width: 100%; 
+            height: 60px; 
             text-align: center;
+            z-index: 1000;
         }
-
-        .footer img {
-            width: 100%;
-            height: 40px;
-            object-fit: contain;
+        .footer img { 
+            width: 100%; 
+            height: 40px; 
+            object-fit: cover; 
+            display: block; 
         }
 
         .content {
-            margin: 0;
+            margin-top: 110px;
+            margin-bottom: 70px;
+            margin-left: 15mm;
+            margin-right: 15mm;
         }
 
-        /* Header Info Table */
-        .header-info {
+        .header-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            table-layout: fixed;
         }
-
-        .header-info td {
+        .header-table td {
             border: 1px solid #000;
-            padding: 8px;
-            vertical-align: top;
+            padding: 4px;
+            vertical-align: middle;
+            font-size: 8px;
         }
-
-        .header-info .logo-cell {
-            width: 25%;
+        .logo-cell {
             text-align: center;
             vertical-align: middle;
-        }
-
-        .header-info .logo-img {
-            max-width: 80px;
-            max-height: 60px;
-        }
-
-        .header-info .title-cell {
-            width: 50%;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .header-info .doc-info {
-            width: 25%;
-        }
-
-        .doc-info-row {
-            margin-bottom: 3px;
-        }
-
-        .doc-info-label {
-            display: inline-block;
-            width: 60px;
-            font-size: 9px;
-        }
-
-        .doc-info-value {
-            font-size: 9px;
-        }
-
-        /* Title */
-        .title-text {
-            font-weight: bold;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        /* Nomor/Tanggal Membaca Section */
-        .membaca-section {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-
-        .membaca-section td {
-            border: 1px solid #000;
             padding: 8px;
         }
-
-        .membaca-label {
-            width: 30%;
+        .logo-cell img {
+            max-width: 150px;
+            max-height: 50px;
+            display: block;
+            margin: 0 auto;
+        }
+        .title-cell {
+            text-align: center;
             font-weight: bold;
-            background-color: #f0f0f0;
+            font-size: 12px;
+            padding: 10px 6px;
+        }
+        .doc-info {
+            text-align: center;
+            font-size: 7px;
+            padding: 4px;
         }
 
-        /* Perihal & Paraf Table */
-        .perihal-table {
+        .content-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            table-layout: fixed;
         }
-
-        .perihal-table td {
+        .content-table td {
             border: 1px solid #000;
-            padding: 15px 8px; /* Jarak atas bawah lebih luas */
+            padding: 6px 8px; 
             vertical-align: top;
         }
 
-        .perihal-label {
-            width: 15%;
-            font-weight: bold;
-            background-color: #f0f0f0;
+        .content-box, .instruction-box {
+            page-break-inside: avoid;
         }
 
-        .perihal-content {
-            width: 70%;
-        }
-
-        .paraf-cell {
-            width: 15%;
-            text-align: center;
-        }
-
-        /* Diteruskan Kepada Table */
-        .diteruskan-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-
-        .diteruskan-table th,
-        .diteruskan-table td {
-            border: 1px solid #000;
-            padding: 8px;
-            vertical-align: top;
-        }
-
-        .diteruskan-table th {
-            background-color: #f0f0f0;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .diteruskan-no {
-            width: 8%;
-            text-align: center;
-        }
-
-        .diteruskan-nama {
-            width: 45%;
-        }
-
-        .diteruskan-tgl {
-            width: 23%;
-            text-align: center;
-        }
-
-        /* Catatan Table */
-        .catatan-table {
-            width: 100%;
+        .content-table table {
             border-collapse: collapse;
         }
-
-        .catatan-table td {
-            border: 1px solid #000;
-            padding: 8px;
-            vertical-align: top;
-            height: 80px;
-        }
-
-        .catatan-header {
-            font-weight: bold;
-            background-color: #f0f0f0;
-            text-align: center;
-            padding: 5px;
-        }
-
-        .page-break {
-            page-break-before: always;
+        .content-table table td {
+            border: none;
+            padding: 0;
         }
     </style>
 </head>
 <body>
-    
+
 {{-- HEADER --}}
 <div class="header">
     @php
-        $kopType = $letter->kop_type ?? 'lab';
-        $headerPath = match($kopType) {
-            'klinik' => public_path('kop/header_klinik.png'),
-            'lab' => public_path('kop/header_lab.png'),
-            'pt' => public_path('kop/header_pt.png'),
-            default => null,
-        };
+        $headerPath = '';
+        $kopType = $letter->kop_type ?? 'pt';
 
-        if ($headerPath && file_exists($headerPath)) {
+        if($kopType === 'klinik') {
+            $headerPath = public_path('kop/header_klinik.png');
+        } elseif($kopType === 'lab') {
+            $headerPath = public_path('kop/header_lab.png');
+        } else {
+            $headerPath = public_path('kop/header_pt.png');
+        }
+
+        if(file_exists($headerPath)) {
             $imageData = base64_encode(file_get_contents($headerPath));
             $mimeType = mime_content_type($headerPath);
             echo '<img src="data:' . $mimeType . ';base64,' . $imageData . '" alt="Header">';
@@ -237,9 +142,14 @@
 <div class="footer">
     @php
         $footerPath = '';
-        if($kopType === 'klinik') $footerPath = public_path('footer/footer_klinik.png');
-        elseif($kopType === 'lab') $footerPath = public_path('footer/footer_lab.png');
-        elseif($kopType === 'pt') $footerPath = public_path('footer/footer_pt.png');
+
+        if($kopType === 'klinik') {
+            $footerPath = public_path('footer/footer_klinik.png');
+        } elseif($kopType === 'lab') {
+            $footerPath = public_path('footer/footer_lab.png');
+        } else {
+            $footerPath = public_path('footer/footer_pt.png');
+        }
 
         if(file_exists($footerPath)) {
             $imageData = base64_encode(file_get_contents($footerPath));
@@ -251,111 +161,122 @@
 
 {{-- CONTENT --}}
 <div class="content">
-    {{-- Header Info Table dengan Logo --}}
-    <table class="header-info">
-        <tr>
-           <td class="logo-cell">
-    @php
-        $logoPath = match($kopType) {
-            'klinik' => public_path('logo/logo_klinik.png'),
-            'lab' => public_path('logo/logo_lab.png'),
-            'pt' => public_path('logo/logo_pt.png'),
-            default => null,
-        };
 
-        if ($logoPath && file_exists($logoPath)) {
-            $imageData = base64_encode(file_get_contents($logoPath));
-            $mimeType = mime_content_type($logoPath);
-            echo '<img src="data:' . $mimeType . ';base64,' . $imageData . '" class="logo-img">';
-        }
-    @endphp
-</td>
-            <td class="title-cell">
-                <p class="title-text">FORMULIR DISPOSISI</p>
+    {{-- HEADER TABLE --}}
+    <table class="header-table">
+        <col style="width:18%">
+        <col style="width:27%">
+        <col style="width:27%">
+        <col style="width:28%">
+        <tr>
+            <td class="logo-cell" rowspan="2">
+                @php
+                    $logoPath = '';
+                    $logoType = $letter->logo_type ?? 'pt';
+
+                    if($logoType === 'klinik') {
+                        $logoPath = public_path('logo/logo_klinik.png');
+                    } elseif($logoType === 'lab') {
+                        $logoPath = public_path('logo/logo_lab.png');
+                    } else {
+                        $logoPath = public_path('logo/logo_pt.png');
+                    }
+
+                    if(file_exists($logoPath)) {
+                        $imageData = base64_encode(file_get_contents($logoPath));
+                        $mimeType = mime_content_type($logoPath);
+                        echo '<img src="data:' . $mimeType . ';base64,' . $imageData . '">';
+                    } else {
+                        echo '<div style="font-weight:bold;font-size:9px;">LOGO</div>';
+                    }
+                @endphp
             </td>
-            <td class="doc-info">
-                <div class="doc-info-row">
-                    <span class="doc-info-label">No. Dokumen</span>: <span class="doc-info-value">{{ $letter->nomor_membaca ?? '-' }}</span>
-                </div>
-                <div class="doc-info-row">
-                    <span class="doc-info-label">No. Revisi</span>: <span class="doc-info-value">{{ $letter->no_revisi ?? '00' }}</span>
-                </div>
-                <div class="doc-info-row">
-                    <span class="doc-info-label">Tanggal</span>: <span class="doc-info-value">{{ $letter->tanggal_pembuatan ? $letter->tanggal_pembuatan->format('d/m/Y') : '-' }}</span>
-                </div>
-            </td>
+            <td class="title-cell" colspan="3">FORMULIR DISPOSISI</td>
+        </tr>
+        <tr>
+            <td class="doc-info"><strong>No. Dokumen</strong><br>{{ $letter->nomor_dokumen ?? 'LD/001/X/2025' }}</td>
+            <td class="doc-info"><strong>No. Revisi</strong><br>{{ $letter->no_revisi ?? '00' }}</td>
+            <td class="doc-info"><strong>Halaman dari</strong><br>{{ $letter->halaman_dari ?? '1' }}</td>
         </tr>
     </table>
 
-    {{-- Nomor/Tanggal Membaca --}}
-    <table class="membaca-section">
+    {{-- CONTENT TABLE --}}
+    <table class="content-table">
+        <col style="width:18%">
+        <col style="width:32%">
+        <col style="width:18%">
+        <col style="width:32%">
+
         <tr>
-            <td class="membaca-label">Nomor/Tanggal Membaca</td>
-            <td>
-                {{ $letter->nomor_membaca ?? '-' }} / 
-                {{ $letter->tanggal_membaca ? $letter->tanggal_membaca->format('d/m/Y') : '-' }}
+            <td><strong>Dari (Bagian pembuat)</strong></td>
+            <td>{{ $letter->bagian_pembuat ?? '' }}</td>
+            <td><strong>Tanggal (pembuatan)</strong></td>
+            <td>{{ $letter->tanggal_pembuatan? \Carbon\Carbon::parse($letter->tanggal_pembuatan)->translatedFormat('d F Y') : '' }}</td>
+        </tr>
+
+        <tr>
+            <td><strong>Nomor/Tanggal</strong></td>
+            <td>{{ $letter->nomor_tanggal ?? '' }}</td>
+            <td><strong>No. Agenda</strong></td>
+            <td>{{ $letter->no_agenda ?? '' }}</td>
+        </tr>
+
+        <tr>
+            <td><strong>Perihal</strong></td>
+            <td>{{ $letter->perihal ?? '' }}</td>
+            <td><strong>Paraf</strong></td>
+            <td>{{ $letter->paraf ?? '' }}</td>
+        </tr>
+
+        {{-- BAGIAN DITERUSKAN KE --}}
+ <tr>
+    <td><strong>Kepada</strong></td>
+    <td><strong>Diteruskan Kepada</strong></td>
+    <td><strong>Tanggal Diserahkan</strong></td>
+    <td><strong>Tanggal Kembali</strong></td>
+</tr>
+<tr>
+    <td>{{ $letter->kepada ?? '' }}</td>
+    <td>
+        @if($letter->diteruskan_kepada && is_array($letter->diteruskan_kepada))
+            @foreach($letter->diteruskan_kepada as $i => $item)
+                {{ $i+1 }}. {{ $item }}<br>
+            @endforeach
+        @else
+            1. ....<br>
+            2. ....<br>
+        @endif
+    </td>
+    <td style="text-align:center;">
+        {{ $letter->tanggal_diserahkan 
+            ? \Carbon\Carbon::parse($letter->tanggal_diserahkan)->translatedFormat('d F Y') 
+            : '' }}
+    </td>
+    <td style="text-align:center;">
+        {{ $letter->tanggal_kembali 
+            ? \Carbon\Carbon::parse($letter->tanggal_kembali)->translatedFormat('d F Y') 
+            : '' }}
+    </td>
+</tr>
+
+<tr>
+    <td><strong>Ringkasan Isi</strong></td>
+    <td colspan="3">
+        <div style="white-space:pre-line;">
+            {{ $letter->ringkasan_isi ?? '' }}
+        </div>
+    </td>
+</tr>
+
+        <tr>
+            <td colspan="2" class="instruction-box">
+                <strong>Instruksi:</strong><br>
+                <div style="margin-top:4px;white-space:pre-line;font-size:10px;">{{ $letter->instruksi_1 ?? '' }}</div>
             </td>
-        </tr>
-    </table>
-
-    {{-- Perihal & Paraf --}}
-    <table class="perihal-table">
-        <tr>
-            <td class="perihal-label">Perihal</td>
-            <td class="perihal-content">{{ $letter->perihal ?? '-' }}</td>
-            <td class="paraf-cell">
-                <div style="font-weight: bold; margin-bottom: 3px;">Paraf</div>
-                <div style="margin-top: 30px;">{{ $letter->paraf ?? '' }}</div>
+            <td colspan="2" class="instruction-box">
+                <strong>Instruksi:</strong><br>
+                <div style="margin-top:4px;white-space:pre-line;font-size:10px;">{{ $letter->instruksi_2 ?? '' }}</div>
             </td>
-        </tr>
-    </table>
-
-    {{-- Diteruskan Kepada --}}
-    <table class="diteruskan-table">
-        <thead>
-            <tr>
-                <th class="diteruskan-no">No.</th>
-                <th class="diteruskan-nama">Diteruskan Kepada</th>
-                <th class="diteruskan-tgl">Tanggal Diserahkan</th>
-                <th class="diteruskan-tgl">Tanggal Kembali</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if(!empty($letter->diteruskan_kepada) && is_array($letter->diteruskan_kepada))
-                @foreach($letter->diteruskan_kepada as $i => $penerima)
-                <tr>
-                    <td class="diteruskan-no">{{ $i + 1 }}.</td>
-                    <td class="diteruskan-nama">{{ $penerima }}</td>
-                    <td class="diteruskan-tgl">{{ $letter->tanggal_diserahkan ? $letter->tanggal_diserahkan->format('d/m/Y') : '' }}</td>
-                    <td class="diteruskan-tgl">{{ $letter->tanggal_kembali ? $letter->tanggal_kembali->format('d/m/Y') : '' }}</td>
-                </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td class="diteruskan-no">1.</td>
-                    <td class="diteruskan-nama"></td>
-                    <td class="diteruskan-tgl"></td>
-                    <td class="diteruskan-tgl"></td>
-                </tr>
-                <tr>
-                    <td class="diteruskan-no">2.</td>
-                    <td class="diteruskan-nama"></td>
-                    <td class="diteruskan-tgl"></td>
-                    <td class="diteruskan-tgl"></td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-
-    {{-- Catatan (2 Kolom) --}}
-    <table class="catatan-table">
-        <tr>
-            <td class="catatan-header" style="width: 50%;">Catatan</td>
-            <td class="catatan-header" style="width: 50%;">Catatan</td>
-        </tr>
-        <tr>
-            <td style="width: 50%;">{{ $letter->catatan_1 ?? '' }}</td>
-            <td style="width: 50%;">{{ $letter->catatan_2 ?? '' }}</td>
         </tr>
     </table>
 </div>

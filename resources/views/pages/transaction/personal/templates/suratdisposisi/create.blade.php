@@ -1,23 +1,12 @@
 @extends('layout.main')
 
 @section('content')
-<x-breadcrumb :values="[__('menu.transaction.menu'), 'Surat Pribadi', 'Buat Formulir Disposisi']" />
-
-@if ($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Terjadi Kesalahan!</strong>
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-@endif
+<x-breadcrumb :values="[__('menu.transaction.menu'), 'Surat Pribadi', 'Formulir Disposisi']" />
 
 <div class="card mb-4">
-    <form action="{{ route('transaction.personal.disposisi.store') }}" method="POST">
+    <form action="{{ route('transaction.personal.suratdisposisi.store') }}" method="POST">
         @csrf
+        <input type="hidden" name="template_type" value="suratdisposisi">
 
         <div class="card-header">
             <h5>Buat Formulir Disposisi</h5>
@@ -26,194 +15,128 @@
         <div class="card-body row">
             {{-- Informasi Header --}}
             <div class="col-12 mb-4">
-                <h6 class="border-bottom pb-2">Informasi Header</h6>
+                <h6 class="border-bottom pb-2">Informasi Dasar</h6>
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="kop_type" class="form-label">Pilih Logo/Kop <span class="text-danger">*</span></label>
-                <select class="form-select @error('kop_type') is-invalid @enderror" id="kop_type" name="kop_type" required>
-                    <option value="">-- Pilih Logo --</option>
+                <label for="logo_type" class="form-label">Pilih Logo</label>
+                <select class="form-select" id="logo_type" name="logo_type" required>
+                    <option value="klinik" {{ old('logo_type') == 'klinik' ? 'selected' : '' }}>Klinik</option>
+                    <option value="lab" {{ old('logo_type') == 'lab' ? 'selected' : '' }}>Laboratorium</option>
+                    <option value="pt" {{ old('logo_type') == 'pt' ? 'selected' : '' }}>PT</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="kop_type" class="form-label">Pilih Kop Surat</label>
+                <select class="form-select" id="kop_type" name="kop_type" required>
                     <option value="klinik" {{ old('kop_type') == 'klinik' ? 'selected' : '' }}>Klinik</option>
-                    <option value="lab" {{ old('kop_type', 'lab') == 'lab' ? 'selected' : '' }}>Laboratorium</option>
+                    <option value="lab" {{ old('kop_type') == 'lab' ? 'selected' : '' }}>Laboratorium</option>
                     <option value="pt" {{ old('kop_type') == 'pt' ? 'selected' : '' }}>PT</option>
                 </select>
-                @error('kop_type')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="logo" class="form-label">Pilih Logo (otomatis) <span class="text-danger">*</span></label>
-                <select name="logo" id="logo" class="form-select @error('logo') is-invalid @enderror" required>
-                    <option value="">-- Pilih Logo --</option>
-                    <option value="logo_klinik.png" {{ old('logo') == 'logo_klinik.png' ? 'selected' : '' }}>Logo Klinik</option>
-                    <option value="logo_lab.png" {{ old('logo') == 'logo_lab.png' ? 'selected' : '' }}>Logo Laboratorium</option>
-                    <option value="logo_pt.png" {{ old('logo') == 'logo_pt.png' ? 'selected' : '' }}>Logo PT</option>
-                </select>
-                @error('logo')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <small class="text-muted">Logo akan otomatis diambil dari folder <code>public/logo/</code></small>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="nomor_ld" class="form-label">Nomor LD <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('nomor_ld') is-invalid @enderror" 
-                       id="nomor_ld" name="nomor_ld" 
-                       placeholder="001" 
-                       value="{{ old('nomor_ld', '001') }}" required>
-                <small class="text-muted">Format: 001, 002, dst</small>
-                @error('nomor_ld')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="tanggal_dokumen" class="form-label">Tanggal Dokumen <span class="text-danger">*</span></label>
-                <input type="date" class="form-control @error('tanggal_dokumen') is-invalid @enderror" 
-                       id="tanggal_dokumen" name="tanggal_dokumen" 
-                       value="{{ old('tanggal_dokumen', date('Y-m-d')) }}" required>
-                <small class="text-muted">Untuk No. Dokumen LD/bulan/tahun</small>
-                @error('tanggal_dokumen')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <x-input-form name="nomor_dokumen" label="No. Dokumen" 
+                    placeholder="LD/001/X/2025" :value="old('nomor_dokumen')" />
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="no_revisi" class="form-label">No. Revisi <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('no_revisi') is-invalid @enderror" 
-                       id="no_revisi" name="no_revisi" 
-                       placeholder="00" 
-                       value="{{ old('no_revisi', '00') }}" required>
-                <small class="text-muted">Contoh: 00, 01, 02</small>
-                @error('no_revisi')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <x-input-form name="no_revisi" label="No. Revisi" 
+                    placeholder="00" :value="old('no_revisi', '00')" />
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="tanggal_pembuatan" class="form-label">Tanggal Pembuatan <span class="text-danger">*</span></label>
-                <input type="date" class="form-control @error('tanggal_pembuatan') is-invalid @enderror" 
-                       id="tanggal_pembuatan" name="tanggal_pembuatan" 
-                       value="{{ old('tanggal_pembuatan', date('Y-m-d')) }}" required>
-                @error('tanggal_pembuatan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <x-input-form name="halaman_dari" type="number" label="Halaman dari" 
+                    :value="old('halaman_dari', 1)" />
             </div>
 
-            {{-- Perihal & Paraf --}}
+            {{-- Tabel Kiri --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Perihal & Paraf</h6>
+                <h6 class="border-bottom pb-2">Informasi Pembuat (Tabel Kiri)</h6>
             </div>
 
-            <div class="col-md-8 mb-3">
-                <label for="perihal" class="form-label">Perihal <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('perihal') is-invalid @enderror" 
-                          id="perihal" name="perihal" rows="3" 
-                          placeholder="Tuliskan perihal disposisi" required>{{ old('perihal') }}</textarea>
-                @error('perihal')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-md-6 mb-3">
+                <x-input-form name="bagian_pembuat" label="Dari (Bagian Pembuat)" 
+                    :value="old('bagian_pembuat')" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <x-input-form name="nomor_tanggal" label="Nomor/Tanggal" 
+                    placeholder="001/2025" :value="old('nomor_tanggal')" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <x-input-form name="perihal" label="Perihal" 
+                    :value="old('perihal')" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <x-input-form name="kepada" label="Kepada" 
+                    :value="old('kepada')" />
+            </div>
+
+            <div class="col-12 mb-3">
+                <label for="ringkasan_isi" class="form-label">Ringkasan Isi</label>
+                <textarea class="form-control" id="ringkasan_isi" name="ringkasan_isi" rows="3">{{ old('ringkasan_isi') }}</textarea>
+            </div>
+
+            <div class="col-12 mb-3">
+                <label for="instruksi_1" class="form-label">Instruksi (Tabel Kiri)</label>
+                <textarea class="form-control" id="instruksi_1" name="instruksi_1" rows="3">{{ old('instruksi_1') }}</textarea>
+            </div>
+
+            {{-- Tabel Kanan --}}
+            <div class="col-12 mb-4 mt-3">
+                <h6 class="border-bottom pb-2">Informasi Disposisi (Tabel Kanan)</h6>
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="paraf" class="form-label">Paraf</label>
-                <input type="text" class="form-control @error('paraf') is-invalid @enderror" 
-                       id="paraf" name="paraf" 
-                       placeholder="Nama/Inisial" 
-                       value="{{ old('paraf') }}">
-                @error('paraf')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <x-input-form name="tanggal_pembuatan" type="date" label="Tanggal (Pembuatan)" 
+                    :value="old('tanggal_pembuatan')" />
             </div>
 
-            {{-- Diteruskan Kepada --}}
-            <div class="col-12 mb-4 mt-3">
-                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                    <h6 class="mb-0">Diteruskan Kepada</h6>
-                    <button type="button" id="add-penerima" class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-plus-circle"></i> Tambah Penerima
-                    </button>
-                </div>
+            <div class="col-md-4 mb-3">
+                <x-input-form name="no_agenda" label="No. Agenda" 
+                    :value="old('no_agenda')" />
             </div>
 
-            <div class="col-12">
-                <div id="penerima-wrapper">
-                    <div class="penerima-item card mb-3">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <strong>Penerima 1</strong>
-                            </div>
-                            <input type="text" name="diteruskan_kepada[]" 
-                                   class="form-control" placeholder="Nama Penerima" required>
-                        </div>
-                    </div>
-                    <div class="penerima-item card mb-3">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <strong>Penerima 2</strong>
-                            </div>
-                            <input type="text" name="diteruskan_kepada[]" 
-                                   class="form-control" placeholder="Nama Penerima" required>
-                        </div>
+            <div class="col-md-4 mb-3">
+                <x-input-form name="paraf" label="Paraf" 
+                    :value="old('paraf')" />
+            </div>
+
+            <div class="col-12 mb-3">
+                <label class="form-label">Diteruskan Kepada</label>
+                <div id="diteruskan-container">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="diteruskan_kepada[]" placeholder="Nama/Jabatan">
+                        <button type="button" class="btn btn-success" onclick="addDiteruskan()">
+                            <i class="bi bi-plus"></i>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            {{-- Tanggal Diserahkan & Kembali --}}
-            <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Tanggal Diserahkan & Kembali</h6>
+            <div class="col-md-6 mb-3">
+                <x-input-form name="tanggal_diserahkan" type="date" label="Tanggal Diserahkan" 
+                    :value="old('tanggal_diserahkan')" />
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="tanggal_diserahkan" class="form-label">Tanggal Diserahkan</label>
-                <input type="date" class="form-control @error('tanggal_diserahkan') is-invalid @enderror" 
-                       id="tanggal_diserahkan" name="tanggal_diserahkan" 
-                       value="{{ old('tanggal_diserahkan') }}">
-                @error('tanggal_diserahkan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <x-input-form name="tanggal_kembali" type="date" label="Tanggal Kembali" 
+                    :value="old('tanggal_kembali')" />
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
-                <input type="date" class="form-control @error('tanggal_kembali') is-invalid @enderror" 
-                       id="tanggal_kembali" name="tanggal_kembali" 
-                       value="{{ old('tanggal_kembali') }}">
-                @error('tanggal_kembali')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            {{-- Catatan --}}
-            <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Catatan</h6>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="catatan_1" class="form-label">Catatan Kolom 1</label>
-                <textarea class="form-control @error('catatan_1') is-invalid @enderror" 
-                          id="catatan_1" name="catatan_1" rows="4" 
-                          placeholder="Catatan kolom pertama">{{ old('catatan_1') }}</textarea>
-                @error('catatan_1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="catatan_2" class="form-label">Catatan Kolom 2</label>
-                <textarea class="form-control @error('catatan_2') is-invalid @enderror" 
-                          id="catatan_2" name="catatan_2" rows="4" 
-                          placeholder="Catatan kolom kedua">{{ old('catatan_2') }}</textarea>
-                @error('catatan_2')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-12 mb-3">
+                <label for="instruksi_2" class="form-label">Instruksi (Tabel Kanan)</label>
+                <textarea class="form-control" id="instruksi_2" name="instruksi_2" rows="3">{{ old('instruksi_2') }}</textarea>
             </div>
         </div>
 
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">
-                <i class="bi bi-save"></i> Simpan Disposisi
+                <i class="bi bi-save"></i> Simpan Formulir
             </button>
             <a href="{{ route('transaction.personal.templates') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
@@ -228,52 +151,22 @@
 .border-bottom {
     border-bottom: 2px solid #dee2e6 !important;
 }
-.penerima-item {
-    background-color: #f8f9fa;
-}
 </style>
 @endpush
 
 @push('scripts')
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const wrapper = document.getElementById("penerima-wrapper");
-    const addBtn = document.getElementById("add-penerima");
-    let penerimaIndex = 2;
-
-    addBtn.addEventListener("click", function () {
-        const div = document.createElement("div");
-        div.classList.add("penerima-item", "card", "mb-3");
-        div.innerHTML = `
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-2">
-                    <strong>Penerima ${penerimaIndex + 1}</strong>
-                    <button type="button" class="btn btn-sm btn-outline-danger remove-penerima">
-                        <i class="bi bi-trash"></i> Hapus
-                    </button>
-                </div>
-                <input type="text" name="diteruskan_kepada[]" 
-                       class="form-control" placeholder="Nama Penerima" required>
-            </div>
-        `;
-        wrapper.appendChild(div);
-        penerimaIndex++;
-    });
-
-    wrapper.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-penerima') || e.target.closest('.remove-penerima')) {
-            e.target.closest('.penerima-item').remove();
-            reindexPenerima();
-        }
-    });
-
-    function reindexPenerima() {
-        const items = wrapper.querySelectorAll('.penerima-item');
-        penerimaIndex = items.length;
-        items.forEach((item, idx) => {
-            item.querySelector('strong').textContent = `Penerima ${idx + 1}`;
-        });
-    }
-});
+function addDiteruskan() {
+    const container = document.getElementById('diteruskan-container');
+    const div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = `
+        <input type="text" class="form-control" name="diteruskan_kepada[]" placeholder="Nama/Jabatan">
+        <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">
+            <i class="bi bi-trash"></i>
+        </button>
+    `;
+    container.appendChild(div);
+}
 </script>
 @endpush

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class PersonalLetterDisposisi extends Model
 {
@@ -11,40 +12,63 @@ class PersonalLetterDisposisi extends Model
 
     protected $table = 'personal_letter_disposisi';
 
-protected $fillable = [
-    'user_id',
-    'kop_type',
-    'logo',
-    'nomor_ld',
-    'tanggal_dokumen',
-    'no_revisi',
-    'tanggal_pembuatan',
-    'nomor_membaca',
-    'tanggal_membaca',
-    'perihal',
-    'paraf',
-    'diteruskan_kepada',
-    'tanggal_diserahkan',
-    'tanggal_kembali',
-    'catatan_1',
-    'catatan_2',
-    'generated_file',
-];
-
-
-    protected $casts = [
-        'diteruskan_kepada' => 'array',
-        'tanggal_dokumen' => 'date',
-        'tanggal_pembuatan' => 'date',
-        'tanggal_membaca' => 'date',
-        'tanggal_diserahkan' => 'date',
-        'tanggal_kembali' => 'date',
+    protected $fillable = [
+        'kop_type',
+        'logo_type',
+        'nomor_dokumen',
+        'no_revisi',
+        'halaman_dari',
+        'bagian_pembuat',
+        'nomor_tanggal',
+        'perihal',
+        'kepada',
+        'ringkasan_isi',
+        'instruksi_1',
+        'tanggal_pembuatan',
+        'no_agenda',
+        'paraf',
+        'diteruskan_kepada',
+        'tanggal_diserahkan',
+        'tanggal_kembali',
+        'instruksi_2',
+        'generated_file',
     ];
 
-    public function generateNomorMembaca()
+    protected $casts = [
+        'tanggal_pembuatan' => 'date',
+        'tanggal_diserahkan' => 'date',
+        'tanggal_kembali' => 'date',
+        'diteruskan_kepada' => 'array',
+    ];
+
+    public function scopeSearch($query, $search)
     {
-        $bulan = date('m', strtotime($this->tanggal_pembuatan ?? now()));
-        $tahun = date('Y', strtotime($this->tanggal_pembuatan ?? now()));
-        $this->nomor_membaca = "LD/{$this->nomor_ld}/{$bulan}/{$tahun}";
+        return $query->where(function ($q) use ($search) {
+            $q->where('nomor_dokumen', 'like', "%{$search}%")
+              ->orWhere('perihal', 'like', "%{$search}%")
+              ->orWhere('bagian_pembuat', 'like', "%{$search}%")
+              ->orWhere('kepada', 'like', "%{$search}%");
+        });
+    }
+
+    public function getFormattedTanggalPembuatanAttribute()
+    {
+        return $this->tanggal_pembuatan 
+            ? Carbon::parse($this->tanggal_pembuatan)->translatedFormat('d F Y')
+            : '-';
+    }
+
+    public function getFormattedTanggalDiserahkanAttribute()
+    {
+        return $this->tanggal_diserahkan 
+            ? Carbon::parse($this->tanggal_diserahkan)->translatedFormat('d F Y')
+            : '-';
+    }
+
+    public function getFormattedTanggalKembaliAttribute()
+    {
+        return $this->tanggal_kembali 
+            ? Carbon::parse($this->tanggal_kembali)->translatedFormat('d F Y')
+            : '-';
     }
 }

@@ -14,10 +14,10 @@ use App\Http\Controllers\PersonalLetter\SuratNotulenController;
 use App\Http\Controllers\PersonalLetter\SuratBeritaAcaraController;
 use App\Http\Controllers\PersonalLetter\SuratDisposisiController;
 use App\Http\Controllers\PersonalLetter\SuratKeputusanController;
+use App\Http\Controllers\PersonalLetter\SuratInstruksiKerjaController;
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
+|--------------------------------------------------------------------------  
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -145,15 +145,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('beritaacara/{id}/preview', [SuratBeritaAcaraController::class, 'preview'])->name('beritaacara.preview');
         Route::get('beritaacara/{id}/download', [SuratBeritaAcaraController::class, 'download'])->name('beritaacara.download');
 
-        // ==================== SURAT DISPOSISI ====================
-        Route::resource('disposisi', \App\Http\Controllers\PersonalLetter\SuratDisposisiController::class)->parameters(['disposisi' => 'personal']);
-        Route::get('disposisi/{id}/preview', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'preview'])->name('disposisi.preview');
-        Route::get('disposisi/{id}/download', [\App\Http\Controllers\PersonalLetter\SuratDisposisiController::class, 'download'])->name('disposisi.download');
+        // ==================== FORMULIR DISPOSISI ====================
+        Route::resource('suratdisposisi', SuratDisposisiController::class)->parameters(['suratdisposisi' => 'personal']);
+        Route::get('suratdisposisi/{id}/preview', [SuratDisposisiController::class, 'preview'])->name('suratdisposisi.preview');
+        Route::get('suratdisposisi/{id}/download', [SuratDisposisiController::class, 'download'])->name('suratdisposisi.download');
+
         // ==================== SURAT KEPUTUSAN ====================
         Route::resource('surat_keputusan', SuratKeputusanController::class)->parameters(['surat_keputusan' => 'personal']);
         Route::get('surat_keputusan/{id}/preview', [SuratKeputusanController::class, 'preview'])->name('surat_keputusan.preview');
         Route::get('surat_keputusan/{id}/download', [SuratKeputusanController::class, 'download'])->name('surat_keputusan.download');
 
+        // ==================== INSTRUKSI KERJA ====================
+        Route::resource('suratinstruksikerja', SuratInstruksiKerjaController::class)->parameters(['suratinstruksikerja' => 'personal']);
+        Route::get('suratinstruksikerja/{id}/preview', [SuratInstruksiKerjaController::class, 'preview'])->name('suratinstruksikerja.preview');
+        Route::get('suratinstruksikerja/{id}/download', [SuratInstruksiKerjaController::class, 'download'])->name('suratinstruksikerja.download');
     });
 
     // ==========================================================

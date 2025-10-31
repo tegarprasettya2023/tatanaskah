@@ -16,6 +16,7 @@ use App\Models\PersonalLetterNotulen;
 use App\Models\PersonalLetterBeritaAcara;
 use App\Models\PersonalLetterDisposisi;
 use App\Models\PersonalLetterKeputusan;
+use App\Models\PersonalLetterInstruksiKerja;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -102,7 +103,7 @@ class BasePersonalLetterController extends Controller
             $item->jenis = 'internal_memo';
             return $item;
         });
-
+        // Pengumuman
         $pengumuman = PersonalLetterPengumuman::query();
         if ($request->filled('search')) {
             $pengumuman->search($request->search);
@@ -137,7 +138,7 @@ class BasePersonalLetterController extends Controller
             $disposisi->search($request->search);
         }
         $disposisi = $disposisi->get()->map(function ($item) {
-            $item->jenis = 'disposisi';
+            $item->jenis = 'surat_disposisi';
             return $item;
         });
 
@@ -150,7 +151,17 @@ class BasePersonalLetterController extends Controller
             $item->jenis = 'surat_keputusan';
             return $item;
         });
-        
+
+        // Ambil semua instruksi kerja
+        $instruksi_kerja = PersonalLetterInstruksiKerja::query();
+        if ($request->filled('search')) {
+            $instruksi_kerja->search($request->search);
+        }
+        $instruksi_kerja = $instruksi_kerja->get()->map(function ($item) {
+            $item->jenis = 'instruksi_kerja';
+            return $item;
+        });
+
         // Gabungkan semua data
         $all = $perjanjian
             ->concat($dinas)
@@ -165,6 +176,7 @@ class BasePersonalLetterController extends Controller
             ->concat($berita_acara)
             ->concat($disposisi)
             ->concat($keputusan)
+            ->concat($instruksi_kerja)
             ->sortByDesc('created_at')
             ->values();
 

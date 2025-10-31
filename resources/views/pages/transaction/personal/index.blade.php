@@ -467,35 +467,35 @@
                                                     <i class="bi bi-trash fs-5"></i>
                                                 </button>
                                             </form>
-                                            @elseif($item->jenis === 'disposisi')
-                                            <a href="{{ route('transaction.personal.disposisi.show', $item->id) }}" 
-                                            class="btn btn-outline-info me-2" title="Lihat Detail">
-                                            <i class="bi bi-eye fs-5"></i>
-                                            </a>
-                                            <a href="{{ route('transaction.personal.disposisi.edit', $item->id) }}" 
-                                            class="btn btn-outline-warning me-2" title="Edit">
-                                            <i class="bi bi-pencil fs-5"></i>
-                                            </a>
-                                            @if($item->generated_file)
-                                                <a href="{{ route('transaction.personal.disposisi.preview', $item->id) }}" 
-                                                class="btn btn-outline-primary me-2" title="Preview PDF" target="_blank">
-                                                    <i class="bi bi-file-pdf fs-5"></i>
+                                            @elseif($item->jenis === 'surat_disposisi')
+                                                <a href="{{ route('transaction.personal.suratdisposisi.show', $item->id) }}" 
+                                                class="btn btn-outline-info me-2" title="Lihat Detail">
+                                                    <i class="bi bi-eye fs-5"></i>
                                                 </a>
-                                                <a href="{{ route('transaction.personal.disposisi.download', $item->id) }}" 
-                                                class="btn btn-outline-success me-2" title="Download PDF" target="_blank">
-                                                    <i class="bi bi-download fs-5"></i>
+                                                <a href="{{ route('transaction.personal.suratdisposisi.edit', $item->id) }}" 
+                                                class="btn btn-outline-warning me-2" title="Edit">
+                                                    <i class="bi bi-pencil fs-5"></i>
                                                 </a>
-                                            @endif
-                                            <form action="{{ route('transaction.personal.disposisi.destroy', $item->id) }}" 
-                                                method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-outline-danger" 
-                                                        onclick="return confirm('Hapus disposisi ini?')"
-                                                        title="Hapus">
-                                                    <i class="bi bi-trash fs-5"></i>
-                                                </button>
-                                            </form>
+                                                @if($item->generated_file)
+                                                    <a href="{{ route('transaction.personal.suratdisposisi.preview', $item->id) }}" 
+                                                    class="btn btn-outline-primary me-2" title="Preview PDF" target="_blank">
+                                                        <i class="bi bi-file-pdf fs-5"></i>
+                                                    </a>
+                                                    <a href="{{ route('transaction.personal.suratdisposisi.download', $item->id) }}" 
+                                                    class="btn btn-outline-success me-2" title="Download PDF" target="_blank">
+                                                        <i class="bi bi-download fs-5"></i>
+                                                    </a>
+                                                @endif
+                                                <form action="{{ route('transaction.personal.suratdisposisi.destroy', $item->id) }}" 
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-outline-danger" 
+                                                            onclick="return confirm('Hapus formulir disposisi ini?')"
+                                                            title="Hapus">
+                                                        <i class="bi bi-trash fs-5"></i>
+                                                    </button>
+                                                </form>
                                             @elseif($item->jenis === 'surat_keputusan')
                                         <a href="{{ route('transaction.personal.surat_keputusan.show', $item->id) }}" 
                                         class="btn btn-outline-info me-2" title="Lihat Detail">
@@ -525,6 +525,35 @@
                                                 <i class="bi bi-trash fs-5"></i>
                                             </button>
                                         </form>
+                                        @elseif($item->jenis === 'instruksi_kerja')
+    <a href="{{ route('transaction.personal.suratinstruksikerja.show', $item->id) }}" 
+       class="btn btn-outline-info me-2" title="Lihat Detail">
+        <i class="bi bi-eye fs-5"></i>
+    </a>
+    <a href="{{ route('transaction.personal.suratinstruksikerja.edit', $item->id) }}" 
+       class="btn btn-outline-warning me-2" title="Edit">
+        <i class="bi bi-pencil fs-5"></i>
+    </a>
+    @if($item->generated_file)
+        <a href="{{ route('transaction.personal.suratinstruksikerja.preview', $item->id) }}" 
+           class="btn btn-outline-primary me-2" title="Preview PDF" target="_blank">
+            <i class="bi bi-file-pdf fs-5"></i>
+        </a>
+        <a href="{{ route('transaction.personal.suratinstruksikerja.download', $item->id) }}" 
+           class="btn btn-outline-success me-2" title="Download PDF" target="_blank">
+            <i class="bi bi-download fs-5"></i>
+        </a>
+    @endif
+    <form action="{{ route('transaction.personal.suratinstruksikerja.destroy', $item->id) }}" 
+          method="POST" class="d-inline">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-outline-danger" 
+                onclick="return confirm('Hapus instruksi kerja ini?')"
+                title="Hapus">
+            <i class="bi bi-trash fs-5"></i>
+        </button>
+    </form>
                                             @endif
                                     </div>
                                 </td>
