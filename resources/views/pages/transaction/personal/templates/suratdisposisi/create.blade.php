@@ -4,9 +4,10 @@
 <x-breadcrumb :values="[__('menu.transaction.menu'), 'Surat Pribadi', 'Formulir Disposisi']" />
 
 <div class="card mb-4">
-    <form action="{{ route('transaction.personal.suratdisposisi.store') }}" method="POST">
+    <form action="{{ route('transaction.personal.suratdisposisi.store') }}" method="POST" id="formDisposisi">
         @csrf
         <input type="hidden" name="template_type" value="suratdisposisi">
+        <input type="hidden" name="signature" id="signatureInput">
 
         <div class="card-header">
             <h5>Buat Formulir Disposisi</h5>
@@ -101,9 +102,18 @@
                     :value="old('no_agenda')" />
             </div>
 
-            <div class="col-md-4 mb-3">
-                <x-input-form name="paraf" label="Paraf" 
-                    :value="old('paraf')" />
+            {{-- Tanda Tangan Digital --}}
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Tanda Tangan Digital</label>
+                <div class="signature-container">
+                    <canvas id="signaturePad" class="signature-pad"></canvas>
+                </div>
+                <div class="mt-2">
+                    <button type="button" class="btn btn-sm btn-warning" onclick="clearSignature()">
+                        <i class="bi bi-eraser"></i> Hapus Tanda Tangan
+                    </button>
+                </div>
+                <small class="text-muted">Tanda tangan di area canvas di atas</small>
             </div>
 
             <div class="col-12 mb-3">
@@ -151,11 +161,61 @@
 .border-bottom {
     border-bottom: 2px solid #dee2e6 !important;
 }
+
+.signature-container {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.signature-pad {
+    width: 100%;
+    height: 200px;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    cursor: crosshair;
+    touch-action: none;
+}
 </style>
 @endpush
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 <script>
+let signaturePad;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('signaturePad');
+    signaturePad = new SignaturePad(canvas, {
+        backgroundColor: 'rgb(255, 255, 255)',
+        penColor: 'rgb(0, 0, 0)'
+    });
+
+    // Resize canvas
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.clear();
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+});
+
+function clearSignature() {
+    signaturePad.clear();
+}
+
+// Submit form
+document.getElementById('formDisposisi').addEventListener('submit', function(e) {
+    if (!signaturePad.isEmpty()) {
+        document.getElementById('signatureInput').value = signaturePad.toDataURL();
+    }
+});
+
 function addDiteruskan() {
     const container = document.getElementById('diteruskan-container');
     const div = document.createElement('div');

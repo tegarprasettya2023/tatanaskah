@@ -171,8 +171,22 @@
                         </h6>
                     </div>
                     <div class="col-12">
-                        <p class="text-muted" style="white-space: pre-line;">{{ $data->lampiran }}</p>
-                    </div>
+@if(!empty($data->lampiran))
+    @if(is_array($data->lampiran))
+        @foreach($data->lampiran as $index => $item)
+            @if(!empty($item))
+                <div class="mb-3">
+                    <h6 class="bi bi-paperclip"></h6> Lampiran {{ $index + 1 }}
+                    <p class="text-muted" style="white-space: pre-line;">{{ $item }}</p>
+                </div>
+            @endif
+        @endforeach
+    @else
+        <p class="text-muted" style="white-space: pre-line;">{{ $data->lampiran }}</p>
+    @endif
+@else
+    <p class="text-muted">Tidak ada lampiran</p>
+@endif                    </div>
                 </div>
                 @endif
             </div>

@@ -13,6 +13,7 @@ class PersonalLetterKeputusan extends Model
 
     protected $fillable = [
         'judul',
+        'judul_2', // BARU
         'kop_type',
         'nomor',
         'tentang',
@@ -36,6 +37,7 @@ class PersonalLetterKeputusan extends Model
         'mengingat' => 'array',
         'isi_keputusan' => 'array',
         'tembusan' => 'array',
+        'lampiran' => 'array', // DIUBAH: dari text ke array
     ];
 
     public function scopeSearch($query, $keyword)

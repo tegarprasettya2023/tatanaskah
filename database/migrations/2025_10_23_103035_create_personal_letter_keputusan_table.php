@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('kop_type')->default('lab'); // klinik, lab, pt
             $table->string('judul')->nullable();
+            $table->string('judul_2')->nullable(); // BARU: Judul kedua
             $table->string('nomor')->nullable();
             $table->text('tentang')->nullable();
             $table->json('menimbang')->nullable(); 
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->string('jabatan_pejabat')->nullable();
             $table->string('nik_pejabat')->nullable();
             $table->json('tembusan')->nullable(); // Array of tembusan
-            $table->text('lampiran')->nullable(); // Isi lampiran jika ada
+            $table->json('lampiran')->nullable(); // DIUBAH: Array untuk multiple lampiran
             $table->string('generated_file')->nullable();
             $table->timestamps();
         });

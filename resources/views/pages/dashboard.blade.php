@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- {{-- Kanan: Grafik Hari Ini --}} -->
-                <div class="col-lg-6 mt-4 mt-lg-0">
+                <!-- <div class="col-lg-6 mt-4 mt-lg-0">
                     <h5 class="card-title mb-1">{{ __('dashboard.today_graphic') }}</h5>
                     <span class="badge bg-label-warning mb-3">{{ __('dashboard.today') }}</span>
                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -73,9 +73,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <!-- {{-- Grid Cards --}} -->
+    <!-- {{-- Grid Cards --}}
     <div class="row">
         <div class="col-xl-4 col-md-6 mb-4">
             <x-dashboard-card-simple :label="__('dashboard.incoming_letter')" :value="$todayIncomingLetter" :daily="true" color="success"
@@ -107,4 +107,4 @@
                 icon="bx-user-check" :percentage="0" />
         </div>
     </div>
-@endsection
+@endsection -->

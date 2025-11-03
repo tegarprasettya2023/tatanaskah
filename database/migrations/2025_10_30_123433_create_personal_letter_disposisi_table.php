@@ -27,7 +27,7 @@ return new class extends Migration
             // Tabel Kanan
             $table->date('tanggal_pembuatan')->nullable();
             $table->string('no_agenda')->nullable();
-            $table->string('paraf')->nullable();
+            $table->text('signature')->nullable();;
             $table->json('diteruskan_kepada')->nullable(); // array
             $table->date('tanggal_diserahkan')->nullable();
             $table->date('tanggal_kembali')->nullable();

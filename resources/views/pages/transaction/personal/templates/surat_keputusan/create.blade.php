@@ -42,10 +42,25 @@
                 @enderror
             </div>
 
-            <div class="form-group mb-3">
-                <label for="judul" class="form-label">Judul Surat</label>
-                <input type="text" name="judul" id="judul" class="form-control"
-                    value="{{ old('judul', $keputusan->judul ?? '') }}" placeholder="Masukkan judul surat">
+            <div class="col-md-6 mb-3"></div>
+
+            <div class="col-md-12 mb-3">
+                <label for="judul" class="form-label">Judul Surat <span class="text-danger">*</span></label>
+                <input type="text" name="judul" id="judul" class="form-control @error('judul') is-invalid @enderror"
+                    value="{{ old('judul') }}" placeholder="Contoh: KEPUTUSAN KEPALA LABORATORIUM" required>
+                @error('judul')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label for="judul_2" class="form-label">Judul 2 (Sub Judul)</label>
+                <input type="text" name="judul_2" id="judul_2" class="form-control @error('judul_2') is-invalid @enderror"
+                    value="{{ old('judul_2') }}" placeholder="Contoh: LABORATORIUM MEDIS KHUSUS PATOLOGI KLINIK UTAMA TRISENSA">
+                <small class="text-muted">Judul 2 akan muncul setelah judul utama dan setelah kalimat 'DENGAN RAHMAT TUHAN YANG MAHA ESA'</small>
+                @error('judul_2')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="col-md-6 mb-3">
@@ -251,20 +266,31 @@
                 </div>
             </div>
 
-            {{-- Lampiran --}}
+            {{-- Lampiran dengan Rich Text Editor --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Lampiran (Opsional)</h6>
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <h6 class="mb-0">Lampiran (Opsional)</h6>
+                    <button type="button" id="add-lampiran" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-plus-circle"></i> Tambah Lampiran
+                    </button>
+                </div>
             </div>
 
-            <div class="col-12 mb-3">
-                <label for="lampiran" class="form-label">Isi Lampiran</label>
-                <textarea class="form-control @error('lampiran') is-invalid @enderror" 
-                          id="lampiran" name="lampiran" rows="5" 
-                          placeholder="Ketik isi lampiran di sini (jika ada)...">{{ old('lampiran') }}</textarea>
-                <small class="text-muted">Jika diisi, lampiran akan ditampilkan di PDF. Jika tidak, lampiran tidak akan muncul.</small>
-                @error('lampiran')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-12">
+                <div id="lampiran-wrapper">
+                    <div class="lampiran-item card mb-3" data-index="0">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <strong>Lampiran 1</strong>
+                            </div>
+                            <!-- Rich Text Editor Container -->
+                            <div class="quill-editor" id="editor-0" style="height: 300px;"></div>
+                            <!-- Hidden input untuk menyimpan HTML content -->
+                            <input type="hidden" name="lampiran[]" class="lampiran-content" value="{{ old('lampiran.0') }}">
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">Gunakan editor untuk memformat teks lampiran. Jika diisi, lampiran akan ditampilkan di PDF pada halaman terpisah.</small>
             </div>
         </div>
 
@@ -281,20 +307,68 @@
 @endsection
 
 @push('style')
+<!-- Quill CSS -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
 .border-bottom {
     border-bottom: 2px solid #dee2e6 !important;
 }
-.menimbang-item, .mengingat-item, .isi-item, .tembusan-item {
+.menimbang-item, .mengingat-item, .isi-item, .tembusan-item, .lampiran-item {
     background-color: #f8f9fa;
+}
+.quill-editor {
+    background: white;
+}
+.ql-editor {
+    min-height: 250px;
+    font-size: 14px;
 }
 </style>
 @endpush
 
 @push('scripts')
+<!-- Quill JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const labelMap = ['Kesatu', 'Kedua', 'Ketiga', 'Keempat', 'Kelima', 'Keenam', 'Ketujuh', 'Kedelapan', 'Kesembilan', 'Kesepuluh'];
+
+    // Array untuk menyimpan instance Quill editor
+    const quillEditors = [];
+
+    // Inisialisasi Quill Editor pertama
+    function initQuillEditor(index) {
+        const editorContainer = document.getElementById(`editor-${index}`);
+        if (!editorContainer) return;
+
+        const quill = new Quill(`#editor-${index}`, {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'align': [] }],
+                    ['link'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Ketik isi lampiran di sini...'
+        });
+
+        // Simpan HTML ke hidden input saat ada perubahan
+        quill.on('text-change', function() {
+            const hiddenInput = editorContainer.closest('.lampiran-item').querySelector('.lampiran-content');
+            hiddenInput.value = quill.root.innerHTML;
+        });
+
+        quillEditors[index] = quill;
+        return quill;
+    }
+
+    // Inisialisasi editor pertama
+    initQuillEditor(0);
 
     // Menimbang
     const menimbangWrapper = document.getElementById("menimbang-wrapper");
@@ -460,6 +534,58 @@ document.addEventListener("DOMContentLoaded", function () {
         tembusanIndex = items.length;
         items.forEach((item, idx) => {
             item.querySelector('strong').textContent = `Tembusan ${idx + 1}`;
+        });
+    }
+
+    // Lampiran dengan Rich Text Editor
+    const lampiranWrapper = document.getElementById("lampiran-wrapper");
+    const addLampiran = document.getElementById("add-lampiran");
+    let lampiranIndex = 1;
+
+    addLampiran.addEventListener("click", function () {
+        const div = document.createElement("div");
+        div.classList.add("lampiran-item", "card", "mb-3");
+        div.setAttribute('data-index', lampiranIndex);
+        div.innerHTML = `
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Lampiran ${lampiranIndex + 1}</strong>
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-lampiran">
+                        <i class="bi bi-trash"></i> Hapus
+                    </button>
+                </div>
+                <div class="quill-editor" id="editor-${lampiranIndex}" style="height: 300px;"></div>
+                <input type="hidden" name="lampiran[]" class="lampiran-content">
+            </div>
+        `;
+        lampiranWrapper.appendChild(div);
+        
+        // Inisialisasi Quill editor untuk lampiran baru
+        initQuillEditor(lampiranIndex);
+        
+        lampiranIndex++;
+    });
+
+    lampiranWrapper.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-lampiran') || e.target.closest('.remove-lampiran')) {
+            const item = e.target.closest('.lampiran-item');
+            const index = item.getAttribute('data-index');
+            
+            // Hapus instance Quill
+            if (quillEditors[index]) {
+                delete quillEditors[index];
+            }
+            
+            item.remove();
+            reindexLampiran();
+        }
+    });
+
+    function reindexLampiran() {
+        const items = lampiranWrapper.querySelectorAll('.lampiran-item');
+        lampiranIndex = items.length;
+        items.forEach((item, idx) => {
+            item.querySelector('strong').textContent = `Lampiran ${idx + 1}`;
         });
     }
 });

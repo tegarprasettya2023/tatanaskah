@@ -26,7 +26,7 @@ class PersonalLetterDisposisi extends Model
         'instruksi_1',
         'tanggal_pembuatan',
         'no_agenda',
-        'paraf',
+        'signature', // Ganti dari 'paraf' ke 'signature'
         'diteruskan_kepada',
         'tanggal_diserahkan',
         'tanggal_kembali',

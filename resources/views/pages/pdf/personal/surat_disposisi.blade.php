@@ -112,6 +112,19 @@
             border: none;
             padding: 0;
         }
+
+        /* Style untuk signature */
+        .signature-container {
+            text-align: center;
+            padding: 4px;
+        }
+        .signature-container img {
+            max-width: 150px;
+            max-height: 150px;
+            display: block;
+            margin: 0 auto;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -224,57 +237,63 @@
         <tr>
             <td><strong>Perihal</strong></td>
             <td>{{ $letter->perihal ?? '' }}</td>
-            <td><strong>Paraf</strong></td>
-            <td>{{ $letter->paraf ?? '' }}</td>
+            <td><strong>Tanda Tangan</strong></td>
+            <td>
+                <div class="signature-container">
+                    @if($letter->signature)
+                        <img src="{{ $letter->signature }}" alt="Signature">
+                    @else
+                        <div style="text-align:center; padding:20px 0; font-size:8px; color:#999;">
+                            (Belum ada tanda tangan)
+                        </div>
+                    @endif
+                </div>
+            </td>
         </tr>
 
         {{-- BAGIAN DITERUSKAN KE --}}
- <tr>
-    <td><strong>Kepada</strong></td>
-    <td><strong>Diteruskan Kepada</strong></td>
-    <td><strong>Tanggal Diserahkan</strong></td>
-    <td><strong>Tanggal Kembali</strong></td>
-</tr>
-<tr>
-    <td>{{ $letter->kepada ?? '' }}</td>
-    <td>
-        @if($letter->diteruskan_kepada && is_array($letter->diteruskan_kepada))
-            @foreach($letter->diteruskan_kepada as $i => $item)
-                {{ $i+1 }}. {{ $item }}<br>
-            @endforeach
-        @else
-            1. ....<br>
-            2. ....<br>
-        @endif
-    </td>
-    <td style="text-align:center;">
-        {{ $letter->tanggal_diserahkan 
-            ? \Carbon\Carbon::parse($letter->tanggal_diserahkan)->translatedFormat('d F Y') 
-            : '' }}
-    </td>
-    <td style="text-align:center;">
-        {{ $letter->tanggal_kembali 
-            ? \Carbon\Carbon::parse($letter->tanggal_kembali)->translatedFormat('d F Y') 
-            : '' }}
-    </td>
-</tr>
+        <tr>
+            <td><strong>Kepada</strong></td>
+            <td><strong>Diteruskan Kepada</strong></td>
+            <td><strong>Tanggal Diserahkan</strong></td>
+            <td><strong>Tanggal Kembali</strong></td>
+        </tr>
+        <tr>
+            <td>{{ $letter->kepada ?? '' }}</td>
+            <td>
+                @if($letter->diteruskan_kepada && is_array($letter->diteruskan_kepada))
+                    @foreach($letter->diteruskan_kepada as $i => $item)
+                        {{ $i+1 }}. {{ $item }}<br>
+                    @endforeach
+                @else
+                    1. ....<br>
+                    2. ....<br>
+                @endif
+            </td>
+            <td style="text-align:center;">
+                {{ $letter->tanggal_diserahkan 
+                    ? \Carbon\Carbon::parse($letter->tanggal_diserahkan)->translatedFormat('d F Y') 
+                    : '' }}
+            </td>
+            <td style="text-align:center;">
+                {{ $letter->tanggal_kembali 
+                    ? \Carbon\Carbon::parse($letter->tanggal_kembali)->translatedFormat('d F Y') 
+                    : '' }}
+            </td>
+        </tr>
 
-<tr>
-    <td><strong>Ringkasan Isi</strong></td>
-    <td colspan="3">
-        <div style="white-space:pre-line;">
-            {{ $letter->ringkasan_isi ?? '' }}
-        </div>
-    </td>
-</tr>
+        <tr>
+            <td><strong>Ringkasan Isi</strong></td>
+            <td colspan="3">
+<div style="white-space:pre-line;">{{ trim($letter->ringkasan_isi ?? '') }}</div>
+            </td>
+        </tr>
 
         <tr>
             <td colspan="2" class="instruction-box">
-                <strong>Instruksi:</strong><br>
                 <div style="margin-top:4px;white-space:pre-line;font-size:10px;">{{ $letter->instruksi_1 ?? '' }}</div>
             </td>
             <td colspan="2" class="instruction-box">
-                <strong>Instruksi:</strong><br>
                 <div style="margin-top:4px;white-space:pre-line;font-size:10px;">{{ $letter->instruksi_2 ?? '' }}</div>
             </td>
         </tr>

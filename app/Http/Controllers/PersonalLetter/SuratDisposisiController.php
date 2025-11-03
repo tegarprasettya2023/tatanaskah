@@ -37,7 +37,7 @@ class SuratDisposisiController extends Controller
             'instruksi_1' => 'nullable|string',
             'tanggal_pembuatan' => 'nullable|date',
             'no_agenda' => 'nullable|string',
-            'paraf' => 'nullable|string',
+            'signature' => 'nullable|string', // Base64 image
             'diteruskan_kepada' => 'nullable|array',
             'tanggal_diserahkan' => 'nullable|date',
             'tanggal_kembali' => 'nullable|date',
@@ -83,7 +83,7 @@ class SuratDisposisiController extends Controller
             'instruksi_1' => 'nullable|string',
             'tanggal_pembuatan' => 'nullable|date',
             'no_agenda' => 'nullable|string',
-            'paraf' => 'nullable|string',
+            'signature' => 'nullable|string', // Base64 image
             'diteruskan_kepada' => 'nullable|array',
             'tanggal_diserahkan' => 'nullable|date',
             'tanggal_kembali' => 'nullable|date',
