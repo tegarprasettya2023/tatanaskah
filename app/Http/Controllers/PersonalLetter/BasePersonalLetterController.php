@@ -17,6 +17,7 @@ use App\Models\PersonalLetterBeritaAcara;
 use App\Models\PersonalLetterDisposisi;
 use App\Models\PersonalLetterKeputusan;
 use App\Models\PersonalLetterInstruksiKerja;
+use App\Models\PersonalLetterSPO;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -152,13 +153,13 @@ class BasePersonalLetterController extends Controller
             return $item;
         });
 
-        // Ambil semua instruksi kerja
-        $instruksi_kerja = PersonalLetterInstruksiKerja::query();
+        // Ambil semua SPO
+        $spo = PersonalLetterSpo::query();
         if ($request->filled('search')) {
-            $instruksi_kerja->search($request->search);
+            $spo->search($request->search);
         }
-        $instruksi_kerja = $instruksi_kerja->get()->map(function ($item) {
-            $item->jenis = 'instruksi_kerja';
+        $spo = $spo->get()->map(function ($item) {
+            $item->jenis = 'spo';
             return $item;
         });
 
@@ -176,7 +177,7 @@ class BasePersonalLetterController extends Controller
             ->concat($berita_acara)
             ->concat($disposisi)
             ->concat($keputusan)
-            ->concat($instruksi_kerja)
+            ->concat($spo)
             ->sortByDesc('created_at')
             ->values();
 

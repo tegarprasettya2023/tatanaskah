@@ -27,12 +27,12 @@
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>{{ __('menu.auth.login') }} | SURAT PTGM</title>
+    <title>{{ __('menu.auth.login') }} | Tata Naskah</title>
 
     <meta name="description" content=""/>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('logo.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('logoglen.ico') }}" type="image/x-icon">
 
 
     <!-- Fonts -->

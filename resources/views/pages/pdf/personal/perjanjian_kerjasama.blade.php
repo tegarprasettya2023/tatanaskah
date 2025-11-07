@@ -4,89 +4,85 @@
 <meta charset="UTF-8">
 <title>Surat Perjanjian Kerja Sama</title>
 <style>
+
     @page {
-        margin: 0;
-        padding: 0;
+        margin: 120px 40px 80px 40px; /* top right bottom left */
     }
 
     body { 
-        font-family: 'CenturyGothic', sans-serif; 
+        font-family: 'Century Gothic'; 
         font-size: 12px; 
         line-height: 1.5; 
         margin: 0;
         padding: 0;
     }
 
-    /* HEADER FIX DI SETIAP HALAMAN */
-    .header { 
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 80px;
-        text-align: center;
-        z-index: 1000;
-    }
-    .header img {
-        width: 100%;
-        height: 90px;
-        object-fit: cover;
-        display: block;
-    }
+        .header {
+            position: fixed;
+            top: -120px;
+            left: -30;
+            right: 30;
+            width: 113%;
+            height: 100px;
+            text-align: center;
+        }
 
-    /* FOOTER FIX DI SETIAP HALAMAN */
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 60px;
-        text-align: center;
-        z-index: 1000;
-    }
-    .footer img {
-        width: 90%;
-        height: 40px;
-        object-fit: cover;
-        display: block;
-    }
+        .header img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+        }
 
-  .content {
-    margin: 0 40px; /* jarak samping biar teks nggak mepet */
-    padding-top: 90px; /* biar konten mulai setelah header */
-    padding-bottom: 80px; /* biar konten selesai sebelum footer */
-}
+        .footer {
+            position: fixed;
+            bottom: -60px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 40px;
+            text-align: center;
+        }
+
+        .footer img {
+            width: 100%;
+            height: 40px;
+            object-fit: contain;
+        }
+
+    /* CONTENT - Tidak perlu padding lagi karena sudah diatur di @page */
+    .content {
+        margin: 0;
+    }
 
     .title {
         text-align: center;
         font-weight: bold;
         font-size: 12px;
-        margin: 15px 0;
+        margin: 5px;
     }
 
     .nomor {
         text-align: center;
-        margin: 15px 0 15px 0;
+        margin: 5px;
         font-weight: bold;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .title-line {
-        margin: 12px 0;
+        margin: 5px;
     }
 
     .pembuka {
         text-align: justify;
         margin: 15px 0;
         margin-top: 30px;
+        page-break-inside: avoid;
     }
 
-{{-- ✅ PIHAK I & II FORMAT LURUS SEPERTI TEMPLATE --}}
-<style>
+    /* PIHAK I & II */
     .pihak-wrapper {
         margin: 15px 30px;
+        page-break-inside: avoid;
     }
     .pihak-table {
         border-collapse: collapse;
@@ -94,11 +90,6 @@
     }
     .pihak-table td.num {
         width: 15px;
-        vertical-align: top;
-    }
-    .pihak-table td.dot {
-        width: 15px;
-        text-align: center;
         vertical-align: top;
     }
     .pihak-table td.nama {
@@ -116,36 +107,35 @@
         vertical-align: top;
     }
 
-    /* PASAL */
-   .pasal {
-    page-break-inside: avoid;
-    margin: -30px 0;
-}
-.pasal::before {
-    content: "";
-    display: block;
-    height: 10px; /* sama dengan margin-top konten / tinggi header */
-}
+    /* PASAL - dengan pagination control */
+    .pasal {
+        page-break-inside: avoid;
+        margin: 5px 0;
+        orphans: 3;
+        widows: 3;
+    }
 
     .pasal-title {
         text-align: center;
-        font-weight: bold;
-        margin: 55px 0 8px 0;
+        margin: 5px 0 8px 0;
+        page-break-after: avoid;
     }
     .pasal-subtitle {
         text-align: center;
-        font-weight: bold;
         margin: 8px 0 12px 0;
+        page-break-after: avoid;
     }
     .pasal-content {
         text-align: justify;
         margin: 10px 0;
         line-height: 1.6;
+        orphans: 3;
+        widows: 3;
     }
 
     /* SIGNATURES */
     .signatures {
-        margin-top: 30px;
+        margin-top: 40px;
         page-break-inside: avoid;
     }
     .signatures table {
@@ -163,16 +153,10 @@
         margin: 15px 0;
     }
     .signature-name {
-        font-weight: bold;
         margin-top: 10px;
     }
     .signature-position {
         margin-top: 5px;
-    }
-
-    /* PAGE BREAK FIX HEADER */
-    .page-break {
-        page-break-before: always;
     }
 </style>
 </head>
@@ -251,39 +235,38 @@
     {{-- PEMBUKA --}}
     <div class="pembuka">
         Pada hari ini, 
-        <strong>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('l') : 'Minggu' }}</strong> 
-        tanggal <strong>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('d') : '28' }}</strong>, 
-        bulan <strong>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('F') : 'September' }}</strong>, 
-        tahun <strong>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('Y') : '2025' }}</strong>, 
-        bertempat di <strong>{{ $letter->tempat ?? '............' }}</strong> yang bertanda tangan di bawah ini :
+        <span>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('l') : 'Minggu' }}</span> 
+        tanggal <span>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('d') : '28' }}</span>, 
+        bulan <span>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('F') : 'September' }}</span>, 
+        tahun <span>{{ $letter->letter_date ? \Carbon\Carbon::parse($letter->letter_date)->translatedFormat('Y') : '2025' }}</span>, 
+        bertempat di <span>{{ $letter->tempat ?? '............' }}</span> yang bertanda tangan di bawah ini :
     </div>
 
-  
-<div class="pihak-wrapper">
-    <table class="pihak-table">
-        <tr>
-            <td class="num">1.</td>
-            <td class="nama"><strong>{{ $letter->pihak1 ?? '....................' }}</strong></td>
-            <td class="colon">:</td>
-            <td class="text">
-                {{ $letter->jabatan1 ?? '....................' }} selanjutnya disebut sebagai <strong>Pihak I</strong>
-            </td>
-        </tr>
-        <tr>
-            <td class="num">2.</td>
-            <td class="nama"><strong>{{ $letter->pihak2 ?? '....................' }}</strong></td>
-            <td class="colon">:</td>
-            <td class="text">
-                {{ $letter->jabatan2 ?? '....................' }} selanjutnya disebut sebagai <strong>Pihak II</strong>
-            </td>
-        </tr>
-    </table>
-</div>
-
+    {{-- PIHAK I & II --}}
+    <div class="pihak-wrapper">
+        <table class="pihak-table">
+            <tr>
+                <td class="num">1.</td>
+                <td class="nama"><span>{{ $letter->pihak1 ?? '....................' }}</span></td>
+                <td class="colon">:</td>
+                <td class="text">
+                    {{ $letter->jabatan1 ?? '....................' }} selanjutnya disebut sebagai <span>Pihak I</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="num">2.</td>
+                <td class="nama"><span>{{ $letter->pihak2 ?? '....................' }}</span></td>
+                <td class="colon">:</td>
+                <td class="text">
+                    {{ $letter->jabatan2 ?? '....................' }} selanjutnya disebut sebagai <span>Pihak II</span>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <div class="pembuka">
         bersepakat untuk melakukan kerja sama dalam bidang 
-        <strong>{{ $letter->tentang ?? '.....yang' }}</strong> diatur dalam ketentuan sebagai berikut:
+        <span>{{ $letter->tentang ?? '.....yang' }}</span> diatur dalam ketentuan sebagai berikut:
     </div>
 
     {{-- PASAL DINAMIS --}}
@@ -319,14 +302,14 @@
         <table>
             <tr>
                 <td>
-                    <div><strong>Pihak I</strong></div>
+                    <div><span>Pihak I</span></div>
                     <div>{{ $letter->institusi1 ?? 'Institusi Pihak I' }}</div>
                     <div class="signature-space"></div>
                     <div class="signature-name">{{ $letter->nama1 ?? 'Nama' }}</div>
                     <div class="signature-position">{{ $letter->jabatan1 ?? 'Nama Jabatan' }}</div>
                 </td>
                 <td>
-                    <div><strong>Pihak II</strong></div>
+                    <div><span>Pihak II</span></div>
                     <div>{{ $letter->institusi2 ?? 'Institusi Pihak II' }}</div>
                     <div class="signature-space"></div>
                     <div class="signature-name">{{ $letter->nama2 ?? 'Nama' }}</div>

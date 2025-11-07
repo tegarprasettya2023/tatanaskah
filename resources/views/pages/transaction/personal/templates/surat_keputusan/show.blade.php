@@ -46,73 +46,6 @@
                     </div>
                 </div>
 
-                {{-- Menimbang --}}
-                @if(!empty($data->menimbang) && count($data->menimbang) > 0)
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h6 class="text-primary border-bottom pb-2 mb-3">
-                            <i class="bi bi-list-check"></i> Menimbang
-                        </h6>
-                    </div>
-                    <div class="col-12">
-                        <ol type="a">
-                            @foreach($data->menimbang as $item)
-                            <li class="mb-2">{{ $item }}</li>
-                            @endforeach
-                        </ol>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Mengingat --}}
-                @if(!empty($data->mengingat) && count($data->mengingat) > 0)
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h6 class="text-primary border-bottom pb-2 mb-3">
-                            <i class="bi bi-list-check"></i> Mengingat
-                        </h6>
-                    </div>
-                    <div class="col-12">
-                        <ol type="a">
-                            @foreach($data->mengingat as $item)
-                            <li class="mb-2">{{ $item }}</li>
-                            @endforeach
-                        </ol>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Menetapkan --}}
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h6 class="text-primary border-bottom pb-2 mb-3">
-                            <i class="bi bi-check-circle"></i> Menetapkan
-                        </h6>
-                    </div>
-                    <div class="col-12">
-                        <p class="text-muted">{{ $data->menetapkan ?? '-' }}</p>
-                    </div>
-                </div>
-
-                {{-- Isi Keputusan --}}
-                @if(!empty($data->isi_keputusan) && count($data->isi_keputusan) > 0)
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h6 class="text-primary border-bottom pb-2 mb-3">
-                            <i class="bi bi-file-text"></i> Isi Keputusan
-                        </h6>
-                    </div>
-                    <div class="col-12">
-                        @foreach($data->isi_keputusan as $keputusan)
-                        <div class="mb-3">
-                            <strong>{{ $keputusan['label'] ?? '' }} :</strong>
-                            <p class="text-muted ms-3 mb-2">{{ $keputusan['isi'] ?? '' }}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
                 {{-- Penandatanganan --}}
                 <div class="row mb-4">
                     <div class="col-12">
@@ -136,59 +69,9 @@
                         <strong>Nama Pejabat:</strong><br>
                         <span class="text-muted">{{ $data->nama_pejabat ?? '-' }}</span>
                     </div>
-                    @if($data->nik_pejabat)
-                    <div class="col-md-12 mb-2">
-                        <strong>NIK Kepegawaian:</strong><br>
-                        <span class="text-muted">{{ $data->nik_pejabat }}</span>
-                    </div>
-                    @endif
                 </div>
 
-                {{-- Tembusan --}}
-                @if(!empty($data->tembusan) && count($data->tembusan) > 0)
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h6 class="text-primary border-bottom pb-2 mb-3">
-                            <i class="bi bi-send"></i> Tembusan
-                        </h6>
-                    </div>
-                    <div class="col-12">
-                        <ol>
-                            @foreach($data->tembusan as $item)
-                            <li class="mb-1">{{ $item }}</li>
-                            @endforeach
-                        </ol>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Lampiran --}}
-                @if($data->lampiran)
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h6 class="text-primary border-bottom pb-2 mb-3">
-                            <i class="bi bi-paperclip"></i> Lampiran
-                        </h6>
-                    </div>
-                    <div class="col-12">
-@if(!empty($data->lampiran))
-    @if(is_array($data->lampiran))
-        @foreach($data->lampiran as $index => $item)
-            @if(!empty($item))
-                <div class="mb-3">
-                    <h6 class="bi bi-paperclip"></h6> Lampiran {{ $index + 1 }}
-                    <p class="text-muted" style="white-space: pre-line;">{{ $item }}</p>
-                </div>
-            @endif
-        @endforeach
-    @else
-        <p class="text-muted" style="white-space: pre-line;">{{ $data->lampiran }}</p>
-    @endif
-@else
-    <p class="text-muted">Tidak ada lampiran</p>
-@endif                    </div>
-                </div>
-                @endif
+ 
             </div>
         </div>
     </div>

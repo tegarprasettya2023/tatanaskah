@@ -525,31 +525,32 @@
                                                 <i class="bi bi-trash fs-5"></i>
                                             </button>
                                         </form>
-                                        @elseif($item->jenis === 'instruksi_kerja')
-    <a href="{{ route('transaction.personal.suratinstruksikerja.show', $item->id) }}" 
+
+@elseif($item->jenis === 'spo')
+    <a href="{{ route('transaction.personal.spo.show', $item->id) }}" 
        class="btn btn-outline-info me-2" title="Lihat Detail">
         <i class="bi bi-eye fs-5"></i>
     </a>
-    <a href="{{ route('transaction.personal.suratinstruksikerja.edit', $item->id) }}" 
+    <a href="{{ route('transaction.personal.spo.edit', $item->id) }}" 
        class="btn btn-outline-warning me-2" title="Edit">
         <i class="bi bi-pencil fs-5"></i>
     </a>
     @if($item->generated_file)
-        <a href="{{ route('transaction.personal.suratinstruksikerja.preview', $item->id) }}" 
+        <a href="{{ route('transaction.personal.spo.preview', $item->id) }}" 
            class="btn btn-outline-primary me-2" title="Preview PDF" target="_blank">
             <i class="bi bi-file-pdf fs-5"></i>
         </a>
-        <a href="{{ route('transaction.personal.suratinstruksikerja.download', $item->id) }}" 
+        <a href="{{ route('transaction.personal.spo.download', $item->id) }}" 
            class="btn btn-outline-success me-2" title="Download PDF" target="_blank">
             <i class="bi bi-download fs-5"></i>
         </a>
     @endif
-    <form action="{{ route('transaction.personal.suratinstruksikerja.destroy', $item->id) }}" 
+    <form action="{{ route('transaction.personal.spo.destroy', $item->id) }}" 
           method="POST" class="d-inline">
         @csrf
         @method('DELETE')
         <button class="btn btn-outline-danger" 
-                onclick="return confirm('Hapus instruksi kerja ini?')"
+                onclick="return confirm('Hapus SPO ini?')"
                 title="Hapus">
             <i class="bi bi-trash fs-5"></i>
         </button>

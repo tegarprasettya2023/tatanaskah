@@ -6,7 +6,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <h5>Pilih Template Surat</h5>
-            <p class="text-muted mb-0">Pilih jenis surat yang ingin Anda buat</p>
+            <p class="text-muted mb-0">Pilih jenis surat yang ingin dibuat</p>
         </div>
     </div>
 
@@ -280,42 +280,31 @@
             </div>
         </div>
 
-<!-- Template Instruksi Kerja -->
+<!-- Template SPO -->
 <div class="col-md-6 col-lg-4 mb-4">
-    <div class="card h-100 border-secondary">
+    <div class="card h-100 border-primary">
         <div class="card-body text-center">
             <div class="mb-3">
-                <i class="bi bi-journal-check fs-1 text-secondary"></i>
+                <i class="bi bi-clipboard-check fs-1 text-primary"></i>
             </div>
-            <h5 class="card-title">Instruksi Kerja</h5>
+            <h5 class="card-title">Standar Prosedur Operasional (SPO)</h5>
             <ul class="list-unstyled text-start small">
                 <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
                 <li><i class="bi bi-check-circle text-success"></i> 2 Logo (Kiri & Kanan)</li>
-                <li><i class="bi bi-check-circle text-success"></i> Prosedur Kerja Dinamis</li>
+                <li><i class="bi bi-check-circle text-success"></i> 10 Section dengan Label Edit</li>
+                <li><i class="bi bi-check-circle text-success"></i> Upload Bagan Alir</li>
                 <li><i class="bi bi-check-circle text-success"></i> Rekaman Histori Perubahan</li>
             </ul>
-            <a href="{{ route('transaction.personal.suratinstruksikerja.create') }}" 
-               class="btn btn-secondary">
-               <i class="bi bi-plus-circle"></i> Buat Instruksi Kerja
+            <a href="{{ route('transaction.personal.spo.create') }}" 
+               class="btn btn-primary">
+               <i class="bi bi-plus-circle"></i> Buat SPO
             </a>
         </div>
     </div>
 </div>
-
     </div>
     </div>
 
-    <div class="card mt-4">
-        <div class="card-body">
-            <h6><i class="bi bi-info-circle text-primary"></i> Informasi</h6>
-            <ul class="mb-0">
-                <li>Semua template mendukung 3 jenis kop: Klinik, Laboratorium, dan PT</li>
-                <li>PDF akan otomatis dihasilkan dengan header dan footer sesuai kop yang dipilih</li>
-                <li>Template dapat di-preview dan di-download dalam format PDF</li>
-                <li>Data surat dapat diedit kapan saja</li>
-            </ul>
-        </div>
-    </div>
 @endsection
 
 @push('style')

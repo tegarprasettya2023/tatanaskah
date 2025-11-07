@@ -32,7 +32,7 @@
     <meta name="description" content=""/>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('logo.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('logoglen.ico') }}" type="image/x-icon">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>

@@ -15,6 +15,7 @@ use App\Http\Controllers\PersonalLetter\SuratBeritaAcaraController;
 use App\Http\Controllers\PersonalLetter\SuratDisposisiController;
 use App\Http\Controllers\PersonalLetter\SuratKeputusanController;
 use App\Http\Controllers\PersonalLetter\SuratInstruksiKerjaController;
+use App\Http\Controllers\PersonalLetter\SuratSpoController;
 
 /*
 |--------------------------------------------------------------------------  
@@ -159,7 +160,13 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('suratinstruksikerja', SuratInstruksiKerjaController::class)->parameters(['suratinstruksikerja' => 'personal']);
         Route::get('suratinstruksikerja/{id}/preview', [SuratInstruksiKerjaController::class, 'preview'])->name('suratinstruksikerja.preview');
         Route::get('suratinstruksikerja/{id}/download', [SuratInstruksiKerjaController::class, 'download'])->name('suratinstruksikerja.download');
+
+        // ==================== SPO ====================
+        Route::resource('spo', SuratSpoController::class)->parameters(['spo' => 'personal']);
+        Route::get('spo/{id}/preview', [SuratSpoController::class, 'preview'])->name('spo.preview');
+        Route::get('spo/{id}/download', [SuratSpoController::class, 'download'])->name('spo.download');
     });
+
 
     // ==========================================================
 

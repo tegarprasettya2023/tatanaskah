@@ -7,8 +7,8 @@
         @page { margin: 0; }
 
         body {
-            font-family: 'Arial', sans-serif;
-            font-size: 9px;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 10px;
             line-height: 1.3;
             margin: 0;
             padding: 0;
@@ -33,19 +33,19 @@
 
         .footer {
             position: fixed; 
-            bottom: 0; 
+            bottom: 10; 
             left: 0; 
             right: 0;
             width: 100%; 
-            height: 60px; 
+            height: 40px; 
             text-align: center;
             z-index: 1000;
         }
         .footer img { 
-            width: 100%; 
+            width: 90%; 
             height: 40px; 
             object-fit: cover; 
-            display: block; 
+
         }
 
         .content {
@@ -206,11 +206,11 @@
             </td>
             <td class="title-cell" colspan="3">FORMULIR DISPOSISI</td>
         </tr>
-        <tr>
-            <td class="doc-info"><strong>No. Dokumen</strong><br>{{ $letter->nomor_dokumen ?? 'LD/001/X/2025' }}</td>
-            <td class="doc-info"><strong>No. Revisi</strong><br>{{ $letter->no_revisi ?? '00' }}</td>
-            <td class="doc-info"><strong>Halaman dari</strong><br>{{ $letter->halaman_dari ?? '1' }}</td>
-        </tr>
+            <tr>
+                <td class="doc-info">No. Dokumen<br>{{ $letter->nomor_dokumen ?? 'LD/001/X/2025' }}</td>
+                <td class="doc-info">No. Revisi<br>{{ $letter->no_revisi ?? '00' }}</td>
+                <td class="doc-info">Halaman dari<br>{{ $letter->halaman_dari ?? '1' }}</td>
+            </tr>
     </table>
 
     {{-- CONTENT TABLE --}}
@@ -221,23 +221,23 @@
         <col style="width:32%">
 
         <tr>
-            <td><strong>Dari (Bagian pembuat)</strong></td>
+            <td>Dari (Bagian pembuat)</td>
             <td>{{ $letter->bagian_pembuat ?? '' }}</td>
-            <td><strong>Tanggal (pembuatan)</strong></td>
+            <td>Tanggal (pembuatan)</td>
             <td>{{ $letter->tanggal_pembuatan? \Carbon\Carbon::parse($letter->tanggal_pembuatan)->translatedFormat('d F Y') : '' }}</td>
         </tr>
 
         <tr>
-            <td><strong>Nomor/Tanggal</strong></td>
+            <td>Nomor/Tanggal</td>
             <td>{{ $letter->nomor_tanggal ?? '' }}</td>
-            <td><strong>No. Agenda</strong></td>
+            <td>No. Agenda</td>
             <td>{{ $letter->no_agenda ?? '' }}</td>
         </tr>
 
         <tr>
-            <td><strong>Perihal</strong></td>
+            <td>Perihal</td>
             <td>{{ $letter->perihal ?? '' }}</td>
-            <td><strong>Tanda Tangan</strong></td>
+            <td>Tanda Tangan</td>
             <td>
                 <div class="signature-container">
                     @if($letter->signature)
@@ -253,10 +253,10 @@
 
         {{-- BAGIAN DITERUSKAN KE --}}
         <tr>
-            <td><strong>Kepada</strong></td>
-            <td><strong>Diteruskan Kepada</strong></td>
-            <td><strong>Tanggal Diserahkan</strong></td>
-            <td><strong>Tanggal Kembali</strong></td>
+            <td>Kepada</td>
+            <td>Diteruskan Kepada</td>
+            <td>Tanggal Diserahkan</td>
+            <td>Tanggal Kembali</td>
         </tr>
         <tr>
             <td>{{ $letter->kepada ?? '' }}</td>
@@ -283,7 +283,7 @@
         </tr>
 
         <tr>
-            <td><strong>Ringkasan Isi</strong></td>
+            <td>Ringkasan Isi</td>
             <td colspan="3">
 <div style="white-space:pre-line;">{{ trim($letter->ringkasan_isi ?? '') }}</div>
             </td>
