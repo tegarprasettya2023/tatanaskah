@@ -2,13 +2,60 @@
 
 namespace App\Http\Controllers\PersonalLetter;
 
+use App\Http\Controllers\Controller;
 use App\Models\PersonalLetterMemo;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
-class SuratMemoController extends BasePersonalLetterController
+class SuratMemoController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = PersonalLetterMemo::with('user')->orderBy('created_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nomor', 'like', "%{$search}%")
+                  ->orWhere('hal', 'like', "%{$search}%")
+                  ->orWhere('yth_nama', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('letter_date', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('letter_date', '<=', $request->date_to);
+        }
+
+        $data = $query->paginate(10)->withQueryString();
+
+        $totalCount = PersonalLetterMemo::count();
+        $monthlyCount = PersonalLetterMemo::whereMonth('created_at', date('m'))->count();
+        $weeklyCount = PersonalLetterMemo::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->count();
+        $todayCount = PersonalLetterMemo::whereDate('created_at', today())->count();
+
+        $title = 'Internal Memo';
+        $icon = 'bx-message-square-dots';
+        $createRoute = route('transaction.personal.memo.create');
+        $previewRoute = 'transaction.personal.memo.preview';
+        $downloadRoute = 'transaction.personal.memo.download';
+        $editRoute = 'transaction.personal.memo.edit';
+        $deleteRoute = 'transaction.personal.memo.destroy';
+
+        return view('pages.transaction.personal.template-index', compact(
+            'data', 'title', 'icon', 'totalCount', 'monthlyCount', 
+            'weeklyCount', 'todayCount', 'createRoute', 'previewRoute', 
+            'downloadRoute', 'editRoute', 'deleteRoute'
+        ));
+    }
+
     public function create()
     {
         return view('pages.transaction.personal.templates.memo.create');
@@ -37,6 +84,7 @@ class SuratMemoController extends BasePersonalLetterController
         $nomorData = PersonalLetterMemo::generateNomor($validated['letter_date']);
         $validated['nomor'] = $nomorData['nomor'];
         $validated['nomor_urut'] = $nomorData['nomor_urut'];
+        $validated['user_id'] = auth()->id();
 
         // Default isi penutup
         if (empty($validated['isi_penutup'])) {
@@ -110,7 +158,7 @@ class SuratMemoController extends BasePersonalLetterController
 
         $letter->delete();
 
-        return redirect()->route('transaction.personal.index')
+        return redirect()->route('transaction.personal.memo.index')
             ->with('success', 'Surat berhasil dihapus!');
     }
 

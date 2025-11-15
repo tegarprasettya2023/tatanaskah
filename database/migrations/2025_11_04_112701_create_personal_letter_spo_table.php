@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('personal_letter_spo', function (Blueprint $table) {
+        Schema::create('personal_letters_spo', function (Blueprint $table) {
             $table->id();
             $table->string('logo_kiri')->nullable(); // klinik, lab, pt
             $table->string('logo_kanan')->nullable(); // klinik, lab, pt
@@ -77,6 +77,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('personal_letter_spo');
+        Schema::dropIfExists('personal_letters_spo');
     }
 };

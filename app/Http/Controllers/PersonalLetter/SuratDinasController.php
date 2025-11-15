@@ -2,13 +2,75 @@
 
 namespace App\Http\Controllers\PersonalLetter;
 
+use App\Http\Controllers\Controller;
 use App\Models\PersonalLetterDinas;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
-class SuratDinasController extends BasePersonalLetterController
+class SuratDinasController extends Controller
 {
+    public function index(Request $request)
+    {
+        // Query dasar - hanya ambil surat dinas
+        $query = PersonalLetterDinas::with('user')->orderBy('created_at', 'desc');
+
+        // Filter pencarian
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nomor', 'like', "%{$search}%")
+                  ->orWhere('perihal', 'like', "%{$search}%")
+                  ->orWhere('kepada', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter tanggal
+        if ($request->filled('date_from')) {
+            $query->whereDate('letter_date', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('letter_date', '<=', $request->date_to);
+        }
+
+        // Pagination
+        $data = $query->paginate(10)->withQueryString();
+
+        // Statistik
+        $totalCount = PersonalLetterDinas::count();
+        $monthlyCount = PersonalLetterDinas::whereMonth('created_at', date('m'))->count();
+        $weeklyCount = PersonalLetterDinas::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->count();
+        $todayCount = PersonalLetterDinas::whereDate('created_at', today())->count();
+
+        // Data untuk view
+        $title = 'Surat Dinas';
+        $icon = 'bx-envelope';
+        $createRoute = route('transaction.personal.surat_dinas.create');
+        $previewRoute = 'transaction.personal.surat_dinas.preview';
+        $downloadRoute = 'transaction.personal.surat_dinas.download';
+        $editRoute = 'transaction.personal.surat_dinas.edit';
+        $deleteRoute = 'transaction.personal.surat_dinas.destroy';
+
+        return view('pages.transaction.personal.template-index', compact(
+            'data',
+            'title',
+            'icon',
+            'totalCount',
+            'monthlyCount',
+            'weeklyCount',
+            'todayCount',
+            'createRoute',
+            'previewRoute',
+            'downloadRoute',
+            'editRoute',
+            'deleteRoute'
+        ));
+    }
+
     public function create()
     {
         $title = 'Buat Surat Dinas';
@@ -62,6 +124,7 @@ class SuratDinasController extends BasePersonalLetterController
         }
 
         unset($validated['pihak']);
+        $validated['user_id'] = auth()->id();
 
         $letter = PersonalLetterDinas::create($validated);
 
@@ -75,7 +138,6 @@ class SuratDinasController extends BasePersonalLetterController
         return view('pages.transaction.personal.templates.suratdinas.show', compact('letter'));
     }
 
-    // ✅ Tambahan method edit
     public function edit($id)
     {
         $data = PersonalLetterDinas::findOrFail($id);
@@ -154,7 +216,7 @@ class SuratDinasController extends BasePersonalLetterController
 
         $letter->delete();
 
-        return redirect()->route('transaction.personal.index')
+        return redirect()->route('transaction.personal.surat_dinas.index')
             ->with('success', 'Surat berhasil dihapus!');
     }
 

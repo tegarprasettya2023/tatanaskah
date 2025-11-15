@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-md-6 mb-2">
                         <strong>No. Dokumen:</strong><br>
-                        <span class="text-muted">{{ $data->nomor_dokumen ?? '-' }}</span>
+                        <span class="text-muted">{{ $data->nomor ?? '-' }}</span>
                     </div>
                     <div class="col-md-6 mb-2">
                         <strong>No. Revisi:</strong><br>

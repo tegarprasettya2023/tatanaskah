@@ -7,21 +7,16 @@ use Illuminate\Http\Request;
 use App\Models\PersonalLetter;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class PerjanjianKerjasamaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PersonalLetter::query();
+        // Query dasar - hanya ambil surat perjanjian
+        $query = PersonalLetter::with('user')->orderBy('created_at', 'desc');
 
-        if ($request->filled('template_type')) {
-            $query->where('template_type', $request->template_type);
-        }
-
-        if ($request->filled('kop_type')) {
-            $query->where('kop_type', $request->kop_type);
-        }
-
+        // Filter pencarian
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -32,35 +27,74 @@ class PerjanjianKerjasamaController extends Controller
             });
         }
 
-        $data = $query->orderBy('created_at', 'desc')->paginate(10);
+        // Filter tanggal
+        if ($request->filled('date_from')) {
+            $query->whereDate('letter_date', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('letter_date', '<=', $request->date_to);
+        }
 
-        return view('pages.transaction.personal.index', compact('data'));
+        // Pagination
+        $data = $query->paginate(10)->withQueryString();
+
+        // Statistik
+        $totalCount = PersonalLetter::count();
+        $monthlyCount = PersonalLetter::whereMonth('created_at', date('m'))->count();
+        $weeklyCount = PersonalLetter::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->count();
+        $todayCount = PersonalLetter::whereDate('created_at', today())->count();
+
+        // Data untuk view
+        $title = 'Perjanjian Kerjasama';
+        $icon = 'bx-file-blank';
+        $createRoute = route('transaction.personal.create', 'perjanjian_kerjasama');
+        $previewRoute = 'transaction.personal.perjanjian.preview';
+        $downloadRoute = 'transaction.personal.perjanjian.download';
+        $editRoute = 'transaction.personal.perjanjian.edit';
+        $deleteRoute = 'transaction.personal.perjanjian.destroy';
+
+        return view('pages.transaction.personal.template-index', compact(
+            'data',
+            'title',
+            'icon',
+            'totalCount',
+            'monthlyCount',
+            'weeklyCount',
+            'todayCount',
+            'createRoute',
+            'previewRoute',
+            'downloadRoute',
+            'editRoute',
+            'deleteRoute'
+        ));
     }
 
-        public function preview($id)
-{
-    $letter = PersonalLetter::findOrFail($id);
+    public function preview($id)
+    {
+        $letter = PersonalLetter::findOrFail($id);
 
-    $pdf = Pdf::loadView('pages.pdf.personal.perjanjian_kerjasama', compact('letter'))
-              ->setPaper('A4', 'portrait')
-              ->setOptions([
-                  'isHtml5ParserEnabled' => true,
-                  'isPhpEnabled' => true,
-                  'defaultFont' => 'DejaVu Sans',
-              ]);
+        $pdf = Pdf::loadView('pages.pdf.personal.perjanjian_kerjasama', compact('letter'))
+                  ->setPaper('A4', 'portrait')
+                  ->setOptions([
+                      'isHtml5ParserEnabled' => true,
+                      'isPhpEnabled' => true,
+                      'defaultFont' => 'DejaVu Sans',
+                  ]);
 
-    // Stream (preview) instead of download
-    return $pdf->stream('Preview_Surat.pdf');
-}
+        return $pdf->stream('Preview_Surat.pdf');
+    }
+
     public function create($template)
-{
-    if ($template === 'perjanjian_kerjasama') {
-        return view('pages.transaction.personal.templates.perjanjian_kerjasama.create');
+    {
+        if ($template === 'perjanjian_kerjasama') {
+            return view('pages.transaction.personal.templates.perjanjian_kerjasama.create');
+        }
+
+        abort(404, 'Template tidak ditemukan');
     }
-
-    abort(404, 'Template tidak ditemukan');
-}
-
 
     public function store(Request $request)
     {
@@ -85,6 +119,7 @@ class PerjanjianKerjasamaController extends Controller
         ]);
 
         $validatedData['pasal_data'] = $validatedData['pasal'];
+        $validatedData['user_id'] = auth()->id();
         unset($validatedData['pasal']);
 
         $letter = PersonalLetter::create($validatedData);
@@ -104,7 +139,6 @@ class PerjanjianKerjasamaController extends Controller
         $data = PersonalLetter::findOrFail($id);
         return view('pages.transaction.personal.templates.perjanjian_kerjasama.edit', compact('data'));
     }
-
 
     public function update(Request $request, $id)
     {
@@ -167,7 +201,7 @@ class PerjanjianKerjasamaController extends Controller
                   ->setOptions([
                       'isHtml5ParserEnabled' => true,
                       'isPhpEnabled' => true,
-                      'defaultFont' => 'DejaVu Sans',
+                      'defaultFont' => 'Century Gothic',
                       'margin_top' => 15,
                       'margin_right' => 15,
                       'margin_bottom' => 15,

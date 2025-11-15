@@ -24,6 +24,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class BasePersonalLetterController extends Controller
 {
+    
     public function index(Request $request)
     {
         // Ambil semua surat perjanjian
@@ -33,6 +34,7 @@ class BasePersonalLetterController extends Controller
         }
         $perjanjian = $perjanjian->get()->map(function ($item) {
             $item->jenis = 'perjanjian';
+            $item->route_prefix = 'perjanjian';
             return $item;
         });
 
@@ -43,6 +45,7 @@ class BasePersonalLetterController extends Controller
         }
         $dinas = $dinas->get()->map(function ($item) {
             $item->jenis = 'surat_dinas';
+            $item->route_prefix = 'surat_dinas';
             return $item;
         });
 
@@ -53,6 +56,7 @@ class BasePersonalLetterController extends Controller
         }
         $keterangan = $keterangan->get()->map(function ($item) {
             $item->jenis = 'surat_keterangan';
+            $item->route_prefix = 'surat_keterangan';
             return $item;
         });
 
@@ -63,6 +67,7 @@ class BasePersonalLetterController extends Controller
         }
         $perintah = $perintah->get()->map(function ($item) {
             $item->jenis = 'surat_perintah';
+            $item->route_prefix = 'surat_perintah';
             return $item;
         });
 
@@ -73,6 +78,7 @@ class BasePersonalLetterController extends Controller
         }
         $kuasa = $kuasa->get()->map(function ($item) {
             $item->jenis = 'surat_kuasa';
+            $item->route_prefix = 'suratkuasa';
             return $item;
         });
 
@@ -83,6 +89,7 @@ class BasePersonalLetterController extends Controller
         }
         $undangan = $undangan->get()->map(function ($item) {
             $item->jenis = 'surat_undangan';
+            $item->route_prefix = 'surat_undangan';
             return $item;
         });
         // Ambil semua surat panggilan
@@ -92,6 +99,7 @@ class BasePersonalLetterController extends Controller
         }
         $panggilan = $panggilan->get()->map(function ($item) {
             $item->jenis = 'surat_panggilan';
+            $item->route_prefix = 'surat_panggilan';
             return $item;
         });
 
@@ -102,6 +110,7 @@ class BasePersonalLetterController extends Controller
         }
         $memo = $memo->get()->map(function ($item) {
             $item->jenis = 'internal_memo';
+            $item->route_prefix = 'memo';
             return $item;
         });
         // Pengumuman
@@ -111,6 +120,7 @@ class BasePersonalLetterController extends Controller
         }
         $pengumuman = $pengumuman->get()->map(function ($item) {
             $item->jenis = 'pengumuman';
+            $item->route_prefix = 'pengumuman';
             return $item;
         });
         // / Ambil semua notulen
@@ -120,6 +130,7 @@ class BasePersonalLetterController extends Controller
         }
         $notulen = $notulen->get()->map(function ($item) {
             $item->jenis = 'notulen';
+            $item->route_prefix = 'notulen';
             return $item;
         
         });
@@ -130,6 +141,7 @@ class BasePersonalLetterController extends Controller
         }
         $berita_acara = $berita_acara->get()->map(function ($item) {
             $item->jenis = 'berita_acara';
+            $item->route_prefix = 'beritaacara';
             return $item;
         });
         
@@ -140,6 +152,7 @@ class BasePersonalLetterController extends Controller
         }
         $disposisi = $disposisi->get()->map(function ($item) {
             $item->jenis = 'surat_disposisi';
+            $item->route_prefix = 'suratdisposisi';
             return $item;
         });
 
@@ -150,6 +163,7 @@ class BasePersonalLetterController extends Controller
         }
         $keputusan = $keputusan->get()->map(function ($item) {
             $item->jenis = 'surat_keputusan';
+            $item->route_prefix = 'surat_keputusan';
             return $item;
         });
 
@@ -160,6 +174,7 @@ class BasePersonalLetterController extends Controller
         }
         $spo = $spo->get()->map(function ($item) {
             $item->jenis = 'spo';
+            $item->route_prefix = 'spo';
             return $item;
         });
 

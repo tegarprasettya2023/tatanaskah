@@ -80,7 +80,7 @@
                     <div class="mb-3">
                         <i class="bi bi-clipboard-check fs-1 text-danger"></i>
                     </div>
-                    <h5 class="card-title">Surat Perintah</h5>
+                    <h5 class="card-title">Surat Perintah/Tugas</h5>
                     <ul class="list-unstyled text-start small">
                         <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
                         <li><i class="bi bi-check-circle text-success"></i> Menimbang & Dasar</li>

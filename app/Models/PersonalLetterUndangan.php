@@ -13,6 +13,7 @@ class PersonalLetterUndangan extends Model
     protected $table = 'personal_letters_undangan';
 
     protected $fillable = [
+        'user_id', // ← Tambahkan
         'template_type',
         'kop_type',
         'nomor',
@@ -36,16 +37,21 @@ class PersonalLetterUndangan extends Model
         'generated_file',
     ];
 
-
     protected $casts = [
         'hari_tanggal' => 'date',
         'tanggal_ttd' => 'date',
         'daftar_undangan' => 'array',
     ];
 
+    // ← Tambahkan relasi
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
     public function getFormattedLetterDateAttribute()
     {
-    return $this->tanggal_ttd ? Carbon::parse($this->tanggal_ttd)->translatedFormat('d F Y') : null;
+        return $this->tanggal_ttd ? Carbon::parse($this->tanggal_ttd)->translatedFormat('d F Y') : null;
     }
 
     public function scopeSearch($query, $search)

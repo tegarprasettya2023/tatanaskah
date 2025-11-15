@@ -179,7 +179,8 @@ return [
          *
          * @var string
          */
-        'default_font' => 'Century Gothic',
+'default_font' => 'Century Gothic',
+
 
         /**
          * Image DPI setting

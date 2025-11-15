@@ -10,11 +10,11 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5><i class="bi bi-file-earmark-text"></i> Detail Surat Perjanjian Kerja Sama</h5>
                 <div class="btn-group">
-                   <a href="{{ route('transaction.personal.preview', $data->id) }}" 
+                   <a href="{{ route('transaction.personal.perjanjian.preview', $data->id) }}" 
                         class="btn btn-success btn-sm" target="_blank">
                         <i class="bi bi-eye"></i> Preview PDF
                     </a>
-                    <a href="{{ route('transaction.personal.download', $data->id) }}" 
+                    <a href="{{ route('transaction.personal.perjanjian.download', $data->id) }}" 
                        class="btn btn-primary btn-sm" target="_blank">
                        <i class="bi bi-download"></i> Download PDF
                     </a>

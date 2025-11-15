@@ -10,9 +10,10 @@ class PersonalLetterDisposisi extends Model
 {
     use HasFactory;
 
-    protected $table = 'personal_letter_disposisi';
+    protected $table = 'personal_letters_disposisi';
 
     protected $fillable = [
+        'user_id',
         'kop_type',
         'logo_type',
         'nomor_dokumen',
@@ -40,7 +41,10 @@ class PersonalLetterDisposisi extends Model
         'tanggal_kembali' => 'date',
         'diteruskan_kepada' => 'array',
     ];
-
+public function user()
+{
+    return $this->belongsTo(\App\Models\User::class);
+}
     public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {

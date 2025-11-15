@@ -207,7 +207,7 @@
             <td class="title-cell" colspan="3">FORMULIR DISPOSISI</td>
         </tr>
             <tr>
-                <td class="doc-info">No. Dokumen<br>{{ $letter->nomor_dokumen ?? 'LD/001/X/2025' }}</td>
+                <td class="doc-info">No. Dokumen<br>{{ $letter->nomor ?? 'LD/001/X/2025' }}</td>
                 <td class="doc-info">No. Revisi<br>{{ $letter->no_revisi ?? '00' }}</td>
                 <td class="doc-info">Halaman dari<br>{{ $letter->halaman_dari ?? '1' }}</td>
             </tr>

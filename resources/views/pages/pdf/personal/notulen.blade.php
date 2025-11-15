@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <title>Notulen Rapat</title>
     <style>
-        /* --- BATAS CETAK (PASTI TIDAK MENIMPA HEADER/FOOTER) --- */
         @page {
-            margin: 120px 40px 100px 40px; /* top, right, bottom, left */
+            margin: 120px 40px 100px 40px;
         }
 
         body {
@@ -17,10 +16,9 @@
             padding: 0;
         }
 
-        /* --- HEADER --- */
         .header {
             position: fixed;
-            top: -120px; /* sesuai margin top @page */
+            top: -120px;
             left: -30;
             right: 30;
             width: 113%;
@@ -34,10 +32,9 @@
             object-fit: contain;
         }
 
-        /* --- FOOTER --- */
         .footer {
             position: fixed;
-            bottom: -80px; /* sesuai margin bottom @page */
+            bottom: -80px;
             left: 0;
             right: 0;
             width: 100%;
@@ -51,7 +48,6 @@
             object-fit: contain;
         }
 
-        /* --- KONTEN UTAMA --- */
         .content {
             margin: 0;
         }
@@ -107,7 +103,6 @@
             text-align: center;
         }
 
-        /* --- SIGNATURE (TIDAK DIUBAH) --- */
         .signature-wrapper {
             width: 100%;
             border-collapse: collapse;
@@ -140,7 +135,7 @@
         }
 
         .sig-name {
-            font-weight: bold;
+            font-weight: normal;
             margin-top: 4px;
         }
 
@@ -153,7 +148,6 @@
             page-break-before: always;
         }
 
-        /* --- DOKUMENTASI --- */
         .doc-title {
             text-align: center;
             font-weight: bold;
@@ -250,8 +244,12 @@
             </tr>
         </thead>
         <tbody>
-            @if(!empty($letter->kegiatan_rapat) && is_array($letter->kegiatan_rapat))
-                @foreach($letter->kegiatan_rapat as $i => $kegiatan)
+            @php
+                $kegiatanArray = is_array($letter->kegiatan_rapat) ? $letter->kegiatan_rapat : [];
+            @endphp
+            
+            @if(!empty($kegiatanArray))
+                @foreach($kegiatanArray as $i => $kegiatan)
                 <tr>
                     <td style="text-align:center;">{{ $i + 1 }}.</td>
                     <td>{{ $kegiatan['pembicara'] ?? '' }}</td>
@@ -267,21 +265,20 @@
         </tbody>
     </table>
 
-    {{-- SIGNATURE (TIDAK DIUBAH) --}}
-   <table class="signature-wrapper" style="margin-top:60px;">
+    <table class="signature-wrapper" style="margin-top:60px;">
         <tr>
             <td class="sig-left" style="text-align:left; padding-top: 3%;">
                 <div class="sig-role">Kepala Laboratorium</div>
                 <span class="sig-placeholder"></span>
                 <div class="sig-name">{{ $letter->kepala_lab ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_kepala_lab ? 'NIK Pegawai: ' . $letter->nik_kepala_lab : 'NIK Pegawai' }}</div>
+                <div class="sig-nik">{{ $letter->nik_kepala_lab ? 'NIK. ' . $letter->nik_kepala_lab : 'NIK Pegawai' }}</div>
             </td>
             <td class="sig-right" style="width:20%; text-align:left;">
                 <div class="sig-role">{{ 'Surabaya' }}, {{ $letter->tanggal_rapat ? $letter->tanggal_rapat->translatedFormat('d F Y') : '..................' }}</div>
                 <div class="sig-role">Notulis</div>
                 <span class="sig-placeholder"></span>
                 <div class="sig-name">{{ $letter->notulis ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_notulis ? 'NIK Pegawai: ' . $letter->nik_notulis : 'NIK Pegawai' }}</div>
+                <div class="sig-nik">{{ $letter->nik_notulis ? 'NIK. ' . $letter->nik_notulis : 'NIK Pegawai' }}</div>
             </td>
         </tr>
     </table>
@@ -289,14 +286,18 @@
 </div>
 
 {{-- HALAMAN 2 - DOKUMENTASI --}}
-@if(!empty($letter->dokumentasi) && is_array($letter->dokumentasi) && count($letter->dokumentasi) > 0)
+@php
+    $dokumentasiArray = is_array($letter->dokumentasi) ? $letter->dokumentasi : [];
+@endphp
+
+@if(!empty($dokumentasiArray) && count($dokumentasiArray) > 0)
 <div class="page-break"></div>
 <div class="content">
     <div class="doc-title">
         JUDUL DOKUMENTASI {{ strtoupper($letter->judul_dokumentasi ?? '............') }}
     </div>
     <div class="doc-grid">
-        @foreach(array_chunk($letter->dokumentasi, 2) as $chunk)
+        @foreach(array_chunk($dokumentasiArray, 2) as $chunk)
         <div class="doc-row">
             @foreach($chunk as $doc)
             <div class="doc-cell">
@@ -319,21 +320,20 @@
         @endforeach
     </div>
 
-    {{-- SIGNATURE (TIDAK DIUBAH) --}}
     <table class="signature-wrapper" style="margin-top:60px;">
         <tr>
             <td class="sig-left" style="text-align:left; padding-top: 3%;">
                 <div class="sig-role">Kepala Laboratorium</div>
                 <span class="sig-placeholder"></span>
                 <div class="sig-name">{{ $letter->kepala_lab ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_kepala_lab ? 'NIK Pegawai: ' . $letter->nik_kepala_lab : 'NIK Pegawai' }}</div>
+                <div class="sig-nik">{{ $letter->nik_kepala_lab ? 'NIK. ' . $letter->nik_kepala_lab : 'NIK Pegawai' }}</div>
             </td>
             <td class="sig-right" style="width:20%; text-align:left;">
                 <div class="sig-role">{{ 'Surabaya' }}, {{ $letter->tanggal_rapat ? $letter->tanggal_rapat->translatedFormat('d F Y') : '..................' }}</div>
                 <div class="sig-role">Notulis</div>
                 <span class="sig-placeholder"></span>
                 <div class="sig-name">{{ $letter->notulis ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_notulis ? 'NIK Pegawai: ' . $letter->nik_notulis : 'NIK Pegawai' }}</div>
+                <div class="sig-nik">{{ $letter->nik_notulis ? 'NIK. ' . $letter->nik_notulis : 'NIK Pegawai' }}</div>
             </td>
         </tr>
     </table>

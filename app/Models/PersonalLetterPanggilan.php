@@ -12,6 +12,7 @@ class PersonalLetterPanggilan extends Model
     protected $table = 'personal_letters_panggilan';
 
     protected $fillable = [
+        'user_id', 
         'template_type',
         'kop_type',
         'nomor',
@@ -38,4 +39,9 @@ class PersonalLetterPanggilan extends Model
         'letter_date' => 'date',
         'hari_tanggal' => 'date',
     ];
+
+    public function user()
+{
+    return $this->belongsTo(\App\Models\User::class);
+}
 }

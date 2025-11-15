@@ -8,15 +8,49 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class SuratSpoController extends Controller
 {
-    public function index()
-    {
-        $data = PersonalLetterSpo::latest()->paginate(10);
-        return view('pages.transaction.personalspo.index', compact('data'));
+public function index(Request $request)
+{
+    $query = PersonalLetterSpo::with('user')->orderBy('created_at', 'desc');
+
+    if ($request->filled('search')) {
+        $query->search($request->search);
     }
 
+    if ($request->filled('date_from')) {
+        $query->whereDate('tanggal_terbit', '>=', $request->date_from);
+    }
+    if ($request->filled('date_to')) {
+        $query->whereDate('tanggal_terbit', '<=', $request->date_to);
+    }
+
+    $data = $query->paginate(10)->withQueryString();
+
+    $totalCount = PersonalLetterSpo::count();
+    $monthlyCount = PersonalLetterSpo::whereMonth('created_at', date('m'))->count();
+    $weeklyCount = PersonalLetterSpo::whereBetween('created_at', [
+        Carbon::now()->startOfWeek(),
+        Carbon::now()->endOfWeek()
+    ])->count();
+    $todayCount = PersonalLetterSpo::whereDate('created_at', today())->count();
+
+    $title = 'SPO';
+    $icon = 'bx-file-blank';
+    $createRoute = route('transaction.personal.spo.create');
+    $previewRoute = 'transaction.personal.spo.preview';
+    $downloadRoute = 'transaction.personal.spo.download';
+    $editRoute = 'transaction.personal.spo.edit';
+    $deleteRoute = 'transaction.personal.spo.destroy';
+
+    return view('pages.transaction.personal.template-index', compact(
+        'data', 'title', 'icon', 'totalCount', 'monthlyCount', 
+        'weeklyCount', 'todayCount', 'createRoute', 'previewRoute', 
+        'downloadRoute', 'editRoute', 'deleteRoute'
+    ));
+}
     public function create()
     {
         return view('pages.transaction.personal.templates.spo.create');

@@ -71,7 +71,7 @@
             margin-top: 10px;
         }
         body, * {
-            font-family: 'Century Gothic', sans-serif !important;
+            font-family: 'Century Gothic' sans-serif !important;
         }
     </style>
 </head>

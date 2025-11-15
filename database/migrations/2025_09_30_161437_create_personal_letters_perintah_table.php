@@ -10,41 +10,39 @@ return new class extends Migration
     {
         Schema::create('personal_letters_perintah', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('template_type')->default('surat_perintah');
             $table->string('kop_type'); // klinik, lab, pt
             $table->string('nomor');
             $table->date('letter_date');
             $table->string('tempat');
             
-            // Menimbang
-            $table->text('menimbang_1');
-            $table->text('menimbang_2');
+            // Menimbang - sekarang array
+            $table->json('menimbang');
             
-            // Dasar
-            $table->text('dasar_a');
-            $table->text('dasar_b');
+            // Dasar - sekarang array
+            $table->json('dasar');
             
-            // Memberi Perintah Kepada
-            $table->string('nama_penerima');
-            $table->string('nik_penerima');
-            $table->string('jabatan_penerima');
-            $table->text('nama_nama_terlampir')->nullable(); // Jika ada nama-nama terlampir
+            // Memberi Perintah Kepada - sekarang opsional
+            $table->string('nama_penerima')->nullable();
+            $table->string('nik_penerima')->nullable();
+            $table->string('jabatan_penerima')->nullable();
+            $table->text('nama_nama_terlampir')->nullable();
             
-            // Untuk (tujuan/keperluan)
-            $table->text('untuk_1');
-            $table->text('untuk_2');
+            // Untuk - sekarang array
+            $table->json('untuk');
             
-            // Tembusan
-            $table->text('tembusan_1')->nullable();
-            $table->text('tembusan_2')->nullable();
+            // Tembusan - sekarang array dan opsional
+            $table->json('tembusan')->nullable();
             
             // Pembuat/Penandatangan
             $table->string('jabatan_pembuat');
             $table->string('nama_pembuat');
             $table->string('nik_pembuat');
             
-        $table->json('lampiran')->nullable();
-
+            // Lampiran - opsional
+            $table->json('lampiran')->nullable();
+            
             $table->string('generated_file')->nullable();
             $table->timestamps();
         });

@@ -11,6 +11,7 @@ class PersonalLetter extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id', // Tambahkan ini
         'template_type',
         'kop_type',
         'nomor',
@@ -46,6 +47,12 @@ class PersonalLetter extends Model
         'pasal_data' => 'array',
         'tembusan_data' => 'array',
     ];
+
+    // Tambahkan relasi user
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 
     public function getFormattedLetterDateAttribute()
     {

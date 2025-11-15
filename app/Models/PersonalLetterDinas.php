@@ -10,9 +10,10 @@ class PersonalLetterDinas extends Model
 {
     use HasFactory;
 
-    protected $table = 'personal_letters_dinas'; // tabel khusus surat dinas
+    protected $table = 'personal_letters_dinas';
 
     protected $fillable = [
+        'user_id', // Tambahkan ini
         'template_type',
         'kop_type',
         'nomor',
@@ -36,6 +37,12 @@ class PersonalLetterDinas extends Model
         'letter_date' => 'date',
         'tembusan_data' => 'array',
     ];
+
+    // Tambahkan relasi user
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 
     public function getFormattedLetterDateAttribute()
     {

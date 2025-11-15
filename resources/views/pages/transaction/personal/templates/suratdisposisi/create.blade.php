@@ -38,8 +38,8 @@
             </div>
 
             <div class="col-md-4 mb-3">
-                <x-input-form name="nomor_dokumen" label="No. Dokumen" 
-                    placeholder="LD/001/X/2025" :value="old('nomor_dokumen')" />
+            <x-input-form name="nomor" label="No. Dokumen" 
+                placeholder="LD/001/X/2025" :value="old('nomor')" />
             </div>
 
             <div class="col-md-6 mb-3">

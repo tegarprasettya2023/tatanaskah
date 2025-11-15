@@ -9,9 +9,10 @@ class PersonalLetterSpo extends Model
 {
     use HasFactory;
 
-    protected $table = 'personal_letter_spo';
+    protected $table = 'personal_letters_spo';
 
     protected $fillable = [
+        'user_id',
         'logo_kiri',
         'logo_kanan',
         'kop_type',
@@ -51,7 +52,10 @@ class PersonalLetterSpo extends Model
         'letter_date' => 'date',
         'rekaman_historis' => 'array',
     ];
-
+public function user()
+{
+    return $this->belongsTo(\App\Models\User::class);
+}
     public function getFormattedTanggalTerbitAttribute()
     {
         return $this->tanggal_terbit ? $this->tanggal_terbit->format('d/m/Y') : '-';

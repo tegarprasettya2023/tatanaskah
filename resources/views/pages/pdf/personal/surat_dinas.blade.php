@@ -9,7 +9,7 @@
         }
         
         body { 
-            font-family: 'DejaVu Sans', sans-serif; 
+            font-family: 'Montserrat', sans-serif;
             font-size: 12px; 
             line-height: 1.6; 
             margin: 0;
@@ -116,7 +116,7 @@
         }
         
         .signature-name {
-            font-weight: bold;
+            font-weight: normal;
         }
         
         .tembusan {
@@ -242,7 +242,7 @@
     <div>{{ $letter->jabatan1 ?? 'Nama Jabatan' }},</div>
     <div class="signature-space"></div>
     <div class="signature-name">{{ $letter->nama1 ?? 'Nama Pejabat' }}</div>
-    <div>{{ $letter->nip ?? 'NIKepegawaian' }}</div>
+    <div> NIK.{{ $letter->nip ?? 'NIKepegawaian' }}</div>
 </div>
 
 {{-- Tembusan --}}

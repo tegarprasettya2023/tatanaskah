@@ -2,13 +2,60 @@
 
 namespace App\Http\Controllers\PersonalLetter;
 
+use App\Http\Controllers\Controller;
 use App\Models\PersonalLetterBeritaAcara;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
-class SuratBeritaAcaraController extends BasePersonalLetterController
+class SuratBeritaAcaraController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = PersonalLetterBeritaAcara::with('user')->orderBy('created_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nomor', 'like', "%{$search}%")
+                  ->orWhere('nama_pihak_pertama', 'like', "%{$search}%")
+                  ->orWhere('pihak_kedua', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('tanggal_acara', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('tanggal_acara', '<=', $request->date_to);
+        }
+
+        $data = $query->paginate(10)->withQueryString();
+
+        $totalCount = PersonalLetterBeritaAcara::count();
+        $monthlyCount = PersonalLetterBeritaAcara::whereMonth('created_at', date('m'))->count();
+        $weeklyCount = PersonalLetterBeritaAcara::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->count();
+        $todayCount = PersonalLetterBeritaAcara::whereDate('created_at', today())->count();
+
+        $title = 'Berita Acara';
+        $icon = 'bx-file-find';
+        $createRoute = route('transaction.personal.beritaacara.create');
+        $previewRoute = 'transaction.personal.beritaacara.preview';
+        $downloadRoute = 'transaction.personal.beritaacara.download';
+        $editRoute = 'transaction.personal.beritaacara.edit';
+        $deleteRoute = 'transaction.personal.beritaacara.destroy';
+
+        return view('pages.transaction.personal.template-index', compact(
+            'data', 'title', 'icon', 'totalCount', 'monthlyCount', 
+            'weeklyCount', 'todayCount', 'createRoute', 'previewRoute', 
+            'downloadRoute', 'editRoute', 'deleteRoute'
+        ));
+    }
+
     public function create()
     {
         return view('pages.transaction.personal.templates.beritaacara.create');
@@ -36,6 +83,7 @@ class SuratBeritaAcaraController extends BasePersonalLetterController
             'nik_mengetahui' => 'nullable|string|max:255',
         ]);
 
+        $validated['user_id'] = auth()->id();
         $letter = PersonalLetterBeritaAcara::create($validated);
 
         return redirect()
@@ -102,7 +150,7 @@ class SuratBeritaAcaraController extends BasePersonalLetterController
         $letter->delete();
 
         return redirect()
-            ->route('transaction.personal.index')
+            ->route('transaction.personal.beritaacara.index')
             ->with('success', 'Berita Acara berhasil dihapus!');
     }
 

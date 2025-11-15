@@ -2,13 +2,60 @@
 
 namespace App\Http\Controllers\PersonalLetter;
 
+use App\Http\Controllers\Controller;
 use App\Models\PersonalLetterKeterangan;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
-class SuratKeteranganController extends BasePersonalLetterController
+class SuratKeteranganController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = PersonalLetterKeterangan::with('user')->orderBy('created_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nomor', 'like', "%{$search}%")
+                  ->orWhere('nama_yang_diterangkan', 'like', "%{$search}%")
+                  ->orWhere('nama_yang_menerangkan', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('letter_date', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('letter_date', '<=', $request->date_to);
+        }
+
+        $data = $query->paginate(10)->withQueryString();
+
+        $totalCount = PersonalLetterKeterangan::count();
+        $monthlyCount = PersonalLetterKeterangan::whereMonth('created_at', date('m'))->count();
+        $weeklyCount = PersonalLetterKeterangan::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->count();
+        $todayCount = PersonalLetterKeterangan::whereDate('created_at', today())->count();
+
+        $title = 'Surat Keterangan';
+        $icon = 'bx-file-blank';
+        $createRoute = route('transaction.personal.surat_keterangan.create');
+        $previewRoute = 'transaction.personal.surat_keterangan.preview';
+        $downloadRoute = 'transaction.personal.surat_keterangan.download';
+        $editRoute = 'transaction.personal.surat_keterangan.edit';
+        $deleteRoute = 'transaction.personal.surat_keterangan.destroy';
+
+        return view('pages.transaction.personal.template-index', compact(
+            'data', 'title', 'icon', 'totalCount', 'monthlyCount', 
+            'weeklyCount', 'todayCount', 'createRoute', 'previewRoute', 
+            'downloadRoute', 'editRoute', 'deleteRoute'
+        ));
+    }
+
     public function create()
     {
         return view('pages.transaction.personal.templates.suratketerangan.create');
@@ -34,6 +81,7 @@ class SuratKeteranganController extends BasePersonalLetterController
             'nik_pembuat' => 'required|string|max:255',
         ]);
 
+        $validated['user_id'] = auth()->id();
         $letter = PersonalLetterKeterangan::create($validated);
 
         return redirect()->route('transaction.personal.surat_keterangan.show', $letter->id)
@@ -95,7 +143,7 @@ class SuratKeteranganController extends BasePersonalLetterController
 
         $letter->delete();
 
-        return redirect()->route('transaction.personal.index')
+        return redirect()->route('transaction.personal.surat_keterangan.index')
             ->with('success', 'Surat berhasil dihapus!');
     }
 

@@ -9,7 +9,7 @@
         }
         
         body { 
-            font-family: 'DejaVu Sans', sans-serif; 
+            font-family: 'Century Gothic' sans-serif;
             font-size: 12px; 
             line-height: 1.6; 
             margin: 0;
@@ -62,13 +62,14 @@
         .title {
             text-align: center;
             font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            margin-bottom: 2px;
         }
         
         .nomor {
             text-align: center;
-            margin-bottom: 30px;
+            font-size: 10px;
+            margin-bottom: 10px;
         }
         
         .section {
@@ -108,8 +109,7 @@
         }
         
         .signature-name {
-            font-weight: bold;
-            text-decoration: underline;
+            font-weight: normal;
         }
         
         .signature-space {
@@ -231,7 +231,7 @@
     <div>{{ $letter->jabatan_pembuat ?? 'Jabatan Pembuat Keterangan' }}</div>
     <div class="signature-space"></div>
     <div class="signature-name">{{ $letter->nama_pembuat ?? 'Nama Pejabat' }}</div>
-    <div>NIK: {{ $letter->nik_pembuat ?? '.................' }}</div>
+    <div>NIK. {{ $letter->nik_pembuat ?? '.................' }}</div>
 </div>
 
 </body>

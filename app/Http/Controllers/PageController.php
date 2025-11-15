@@ -11,6 +11,20 @@ use App\Models\Config;
 use App\Models\Disposition;
 use App\Models\Letter;
 use App\Models\User;
+use App\Models\PersonalLetter;
+use App\Models\PersonalLetterDinas;
+use App\Models\PersonalLetterKeterangan;
+use App\Models\PersonalLetterPerintah;
+use App\Models\PersonalLetterKuasa;
+use App\Models\PersonalLetterUndangan;
+use App\Models\PersonalLetterPanggilan;
+use App\Models\PersonalLetterMemo;
+use App\Models\PersonalLetterPengumuman;
+use App\Models\PersonalLetterNotulen;
+use App\Models\PersonalLetterBeritaAcara;
+use App\Models\PersonalLetterDisposisi;
+use App\Models\PersonalLetterKeputusan;
+use App\Models\PersonalLetterSPO;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -24,42 +38,155 @@ use JetBrains\PhpStorm\NoReturn;
 class PageController extends Controller
 {
     /**
+     * Dashboard - menampilkan statistik surat masuk/keluar DAN personal letters
      * @param Request $request
      * @return View
      */
     public function index(Request $request): View
     {
-        $todayIncomingLetter = Letter::incoming()->today()->count();
-        $todayOutgoingLetter = Letter::outgoing()->today()->count();
-        $todayDispositionLetter = Disposition::today()->count();
-        $todayLetterTransaction = $todayIncomingLetter + $todayOutgoingLetter + $todayDispositionLetter;
+        // Set locale untuk Indonesia
+        Carbon::setLocale('id');
+        
+        // Greeting berdasarkan waktu
+        $hour = date('H');
+        if ($hour < 12) {
+            $greeting = 'Selamat Pagi! 🌅';
+        } elseif ($hour < 15) {
+            $greeting = 'Selamat Siang! ☀️';
+        } elseif ($hour < 18) {
+            $greeting = 'Selamat Sore! 🌤️';
+        } else {
+            $greeting = 'Selamat Malam! 🌙';
+        }
+        
+        // Tanggal saat ini
+        $currentDate = Carbon::now()->translatedFormat('l, d F Y');
+        
+        // ========== DATA PERSONAL LETTERS ==========
+        // Hitung jumlah setiap jenis surat
+        $perjanjianCount = PersonalLetter::count();
+        $dinasCount = PersonalLetterDinas::count();
+        $keteranganCount = PersonalLetterKeterangan::count();
+        $perintahCount = PersonalLetterPerintah::count();
+        $kuasaCount = PersonalLetterKuasa::count();
+        $undanganCount = PersonalLetterUndangan::count();
+        $panggilanCount = PersonalLetterPanggilan::count();
+        $memoCount = PersonalLetterMemo::count();
+        $pengumumanCount = PersonalLetterPengumuman::count();
+        $notulenCount = PersonalLetterNotulen::count();
+        $beritaAcaraCount = PersonalLetterBeritaAcara::count();
+        $disposisiCount = PersonalLetterDisposisi::count();
+        $keputusanCount = PersonalLetterKeputusan::count();
+        $spoCount = PersonalLetterSPO::count();
+        
+        // Total semua surat personal
+        $totalPersonalLetters = $perjanjianCount + $dinasCount + $keteranganCount + 
+                               $perintahCount + $kuasaCount + $undanganCount + 
+                               $panggilanCount + $memoCount + $pengumumanCount + 
+                               $notulenCount + $beritaAcaraCount + $disposisiCount + 
+                               $keputusanCount + $spoCount;
+        
+        // Surat bulan ini
+        $monthlyLetters = PersonalLetter::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterDinas::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterKeterangan::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterPerintah::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterKuasa::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterUndangan::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterPanggilan::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterMemo::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterPengumuman::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterNotulen::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterBeritaAcara::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterDisposisi::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterKeputusan::whereMonth('created_at', date('m'))->count() +
+                         PersonalLetterSPO::whereMonth('created_at', date('m'))->count();
+        
+        // Surat bulan lalu untuk perbandingan
+        $lastMonthLetters = PersonalLetter::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterDinas::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterKeterangan::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterPerintah::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterKuasa::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterUndangan::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterPanggilan::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterMemo::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterPengumuman::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterNotulen::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterBeritaAcara::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterDisposisi::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterKeputusan::whereMonth('created_at', date('m', strtotime('-1 month')))->count() +
+                           PersonalLetterSPO::whereMonth('created_at', date('m', strtotime('-1 month')))->count();
+        
+        // Hitung persentase perubahan
+        $percentageMonthly = $lastMonthLetters > 0 
+            ? (($monthlyLetters - $lastMonthLetters) / $lastMonthLetters * 100) 
+            : 0;
+        
+        // Surat hari ini
+        $todayLetters = PersonalLetter::whereDate('created_at', today())->count() +
+                       PersonalLetterDinas::whereDate('created_at', today())->count() +
+                       PersonalLetterKeterangan::whereDate('created_at', today())->count() +
+                       PersonalLetterPerintah::whereDate('created_at', today())->count() +
+                       PersonalLetterKuasa::whereDate('created_at', today())->count() +
+                       PersonalLetterUndangan::whereDate('created_at', today())->count() +
+                       PersonalLetterPanggilan::whereDate('created_at', today())->count() +
+                       PersonalLetterMemo::whereDate('created_at', today())->count() +
+                       PersonalLetterPengumuman::whereDate('created_at', today())->count() +
+                       PersonalLetterNotulen::whereDate('created_at', today())->count() +
+                       PersonalLetterBeritaAcara::whereDate('created_at', today())->count() +
+                       PersonalLetterDisposisi::whereDate('created_at', today())->count() +
+                       PersonalLetterKeputusan::whereDate('created_at', today())->count() +
+                       PersonalLetterSPO::whereDate('created_at', today())->count();
+        
+        // Data untuk chart trend bulanan (12 bulan terakhir)
+        $monthlyData = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $month = date('m', strtotime("-{$i} months"));
+            $year = date('Y', strtotime("-{$i} months"));
+            
+            $count = PersonalLetter::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterDinas::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterKeterangan::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterPerintah::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterKuasa::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterUndangan::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterPanggilan::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterMemo::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterPengumuman::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterNotulen::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterBeritaAcara::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterDisposisi::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterKeputusan::whereMonth('created_at', $month)->whereYear('created_at', $year)->count() +
+                    PersonalLetterSPO::whereMonth('created_at', $month)->whereYear('created_at', $year)->count();
+            
+            $monthlyData[] = $count;
+        }
 
-        // Surat yang Disetujui dan Belum Disetujui
-        $todayApprovedLetters = Letter::where('validation', 'Disetujui')->today()->count();
-        $todayPendingLetters = Letter::where('validation', 'Belum Disetujui')->today()->count();
-
-        $yesterdayIncomingLetter = Letter::incoming()->yesterday()->count();
-        $yesterdayOutgoingLetter = Letter::outgoing()->yesterday()->count();
-        $yesterdayDispositionLetter = Disposition::yesterday()->count();
-        $yesterdayLetterTransaction = $yesterdayIncomingLetter + $yesterdayOutgoingLetter + $yesterdayDispositionLetter;
-
-        return view('pages.dashboard', [
-            'greeting' => GeneralHelper::greeting(),
-            'currentDate' => Carbon::now()->isoFormat('dddd, D MMMM YYYY'),
-            'todayIncomingLetter' => $todayIncomingLetter,
-            'todayOutgoingLetter' => $todayOutgoingLetter,
-            'todayDispositionLetter' => $todayDispositionLetter,
-            'todayLetterTransaction' => $todayLetterTransaction,
-            'todayApprovedLetters' => $todayApprovedLetters,
-            'todayPendingLetters' => $todayPendingLetters,
-            'activeUser' => User::active()->count(),
-            'percentageIncomingLetter' => GeneralHelper::calculateChangePercentage($yesterdayIncomingLetter, $todayIncomingLetter),
-            'percentageOutgoingLetter' => GeneralHelper::calculateChangePercentage($yesterdayOutgoingLetter, $todayOutgoingLetter),
-            'percentageDispositionLetter' => GeneralHelper::calculateChangePercentage($yesterdayDispositionLetter, $todayDispositionLetter),
-            'percentageLetterTransaction' => GeneralHelper::calculateChangePercentage($yesterdayLetterTransaction, $todayLetterTransaction),
-        ]);
+        return view('pages.dashboard', compact(
+            'greeting',
+            'currentDate',
+            'perjanjianCount',
+            'dinasCount',
+            'keteranganCount',
+            'perintahCount',
+            'kuasaCount',
+            'undanganCount',
+            'panggilanCount',
+            'memoCount',
+            'pengumumanCount',
+            'notulenCount',
+            'beritaAcaraCount',
+            'disposisiCount',
+            'keputusanCount',
+            'spoCount',
+            'totalPersonalLetters',
+            'monthlyLetters',
+            'percentageMonthly',
+            'todayLetters',
+            'monthlyData'
+        ));
     }
-
 
     /**
      * @param Request $request
@@ -130,8 +257,6 @@ class PageController extends Controller
             return back()->with('error', $exception->getMessage());
         }
     }
-
-
 
     /**
      * @return RedirectResponse

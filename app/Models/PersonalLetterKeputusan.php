@@ -9,9 +9,10 @@ class PersonalLetterKeputusan extends Model
 {
     use HasFactory;
 
-    protected $table = 'personal_letter_keputusan';
+    protected $table = 'personal_letters_keputusan';
 
     protected $fillable = [
+        'user_id',
         'judul',
         'judul_2', // BARU
         'kop_type',
@@ -30,7 +31,10 @@ class PersonalLetterKeputusan extends Model
         'lampiran',
         'generated_file',
     ];
-
+public function user()
+{
+    return $this->belongsTo(\App\Models\User::class);
+}
     protected $casts = [
         'tanggal_penetapan' => 'date',
         'menimbang' => 'array',

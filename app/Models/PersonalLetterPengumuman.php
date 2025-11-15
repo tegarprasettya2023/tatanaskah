@@ -10,9 +10,10 @@ class PersonalLetterPengumuman extends Model
 {
     use HasFactory;
 
-    protected $table = 'personal_letter_pengumuman';
+    protected $table = 'personal_letters_pengumuman';
 
     protected $fillable = [
+        'user_id',
         'kop_type',
         'nomor',
         'tentang',
@@ -31,7 +32,10 @@ class PersonalLetterPengumuman extends Model
         'tanggal_surat' => 'date',
         'tanggal_ttd' => 'date',
     ];
-
+public function user()
+{
+    return $this->belongsTo(\App\Models\User::class);
+}
     public function scopeSearch($query, $term)
     {
         return $query->where(function ($q) use ($term) {

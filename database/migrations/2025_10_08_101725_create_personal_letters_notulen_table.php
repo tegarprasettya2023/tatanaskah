@@ -8,8 +8,9 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('personal_letter_notulen', function (Blueprint $table) {
+        Schema::create('personal_letters_notulen', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // TAMBAHAN
             $table->string('kop_type')->default('lab'); // klinik, lab, pt
             $table->string('isi_notulen')->nullable();
             $table->date('tanggal_rapat')->nullable();
@@ -18,9 +19,9 @@ return new class extends Migration
             $table->string('pimpinan_rapat')->nullable();
             $table->text('peserta_rapat')->nullable();
             $table->json('kegiatan_rapat')->nullable(); // Array of objects
-            $table->string('kepala_lab')->nullable(); // Nama
+            $table->string('kepala_lab')->nullable();
             $table->string('nik_kepala_lab')->nullable();
-            $table->string('notulis')->nullable(); // Nama
+            $table->string('notulis')->nullable();
             $table->string('nik_notulis')->nullable();
             $table->string('judul_dokumentasi')->nullable();
             $table->json('dokumentasi')->nullable(); // Array of image paths
@@ -31,6 +32,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('personal_letter_notulen');
+        Schema::dropIfExists('personal_letters_notulen');
     }
 };

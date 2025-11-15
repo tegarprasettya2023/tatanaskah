@@ -13,15 +13,21 @@ class PersonalLetterKuasa extends Model
     protected $table = 'personal_letter_kuasa';
 
     protected $fillable = [
+        'user_id', 
         'kop_type','nomor','letter_date','tempat',
         'nama_pemberi','nip_pemberi','jabatan_pemberi','alamat_pemberi',
         'nama_penerima','nip_penerima','jabatan_penerima','alamat_penerima',
-        'isi'
+        'isi', 'generated_file'
     ];
 
     protected $casts = [
         'letter_date' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 
     public function getFormattedLetterDateAttribute()
     {

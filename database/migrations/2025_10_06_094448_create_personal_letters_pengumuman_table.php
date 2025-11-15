@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('personal_letter_pengumuman', function (Blueprint $table) {
+        Schema::create('personal_letters_pengumuman', function (Blueprint $table) {
             $table->id();
             $table->string('kop_type')->default('klinik');
             $table->string('nomor')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('personal_letter_pengumuman');
+        Schema::dropIfExists('personal_letters_pengumuman');
     }
 };

@@ -111,7 +111,7 @@
             <div class="col-md-6 mb-3">
                 <label for="kepada" class="form-label">Yth. <span class="text-danger">*</span></label>
                 <input type="text" class="form-control @error('kepada') is-invalid @enderror" 
-                       id="kepada" name="kepada" placeholder="Kepala Bagian SDM" 
+                       id="kepada" name="kepada" placeholder="Kepala Laboratorium" 
                        value="{{ old('kepada') }}" required>
                 @error('kepada')
                     <div class="invalid-feedback">{{ $message }}</div>

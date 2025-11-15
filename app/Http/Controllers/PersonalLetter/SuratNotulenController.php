@@ -2,13 +2,60 @@
 
 namespace App\Http\Controllers\PersonalLetter;
 
+use App\Http\Controllers\Controller;
 use App\Models\PersonalLetterNotulen;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
-class SuratNotulenController extends BasePersonalLetterController
+class SuratNotulenController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = PersonalLetterNotulen::with('user')->orderBy('created_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('isi_notulen', 'like', "%{$search}%")
+                  ->orWhere('pimpinan_rapat', 'like', "%{$search}%")
+                  ->orWhere('tempat', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('tanggal_rapat', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('tanggal_rapat', '<=', $request->date_to);
+        }
+
+        $data = $query->paginate(10)->withQueryString();
+
+        $totalCount = PersonalLetterNotulen::count();
+        $monthlyCount = PersonalLetterNotulen::whereMonth('created_at', date('m'))->count();
+        $weeklyCount = PersonalLetterNotulen::whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->count();
+        $todayCount = PersonalLetterNotulen::whereDate('created_at', today())->count();
+
+        $title = 'Notulen';
+        $icon = 'bx-notepad';
+        $createRoute = route('transaction.personal.notulen.create');
+        $previewRoute = 'transaction.personal.notulen.preview';
+        $downloadRoute = 'transaction.personal.notulen.download';
+        $editRoute = 'transaction.personal.notulen.edit';
+        $deleteRoute = 'transaction.personal.notulen.destroy';
+
+        return view('pages.transaction.personal.template-index', compact(
+            'data', 'title', 'icon', 'totalCount', 'monthlyCount', 
+            'weeklyCount', 'todayCount', 'createRoute', 'previewRoute', 
+            'downloadRoute', 'editRoute', 'deleteRoute'
+        ));
+    }
+
     public function create()
     {
         return view('pages.transaction.personal.templates.notulen.create');
@@ -38,16 +85,19 @@ class SuratNotulenController extends BasePersonalLetterController
             'dokumentasi.*' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
-        // Handle upload dokumentasi
+        // Handle upload dokumentasi - PERBAIKAN: pastikan array
+        $dokumentasiPaths = [];
         if ($request->hasFile('dokumentasi')) {
-            $uploaded = [];
             foreach ($request->file('dokumentasi') as $file) {
                 $path = $file->store('notulen/dokumentasi', 'public');
-                $uploaded[] = $path;
+                $dokumentasiPaths[] = $path;
             }
-            $validated['dokumentasi'] = $uploaded;
         }
-
+        
+        // Simpan sebagai array (akan otomatis di-cast ke JSON oleh model)
+        $validated['dokumentasi'] = $dokumentasiPaths;
+        $validated['user_id'] = auth()->id();
+        
         $letter = PersonalLetterNotulen::create($validated);
 
         return redirect()
@@ -58,12 +108,29 @@ class SuratNotulenController extends BasePersonalLetterController
     public function show($id)
     {
         $data = PersonalLetterNotulen::findOrFail($id);
+        
+        // Debug: Log data untuk checking
+        \Log::info('Notulen Show Data:', [
+            'id' => $data->id,
+            'dokumentasi_type' => gettype($data->dokumentasi),
+            'dokumentasi_value' => $data->dokumentasi,
+            'dokumentasi_count' => is_array($data->dokumentasi) ? count($data->dokumentasi) : 0
+        ]);
+        
         return view('pages.transaction.personal.templates.notulen.show', compact('data'));
     }
 
     public function edit($id)
     {
         $data = PersonalLetterNotulen::findOrFail($id);
+        
+        // Debug: Log data untuk checking
+        \Log::info('Notulen Edit Data:', [
+            'id' => $data->id,
+            'dokumentasi_type' => gettype($data->dokumentasi),
+            'dokumentasi_value' => $data->dokumentasi,
+        ]);
+        
         return view('pages.transaction.personal.templates.notulen.edit', compact('data'));
     }
 
@@ -94,27 +161,32 @@ class SuratNotulenController extends BasePersonalLetterController
             'hapus_dokumentasi' => 'nullable|array',
         ]);
 
+        // PERBAIKAN: Ambil dokumentasi yang ada sebagai array
+        $existingDocs = is_array($letter->dokumentasi) ? $letter->dokumentasi : [];
+
         // Handle hapus dokumentasi lama
         if ($request->filled('hapus_dokumentasi')) {
-            $existingDocs = $letter->dokumentasi ?? [];
             foreach ($request->hapus_dokumentasi as $indexToDelete) {
                 if (isset($existingDocs[$indexToDelete])) {
+                    // Hapus file dari storage
                     Storage::disk('public')->delete($existingDocs[$indexToDelete]);
                     unset($existingDocs[$indexToDelete]);
                 }
             }
-            $validated['dokumentasi'] = array_values($existingDocs);
+            // Re-index array
+            $existingDocs = array_values($existingDocs);
         }
 
         // Handle upload dokumentasi baru
         if ($request->hasFile('dokumentasi')) {
-            $existing = $validated['dokumentasi'] ?? $letter->dokumentasi ?? [];
             foreach ($request->file('dokumentasi') as $file) {
                 $path = $file->store('notulen/dokumentasi', 'public');
-                $existing[] = $path;
+                $existingDocs[] = $path;
             }
-            $validated['dokumentasi'] = $existing;
         }
+
+        // Update dokumentasi dengan array yang sudah diproses
+        $validated['dokumentasi'] = $existingDocs;
 
         $letter->update($validated);
 
@@ -134,7 +206,7 @@ class SuratNotulenController extends BasePersonalLetterController
         $letter = PersonalLetterNotulen::findOrFail($id);
 
         // Hapus dokumentasi
-        if ($letter->dokumentasi) {
+        if (is_array($letter->dokumentasi)) {
             foreach ($letter->dokumentasi as $doc) {
                 Storage::disk('public')->delete($doc);
             }
@@ -148,7 +220,7 @@ class SuratNotulenController extends BasePersonalLetterController
         $letter->delete();
 
         return redirect()
-            ->route('transaction.personal.index')
+            ->route('transaction.personal.notulen.index')
             ->with('success', 'Notulen berhasil dihapus!');
     }
 
@@ -180,7 +252,8 @@ class SuratNotulenController extends BasePersonalLetterController
                   ]);
 
         $filename = 'Notulen_' . 
-                   $letter->tanggal_rapat->format('Y_m_d') . '.pdf';
+                   $letter->tanggal_rapat->format('Y_m_d') . '_' . 
+                   now()->format('His') . '.pdf';
 
         if (!$letter->generated_file) {
             $pdfContent = $pdf->output();

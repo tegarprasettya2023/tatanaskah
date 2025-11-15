@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('personal_letter_disposisi', function (Blueprint $table) {
+        Schema::create('personal_letters_disposisi', function (Blueprint $table) {
             $table->id();
             $table->string('kop_type')->default('klinik'); // klinik, lab, pt
             $table->string('logo_type')->default('klinik'); // untuk logo
-            $table->string('nomor_dokumen')->nullable();
+            $table->string('nomor')->nullable();
             $table->string('no_revisi')->nullable();
             $table->integer('halaman_dari')->default(1);
             
@@ -40,6 +40,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('personal_letter_disposisi');
+        Schema::dropIfExists('personal_letters_disposisi');
     }
 };

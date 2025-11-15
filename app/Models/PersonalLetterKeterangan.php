@@ -13,6 +13,7 @@ class PersonalLetterKeterangan extends Model
     protected $table = 'personal_letters_keterangan';
 
     protected $fillable = [
+         'user_id',
         'template_type',
         'kop_type',
         'nomor',
@@ -34,7 +35,10 @@ class PersonalLetterKeterangan extends Model
     protected $casts = [
         'letter_date' => 'date',
     ];
-
+public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
     public function getFormattedLetterDateAttribute()
     {
         return $this->letter_date ? Carbon::parse($this->letter_date)->translatedFormat('d F Y') : null;

@@ -71,93 +71,97 @@
                 @enderror
             </div>
 
-            {{-- MENIMBANG --}}
+            {{-- MENIMBANG (Dynamic) --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Menimbang</h6>
+                <h6 class="border-bottom pb-2">
+                    Menimbang
+                    <button type="button" class="btn btn-sm btn-success float-end" onclick="addMenimbangRow()">
+                        <i class="bi bi-plus-circle"></i> Tambah
+                    </button>
+                </h6>
             </div>
 
-            <div class="col-12 mb-3">
-                <label for="menimbang_1" class="form-label">1. bahwa <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('menimbang_1') is-invalid @enderror" 
-                          id="menimbang_1" name="menimbang_1" rows="3" 
-                          placeholder="Isi pertimbangan pertama..." required>{{ old('menimbang_1') }}</textarea>
-                @error('menimbang_1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-12" id="menimbang-container">
+                <div class="mb-3 menimbang-row">
+                    <label class="form-label">1. bahwa <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <textarea class="form-control @error('menimbang.0') is-invalid @enderror" 
+                                  name="menimbang[]" rows="3" 
+                                  placeholder="Isi pertimbangan..." required>{{ old('menimbang.0') }}</textarea>
+                        <button type="button" class="btn btn-danger" onclick="removeMenimbangRow(this)" style="display: none;">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                    @error('menimbang.0')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
-            <div class="col-12 mb-3">
-                <label for="menimbang_2" class="form-label">2. bahwa <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('menimbang_2') is-invalid @enderror" 
-                          id="menimbang_2" name="menimbang_2" rows="3" 
-                          placeholder="Isi pertimbangan kedua..." required>{{ old('menimbang_2') }}</textarea>
-                @error('menimbang_2')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            {{-- DASAR --}}
+            {{-- DASAR (Dynamic) --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Dasar</h6>
+                <h6 class="border-bottom pb-2">
+                    Dasar
+                    <button type="button" class="btn btn-sm btn-success float-end" onclick="addDasarRow()">
+                        <i class="bi bi-plus-circle"></i> Tambah
+                    </button>
+                </h6>
             </div>
 
-            <div class="col-12 mb-3">
-                <label for="dasar_a" class="form-label">a. <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('dasar_a') is-invalid @enderror" 
-                          id="dasar_a" name="dasar_a" rows="2" 
-                          placeholder="Dasar hukum atau peraturan pertama..." required>{{ old('dasar_a') }}</textarea>
-                @error('dasar_a')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-12" id="dasar-container">
+                <div class="mb-3 dasar-row">
+                    <label class="form-label">a. <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <textarea class="form-control @error('dasar.0') is-invalid @enderror" 
+                                  name="dasar[]" rows="2" 
+                                  placeholder="Dasar hukum atau peraturan..." required>{{ old('dasar.0') }}</textarea>
+                        <button type="button" class="btn btn-danger" onclick="removeDasarRow(this)" style="display: none;">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                    @error('dasar.0')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
-            <div class="col-12 mb-3">
-                <label for="dasar_b" class="form-label">b. <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('dasar_b') is-invalid @enderror" 
-                          id="dasar_b" name="dasar_b" rows="2" 
-                          placeholder="Dasar hukum atau peraturan kedua..." required>{{ old('dasar_b') }}</textarea>
-                @error('dasar_b')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            {{-- MEMBERI PERINTAH KEPADA --}}
+            {{-- MEMBERI PERINTAH KEPADA (Opsional) --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Memberi Perintah Kepada</h6>
+                <h6 class="border-bottom pb-2">Memberi Perintah Kepada <small class="text-muted">(Opsional)</small></h6>
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="nama_penerima" class="form-label">Nama <span class="text-danger">*</span></label>
+                <label for="nama_penerima" class="form-label">Nama</label>
                 <input type="text" class="form-control @error('nama_penerima') is-invalid @enderror" 
                        id="nama_penerima" name="nama_penerima" 
-                       value="{{ old('nama_penerima') }}" required>
+                       value="{{ old('nama_penerima') }}">
                 @error('nama_penerima')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="nik_penerima" class="form-label">NIKepegawaian <span class="text-danger">*</span></label>
+                <label for="nik_penerima" class="form-label">NIKepegawaian</label>
                 <input type="text" class="form-control @error('nik_penerima') is-invalid @enderror" 
                        id="nik_penerima" name="nik_penerima" 
-                       value="{{ old('nik_penerima') }}" required>
+                       value="{{ old('nik_penerima') }}">
                 @error('nik_penerima')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="jabatan_penerima" class="form-label">Jabatan <span class="text-danger">*</span></label>
+                <label for="jabatan_penerima" class="form-label">Jabatan</label>
                 <input type="text" class="form-control @error('jabatan_penerima') is-invalid @enderror" 
                        id="jabatan_penerima" name="jabatan_penerima" 
-                       value="{{ old('jabatan_penerima') }}" required>
+                       value="{{ old('jabatan_penerima') }}">
                 @error('jabatan_penerima')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="col-12 mb-3">
-                <label for="nama_nama_terlampir" class="form-label">Atau nama-nama terlampir <small class="text-muted">(Opsional)</small></label>
+                <label for="nama_nama_terlampir" class="form-label">Atau nama-nama terlampir</label>
                 <textarea class="form-control @error('nama_nama_terlampir') is-invalid @enderror" 
                           id="nama_nama_terlampir" name="nama_nama_terlampir" rows="3" 
                           placeholder="Tulis nama-nama lain yang terlampir (jika ada)...">{{ old('nama_nama_terlampir') }}</textarea>
@@ -167,29 +171,31 @@
                 @enderror
             </div>
 
-            {{-- UNTUK --}}
+            {{-- UNTUK (Dynamic) --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Untuk (Tujuan/Keperluan)</h6>
+                <h6 class="border-bottom pb-2">
+                    Untuk (Tujuan/Keperluan)
+                    <button type="button" class="btn btn-sm btn-success float-end" onclick="addUntukRow()">
+                        <i class="bi bi-plus-circle"></i> Tambah
+                    </button>
+                </h6>
             </div>
 
-            <div class="col-12 mb-3">
-                <label for="untuk_1" class="form-label">1. <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('untuk_1') is-invalid @enderror" 
-                          id="untuk_1" name="untuk_1" rows="3" 
-                          placeholder="Tujuan/keperluan pertama..." required>{{ old('untuk_1') }}</textarea>
-                @error('untuk_1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="col-12 mb-3">
-                <label for="untuk_2" class="form-label">2. <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('untuk_2') is-invalid @enderror" 
-                          id="untuk_2" name="untuk_2" rows="3" 
-                          placeholder="Tujuan/keperluan kedua..." required>{{ old('untuk_2') }}</textarea>
-                @error('untuk_2')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-12" id="untuk-container">
+                <div class="mb-3 untuk-row">
+                    <label class="form-label">1. <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <textarea class="form-control @error('untuk.0') is-invalid @enderror" 
+                                  name="untuk[]" rows="3" 
+                                  placeholder="Tujuan/keperluan..." required>{{ old('untuk.0') }}</textarea>
+                        <button type="button" class="btn btn-danger" onclick="removeUntukRow(this)" style="display: none;">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                    @error('untuk.0')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
             {{-- PEMBUAT (PENANDATANGAN) --}}
@@ -230,103 +236,71 @@
                 @enderror
             </div>
 
-            {{-- TEMBUSAN --}}
+            {{-- TEMBUSAN (Dynamic, Opsional) --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Tembusan <small class="text-muted">(Opsional)</small></h6>
+                <h6 class="border-bottom pb-2">
+                    Tembusan <small class="text-muted">(Opsional)</small>
+                    <button type="button" class="btn btn-sm btn-success float-end" onclick="addTembusanRow()">
+                        <i class="bi bi-plus-circle"></i> Tambah
+                    </button>
+                </h6>
+            </div>
+
+            <div class="col-12" id="tembusan-container">
+                <div class="mb-3 tembusan-row">
+                    <label class="form-label">1.</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control @error('tembusan.0') is-invalid @enderror" 
+                               name="tembusan[]" 
+                               placeholder="Nama/Jabatan penerima tembusan"
+                               value="{{ old('tembusan.0') }}">
+                        <button type="button" class="btn btn-danger" onclick="removeTembusanRow(this)" style="display: none;">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                    @error('tembusan.0')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            {{-- LAMPIRAN DAFTAR NAMA (Opsional) --}}
+            <div class="col-12 mb-4 mt-3">
+                <h6 class="border-bottom pb-2">Lampiran Daftar Nama yang Diberikan Tugas <small class="text-muted">(Opsional)</small></h6>
             </div>
 
             <div class="col-12 mb-3">
-                <label for="tembusan_1" class="form-label">1.</label>
-                <input type="text" class="form-control @error('tembusan_1') is-invalid @enderror" 
-                       id="tembusan_1" name="tembusan_1" 
-                       placeholder="Nama/Jabatan penerima tembusan pertama"
-                       value="{{ old('tembusan_1') }}">
-                @error('tembusan_1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label class="form-label">Daftar Nama</label>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="25%">Nama</th>
+                            <th width="20%">NIK</th>
+                            <th width="20%">Jabatan</th>
+                            <th width="25%">Keterangan</th>
+                            <th width="5%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lampiran-rows">
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" name="lampiran[0][nama]" class="form-control"></td>
+                            <td><input type="text" name="lampiran[0][nik]" class="form-control"></td>
+                            <td><input type="text" name="lampiran[0][jabatan]" class="form-control"></td>
+                            <td><input type="text" name="lampiran[0][keterangan]" class="form-control"></td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="removeLampiranRow(this)" style="display: none;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-sm btn-success" onclick="addLampiranRow()">
+                    <i class="bi bi-plus-circle"></i> Tambah
+                </button>
             </div>
-
-            <div class="col-12 mb-3">
-                <label for="tembusan_2" class="form-label">2.</label>
-                <input type="text" class="form-control @error('tembusan_2') is-invalid @enderror" 
-                       id="tembusan_2" name="tembusan_2" 
-                       placeholder="Nama/Jabatan penerima tembusan kedua"
-                       value="{{ old('tembusan_2') }}">
-                @error('tembusan_2')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            {{-- LAMPIRAN DAFTAR NAMA --}}
-<div class="col-12 mb-4 mt-3">
-    <h6 class="border-bottom pb-2">Lampiran Daftar Nama yang Diberikan Tugas</h6>
-</div>
-
-<div class="col-12 mb-3">
-    <label for="lampiran_nomor" class="form-label">Nomor Surat Tugas</label>
-    <input type="text" class="form-control @error('lampiran_nomor') is-invalid @enderror" 
-           id="lampiran_nomor" name="lampiran_nomor" 
-           value="{{ old('lampiran_nomor') }}">
-    @error('lampiran_nomor')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="col-12 mb-3">
-    <label for="lampiran_tanggal" class="form-label">Tanggal</label>
-    <input type="date" class="form-control @error('lampiran_tanggal') is-invalid @enderror" 
-           id="lampiran_tanggal" name="lampiran_tanggal" 
-           value="{{ old('lampiran_tanggal') }}">
-    @error('lampiran_tanggal')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
-
-
-{{-- Dynamic Input Daftar Nama --}}
-<div class="col-12 mb-3">
-    <label class="form-label">Daftar Nama</label>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>NIK</th>
-                <th>Jabatan</th>
-                <th>Keterangan</th>
-            </tr>
-        </thead>
-        <tbody id="lampiran-rows">
-            <tr>
-                <td>1</td>
-                <td><input type="text" name="lampiran[0][nama]" class="form-control"></td>
-                <td><input type="text" name="lampiran[0][nik]" class="form-control"></td>
-                <td><input type="text" name="lampiran[0][jabatan]" class="form-control"></td>
-                <td><input type="text" name="lampiran[0][keterangan]" class="form-control"></td>
-            </tr>
-        </tbody>
-    </table>
-    <button type="button" class="btn btn-sm btn-success" onclick="addLampiranRow()">+ Tambah</button>
-</div>
-
-@push('scripts')
-<script>
-let rowIndex = 1;
-function addLampiranRow() {
-    const tbody = document.getElementById('lampiran-rows');
-    let row = `
-    <tr>
-        <td>${rowIndex+1}</td>
-        <td><input type="text" name="lampiran[${rowIndex}][nama]" class="form-control"></td>
-        <td><input type="text" name="lampiran[${rowIndex}][nik]" class="form-control"></td>
-        <td><input type="text" name="lampiran[${rowIndex}][jabatan]" class="form-control"></td>
-        <td><input type="text" name="lampiran[${rowIndex}][keterangan]" class="form-control"></td>
-    </tr>`;
-    tbody.insertAdjacentHTML('beforeend', row);
-    rowIndex++;
-}
-</script>
-@endpush
-
         </div>
 
         <div class="card-footer">
@@ -347,4 +321,233 @@ function addLampiranRow() {
     border-bottom: 2px solid #dee2e6 !important;
 }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+// Menimbang Functions
+let menimbangIndex = 1;
+const menimbangLabels = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+function addMenimbangRow() {
+    const container = document.getElementById('menimbang-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'mb-3 menimbang-row';
+    newRow.innerHTML = `
+        <label class="form-label">${menimbangIndex + 1}. bahwa <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <textarea class="form-control" name="menimbang[]" rows="3" 
+                      placeholder="Isi pertimbangan..." required></textarea>
+            <button type="button" class="btn btn-danger" onclick="removeMenimbangRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    `;
+    container.appendChild(newRow);
+    menimbangIndex++;
+    updateRemoveButtons('menimbang-row');
+}
+
+function removeMenimbangRow(button) {
+    const container = document.getElementById('menimbang-container');
+    button.closest('.menimbang-row').remove();
+    updateMenimbangNumbers();
+    updateRemoveButtons('menimbang-row');
+}
+
+function updateMenimbangNumbers() {
+    const rows = document.querySelectorAll('.menimbang-row');
+    rows.forEach((row, index) => {
+        const label = row.querySelector('label');
+        label.innerHTML = `${index + 1}. bahwa <span class="text-danger">*</span>`;
+    });
+    menimbangIndex = rows.length;
+}
+
+// Dasar Functions
+let dasarIndex = 1;
+
+function addDasarRow() {
+    const container = document.getElementById('dasar-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'mb-3 dasar-row';
+    const label = dasarIndex < menimbangLabels.length ? menimbangLabels[dasarIndex] : dasarIndex + 1;
+    newRow.innerHTML = `
+        <label class="form-label">${label}. <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <textarea class="form-control" name="dasar[]" rows="2" 
+                      placeholder="Dasar hukum atau peraturan..." required></textarea>
+            <button type="button" class="btn btn-danger" onclick="removeDasarRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    `;
+    container.appendChild(newRow);
+    dasarIndex++;
+    updateRemoveButtons('dasar-row');
+}
+
+function removeDasarRow(button) {
+    button.closest('.dasar-row').remove();
+    updateDasarNumbers();
+    updateRemoveButtons('dasar-row');
+}
+
+function updateDasarNumbers() {
+    const rows = document.querySelectorAll('.dasar-row');
+    rows.forEach((row, index) => {
+        const label = row.querySelector('label');
+        const labelText = index < menimbangLabels.length ? menimbangLabels[index] : index + 1;
+        label.innerHTML = `${labelText}. <span class="text-danger">*</span>`;
+    });
+    dasarIndex = rows.length;
+}
+
+// Untuk Functions
+let untukIndex = 1;
+
+function addUntukRow() {
+    const container = document.getElementById('untuk-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'mb-3 untuk-row';
+    newRow.innerHTML = `
+        <label class="form-label">${untukIndex + 1}. <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <textarea class="form-control" name="untuk[]" rows="3" 
+                      placeholder="Tujuan/keperluan..." required></textarea>
+            <button type="button" class="btn btn-danger" onclick="removeUntukRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    `;
+    container.appendChild(newRow);
+    untukIndex++;
+    updateRemoveButtons('untuk-row');
+}
+
+function removeUntukRow(button) {
+    button.closest('.untuk-row').remove();
+    updateUntukNumbers();
+    updateRemoveButtons('untuk-row');
+}
+
+function updateUntukNumbers() {
+    const rows = document.querySelectorAll('.untuk-row');
+    rows.forEach((row, index) => {
+        const label = row.querySelector('label');
+        label.innerHTML = `${index + 1}. <span class="text-danger">*</span>`;
+    });
+    untukIndex = rows.length;
+}
+
+// Tembusan Functions
+let tembusanIndex = 1;
+
+function addTembusanRow() {
+    const container = document.getElementById('tembusan-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'mb-3 tembusan-row';
+    newRow.innerHTML = `
+        <label class="form-label">${tembusanIndex + 1}.</label>
+        <div class="input-group">
+            <input type="text" class="form-control" name="tembusan[]" 
+                   placeholder="Nama/Jabatan penerima tembusan">
+            <button type="button" class="btn btn-danger" onclick="removeTembusanRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    `;
+    container.appendChild(newRow);
+    tembusanIndex++;
+    updateRemoveButtons('tembusan-row');
+}
+
+function removeTembusanRow(button) {
+    button.closest('.tembusan-row').remove();
+    updateTembusanNumbers();
+    updateRemoveButtons('tembusan-row');
+}
+
+function updateTembusanNumbers() {
+    const rows = document.querySelectorAll('.tembusan-row');
+    rows.forEach((row, index) => {
+        const label = row.querySelector('label');
+        label.textContent = `${index + 1}.`;
+    });
+    tembusanIndex = rows.length;
+}
+
+// Lampiran Functions
+let lampiranRowIndex = 1;
+
+function addLampiranRow() {
+    const tbody = document.getElementById('lampiran-rows');
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${lampiranRowIndex + 1}</td>
+        <td><input type="text" name="lampiran[${lampiranRowIndex}][nama]" class="form-control"></td>
+        <td><input type="text" name="lampiran[${lampiranRowIndex}][nik]" class="form-control"></td>
+        <td><input type="text" name="lampiran[${lampiranRowIndex}][jabatan]" class="form-control"></td>
+        <td><input type="text" name="lampiran[${lampiranRowIndex}][keterangan]" class="form-control"></td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger" onclick="removeLampiranRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+    tbody.appendChild(newRow);
+    lampiranRowIndex++;
+    updateLampiranNumbers();
+}
+
+function removeLampiranRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+    updateLampiranNumbers();
+}
+
+function updateLampiranNumbers() {
+    const rows = document.querySelectorAll('#lampiran-rows tr');
+    rows.forEach((row, index) => {
+        row.cells[0].textContent = index + 1;
+        // Update name attributes
+        const inputs = row.querySelectorAll('input');
+        inputs.forEach(input => {
+            const name = input.getAttribute('name');
+            if (name) {
+                input.setAttribute('name', name.replace(/\[\d+\]/, `[${index}]`));
+            }
+        });
+    });
+    lampiranRowIndex = rows.length;
+    
+    // Show/hide delete buttons
+    rows.forEach((row, index) => {
+        const deleteBtn = row.querySelector('.btn-danger');
+        if (deleteBtn) {
+            deleteBtn.style.display = rows.length > 1 ? 'inline-block' : 'none';
+        }
+    });
+}
+
+// Generic function to update remove buttons visibility
+function updateRemoveButtons(className) {
+    const rows = document.querySelectorAll('.' + className);
+    rows.forEach((row, index) => {
+        const deleteBtn = row.querySelector('.btn-danger');
+        if (deleteBtn) {
+            deleteBtn.style.display = rows.length > 1 ? 'inline-block' : 'none';
+        }
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateRemoveButtons('menimbang-row');
+    updateRemoveButtons('dasar-row');
+    updateRemoveButtons('untuk-row');
+    updateRemoveButtons('tembusan-row');
+    updateLampiranNumbers();
+});
+</script>
 @endpush

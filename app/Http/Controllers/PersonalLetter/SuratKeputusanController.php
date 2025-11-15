@@ -6,19 +6,49 @@ use App\Http\Controllers\Controller;
 use App\Models\PersonalLetterKeputusan;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class SuratKeputusanController extends Controller
 {
-    public function index(Request $request)
-    {
-        $title = 'Daftar Surat Keputusan';
-        $keyword = $request->get('search');
-        $data = PersonalLetterKeputusan::when($keyword, function ($query, $keyword) {
-            return $query->search($keyword);
-        })->latest()->paginate(10);
+public function index(Request $request)
+{
+    $query = PersonalLetterKeputusan::with('user')->orderBy('created_at', 'desc');
 
-        return view('pages.transaction.personal.templates.surat_keputusan.index', compact('title', 'data'));
+    if ($request->filled('search')) {
+        $query->search($request->search);
     }
+
+    if ($request->filled('date_from')) {
+        $query->whereDate('tanggal_penetapan', '>=', $request->date_from);
+    }
+    if ($request->filled('date_to')) {
+        $query->whereDate('tanggal_penetapan', '<=', $request->date_to);
+    }
+
+    $data = $query->paginate(10)->withQueryString();
+
+    $totalCount = PersonalLetterKeputusan::count();
+    $monthlyCount = PersonalLetterKeputusan::whereMonth('created_at', date('m'))->count();
+    $weeklyCount = PersonalLetterKeputusan::whereBetween('created_at', [
+        Carbon::now()->startOfWeek(),
+        Carbon::now()->endOfWeek()
+    ])->count();
+    $todayCount = PersonalLetterKeputusan::whereDate('created_at', today())->count();
+
+    $title = 'Surat Keputusan';
+    $icon = 'bx-check-shield';
+    $createRoute = route('transaction.personal.surat_keputusan.create');
+    $previewRoute = 'transaction.personal.surat_keputusan.preview';
+    $downloadRoute = 'transaction.personal.surat_keputusan.download';
+    $editRoute = 'transaction.personal.surat_keputusan.edit';
+    $deleteRoute = 'transaction.personal.surat_keputusan.destroy';
+
+    return view('pages.transaction.personal.template-index', compact(
+        'data', 'title', 'icon', 'totalCount', 'monthlyCount', 
+        'weeklyCount', 'todayCount', 'createRoute', 'previewRoute', 
+        'downloadRoute', 'editRoute', 'deleteRoute'
+    ));
+}
 
     public function create()
     {
