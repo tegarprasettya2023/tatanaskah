@@ -298,9 +298,10 @@
             <button type="submit" class="btn btn-primary">
                 <i class="bi bi-save"></i> Simpan Surat Keputusan
             </button>
-            <a href="{{ route('transaction.personal.index') }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali
-            </a>
+<a href="{{ url()->previous() }}" class="btn btn-secondary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</a>
+
         </div>
     </form>
 </div>

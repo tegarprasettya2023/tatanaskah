@@ -67,25 +67,31 @@ class SuratNotulenController extends Controller
             'kop_type' => 'required|in:klinik,lab,pt',
             'isi_notulen' => 'required|string|max:500',
             'tanggal_rapat' => 'required|date',
+            'tanggal_ttd' => 'required|date', // TAMBAHAN BARU
             'waktu' => 'required',
             'tempat' => 'required|string|max:255',
             'pimpinan_rapat' => 'required|string|max:255',
             'peserta_rapat' => 'required|string',
             'kegiatan_rapat' => 'required|array',
             'kegiatan_rapat.*.pembicara' => 'required|string',
-            'kegiatan_rapat.*.materi' => 'required|string',
+            // 'kegiatan_rapat.*.materi' => 'required|string', // DIHAPUS
             'kegiatan_rapat.*.tanggapan' => 'nullable|string',
             'kegiatan_rapat.*.keputusan' => 'nullable|string',
             'kegiatan_rapat.*.keterangan' => 'nullable|string',
-            'kepala_lab' => 'required|string|max:255',
-            'nik_kepala_lab' => 'nullable|string|max:255',
-            'notulis' => 'required|string|max:255',
-            'nik_notulis' => 'nullable|string|max:255',
+            
+            // Field penandatangan diubah
+            'ttd_jabatan_1' => 'required|string|max:255',
+            'nama_ttd_jabatan_1' => 'required|string|max:255',
+            'nik_ttd_jabatan_1' => 'nullable|string|max:255',
+            'ttd_jabatan_2' => 'required|string|max:255',
+            'nama_ttd_jabatan_2' => 'required|string|max:255',
+            'nik_ttd_jabatan_2' => 'nullable|string|max:255',
+            
             'judul_dokumentasi' => 'nullable|string|max:500',
             'dokumentasi.*' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
-        // Handle upload dokumentasi - PERBAIKAN: pastikan array
+        // Handle upload dokumentasi
         $dokumentasiPaths = [];
         if ($request->hasFile('dokumentasi')) {
             foreach ($request->file('dokumentasi') as $file) {
@@ -94,7 +100,6 @@ class SuratNotulenController extends Controller
             }
         }
         
-        // Simpan sebagai array (akan otomatis di-cast ke JSON oleh model)
         $validated['dokumentasi'] = $dokumentasiPaths;
         $validated['user_id'] = auth()->id();
         
@@ -108,29 +113,12 @@ class SuratNotulenController extends Controller
     public function show($id)
     {
         $data = PersonalLetterNotulen::findOrFail($id);
-        
-        // Debug: Log data untuk checking
-        \Log::info('Notulen Show Data:', [
-            'id' => $data->id,
-            'dokumentasi_type' => gettype($data->dokumentasi),
-            'dokumentasi_value' => $data->dokumentasi,
-            'dokumentasi_count' => is_array($data->dokumentasi) ? count($data->dokumentasi) : 0
-        ]);
-        
         return view('pages.transaction.personal.templates.notulen.show', compact('data'));
     }
 
     public function edit($id)
     {
         $data = PersonalLetterNotulen::findOrFail($id);
-        
-        // Debug: Log data untuk checking
-        \Log::info('Notulen Edit Data:', [
-            'id' => $data->id,
-            'dokumentasi_type' => gettype($data->dokumentasi),
-            'dokumentasi_value' => $data->dokumentasi,
-        ]);
-        
         return view('pages.transaction.personal.templates.notulen.edit', compact('data'));
     }
 
@@ -142,38 +130,41 @@ class SuratNotulenController extends Controller
             'kop_type' => 'required|in:klinik,lab,pt',
             'isi_notulen' => 'required|string|max:500',
             'tanggal_rapat' => 'required|date',
+            'tanggal_ttd' => 'required|date', 
             'waktu' => 'required',
             'tempat' => 'required|string|max:255',
             'pimpinan_rapat' => 'required|string|max:255',
             'peserta_rapat' => 'required|string',
             'kegiatan_rapat' => 'required|array',
             'kegiatan_rapat.*.pembicara' => 'required|string',
-            'kegiatan_rapat.*.materi' => 'required|string',
             'kegiatan_rapat.*.tanggapan' => 'nullable|string',
             'kegiatan_rapat.*.keputusan' => 'nullable|string',
             'kegiatan_rapat.*.keterangan' => 'nullable|string',
-            'kepala_lab' => 'required|string|max:255',
-            'nik_kepala_lab' => 'nullable|string|max:255',
-            'notulis' => 'required|string|max:255',
-            'nik_notulis' => 'nullable|string|max:255',
+            
+            // Field penandatangan diubah
+            'ttd_jabatan_1' => 'required|string|max:255',
+            'nama_ttd_jabatan_1' => 'required|string|max:255',
+            'nik_ttd_jabatan_1' => 'nullable|string|max:255',
+            'ttd_jabatan_2' => 'required|string|max:255',
+            'nama_ttd_jabatan_2' => 'required|string|max:255',
+            'nik_ttd_jabatan_2' => 'nullable|string|max:255',
+            
             'judul_dokumentasi' => 'nullable|string|max:500',
             'dokumentasi.*' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
             'hapus_dokumentasi' => 'nullable|array',
         ]);
 
-        // PERBAIKAN: Ambil dokumentasi yang ada sebagai array
+        // Ambil dokumentasi yang ada sebagai array
         $existingDocs = is_array($letter->dokumentasi) ? $letter->dokumentasi : [];
 
         // Handle hapus dokumentasi lama
         if ($request->filled('hapus_dokumentasi')) {
             foreach ($request->hapus_dokumentasi as $indexToDelete) {
                 if (isset($existingDocs[$indexToDelete])) {
-                    // Hapus file dari storage
                     Storage::disk('public')->delete($existingDocs[$indexToDelete]);
                     unset($existingDocs[$indexToDelete]);
                 }
             }
-            // Re-index array
             $existingDocs = array_values($existingDocs);
         }
 
@@ -185,9 +176,7 @@ class SuratNotulenController extends Controller
             }
         }
 
-        // Update dokumentasi dengan array yang sudah diproses
         $validated['dokumentasi'] = $existingDocs;
-
         $letter->update($validated);
 
         // Hapus PDF lama

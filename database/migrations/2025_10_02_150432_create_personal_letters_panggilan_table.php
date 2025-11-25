@@ -27,8 +27,7 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('nama_pejabat');
             $table->string('nik');
-            $table->string('tembusan_1')->nullable();
-            $table->string('tembusan_2')->nullable();
+            $table->json('tembusan')->nullable();
             $table->string('generated_file')->nullable();
             $table->timestamps();
         });

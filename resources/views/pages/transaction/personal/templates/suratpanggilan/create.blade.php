@@ -81,7 +81,7 @@
             <div class="col-12 mb-3">
                 <label for="kepada">Kepada <span class="text-danger">*</span></label>
                 <input type="text" name="kepada" id="kepada" class="form-control" 
-                       value="{{ old('kepada') }}" placeholder="Contoh: Sdr. John Doe" required>
+                       value="{{ old('kepada') }}" placeholder="Masukkan Nama" required>
                 @error('kepada')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -91,8 +91,7 @@
             <div class="col-12 mb-3">
                 <label for="isi_pembuka">Sehubungan dengan <span class="text-danger">*</span></label>
                 <textarea name="isi_pembuka" id="isi_pembuka" rows="3" class="form-control" 
-                          placeholder="Contoh: adanya dugaan pelanggaran..." required>{{ old('isi_pembuka') }}</textarea>
-                <small class="text-muted">Tuliskan alasan pemanggilan</small>
+                          placeholder="Tuliskan alasan pemanggilan" required>{{ old('isi_pembuka') }}</textarea>
                 @error('isi_pembuka')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -128,7 +127,7 @@
             <div class="col-md-6 mb-3">
                 <label for="tempat">Tempat <span class="text-danger">*</span></label>
                 <input type="text" name="tempat" id="tempat" class="form-control" 
-                       value="{{ old('tempat') }}" placeholder="Contoh: Ruang Meeting Lantai 2" required>
+                       value="{{ old('tempat') }}" placeholder="Masukkan lokasi tempat" required>
                 @error('tempat')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -148,7 +147,7 @@
             <div class="col-12 mb-3">
                 <label for="alamat_pemanggil">Alamat Pemanggil <span class="text-danger">*</span></label>
                 <textarea name="alamat_pemanggil" id="alamat_pemanggil" rows="2" class="form-control" 
-                          placeholder="Contoh: Jl. Raya Darmo No. 123, Surabaya" required>{{ old('alamat_pemanggil') }}</textarea>
+                          placeholder="Masukkan alamat pemanggil" required>{{ old('alamat_pemanggil') }}</textarea>
                 @error('alamat_pemanggil')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -173,7 +172,7 @@
             <div class="col-md-6 mb-3">
                 <label for="nama_pejabat">Nama Pejabat <span class="text-danger">*</span></label>
                 <input type="text" name="nama_pejabat" id="nama_pejabat" class="form-control" 
-                       value="{{ old('nama_pejabat') }}" placeholder="Contoh: Dr. Ahmad Suryadi" required>
+                       value="{{ old('nama_pejabat') }}" placeholder="Masukkan Nama Pejabat" required>
                 @error('nama_pejabat')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -190,28 +189,28 @@
             </div>
 
             <div class="col-12"><hr></div>
-            <div class="col-12 mb-3">
-                <h6 class="text-primary">Tembusan (Opsional)</h6>
+            <!-- TEMBUSAN DYNAMIC -->
+            <div class="col-12 mb-4 mt-3">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <h6 class="text-primary mb-0">Tembusan (Opsional)</h6>
+                    <button type="button" id="add-tembusan" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-plus-circle"></i> Tambah Tembusan
+                    </button>
+                </div>
             </div>
 
-            <!-- Tembusan 1 -->
-            <div class="col-md-6 mb-3">
-                <label for="tembusan_1">Tembusan 1</label>
-                <input type="text" name="tembusan_1" id="tembusan_1" class="form-control" 
-                       value="{{ old('tembusan_1') }}" placeholder="Contoh: Kepala Bagian HRD">
-                @error('tembusan_1')
-                    <div class="text-danger small">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Tembusan 2 -->
-            <div class="col-md-6 mb-3">
-                <label for="tembusan_2">Tembusan 2</label>
-                <input type="text" name="tembusan_2" id="tembusan_2" class="form-control" 
-                       value="{{ old('tembusan_2') }}" placeholder="Contoh: Arsip">
-                @error('tembusan_2')
-                    <div class="text-danger small">{{ $message }}</div>
-                @enderror
+            <div class="col-12">
+                <div id="tembusan-wrapper">
+                    <div class="tembusan-item card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <strong>Tembusan 1</strong>
+                            </div>
+                            <input type="text" name="tembusan[]" class="form-control" 
+                                   placeholder="Contoh: Kepala Bagian HRD" value="{{ old('tembusan.0') }}">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -226,3 +225,57 @@
     </form>
 </div>
 @endsection
+
+@push('style')
+<style>
+.border-bottom {
+    border-bottom: 2px solid #dee2e6 !important;
+}
+.tembusan-item {
+    background-color: #f8f9fa;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tembusanWrapper = document.getElementById("tembusan-wrapper");
+    const addTembusan = document.getElementById("add-tembusan");
+    let tembusanIndex = 1;
+
+    addTembusan.addEventListener("click", function () {
+        const div = document.createElement("div");
+        div.classList.add("tembusan-item", "card", "mb-3");
+        div.innerHTML = `
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Tembusan ${tembusanIndex + 1}</strong>
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-tembusan">
+                        <i class="bi bi-trash"></i> Hapus
+                    </button>
+                </div>
+                <input type="text" name="tembusan[]" class="form-control" placeholder="Contoh: Kepala Divisi ...">
+            </div>
+        `;
+        tembusanWrapper.appendChild(div);
+        tembusanIndex++;
+    });
+
+    tembusanWrapper.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-tembusan') || e.target.closest('.remove-tembusan')) {
+            e.target.closest('.tembusan-item').remove();
+            reindexTembusan();
+        }
+    });
+
+    function reindexTembusan() {
+        const items = tembusanWrapper.querySelectorAll('.tembusan-item');
+        tembusanIndex = items.length;
+        items.forEach((item, idx) => {
+            item.querySelector('strong').textContent = `Tembusan ${idx + 1}`;
+        });
+    }
+});
+</script>
+@endpush

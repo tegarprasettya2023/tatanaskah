@@ -66,6 +66,7 @@ class SuratMemoController extends Controller
         $validated = $request->validate([
             'template_type' => 'required|string',
             'kop_type' => 'required|string',
+            'nomor' => 'required|string|max:255',
             'letter_date' => 'required|date',
             'tempat_ttd' => 'required|string|max:255',
             'yth_nama' => 'required|string|max:255',
@@ -75,20 +76,29 @@ class SuratMemoController extends Controller
             'isi_penutup' => 'nullable|string',
             'jabatan_pembuat' => 'required|string|max:255',
             'nama_pembuat' => 'required|string|max:255',
-            'nik_pembuat' => 'required|string|max:255',
-            'tembusan_1' => 'nullable|string',
-            'tembusan_2' => 'nullable|string',
+            'nik_pembuat' => 'nullable|string|max:255',
+            'tembusan' => 'nullable|array',
         ]);
 
-        // Generate nomor otomatis
-        $nomorData = PersonalLetterMemo::generateNomor($validated['letter_date']);
-        $validated['nomor'] = $nomorData['nomor'];
-        $validated['nomor_urut'] = $nomorData['nomor_urut'];
         $validated['user_id'] = auth()->id();
 
-        // Default isi penutup
-        if (empty($validated['isi_penutup'])) {
-            $validated['isi_penutup'] = 'Atas perhatian dan perkenan Bapak/Ibu/Saudara/I, kami mengucapkan terima kasih.';
+        // Sanitasi HTML
+        $validated['sehubungan_dengan'] = $this->sanitizeHtml($validated['sehubungan_dengan']);
+        $validated['alinea_isi'] = $this->sanitizeHtml($validated['alinea_isi']);
+        if (isset($validated['isi_penutup'])) {
+            $validated['isi_penutup'] = $this->sanitizeHtml($validated['isi_penutup']);
+        }
+
+        // Filter tembusan yang kosong
+        if (isset($validated['tembusan']) && is_array($validated['tembusan'])) {
+            $validated['tembusan'] = array_values(array_filter($validated['tembusan'], function($item) {
+                return $item !== null && $item !== false && trim((string)$item) !== '';
+            }));
+            if (empty($validated['tembusan'])) {
+                $validated['tembusan'] = null;
+            }
+        } else {
+            $validated['tembusan'] = null;
         }
 
         $letter = PersonalLetterMemo::create($validated);
@@ -116,6 +126,7 @@ class SuratMemoController extends Controller
         $validated = $request->validate([
             'template_type' => 'required|string',
             'kop_type' => 'required|string',
+            'nomor' => 'required|string|max:255',
             'letter_date' => 'required|date',
             'tempat_ttd' => 'required|string|max:255',
             'yth_nama' => 'required|string|max:255',
@@ -125,16 +136,27 @@ class SuratMemoController extends Controller
             'isi_penutup' => 'nullable|string',
             'jabatan_pembuat' => 'required|string|max:255',
             'nama_pembuat' => 'required|string|max:255',
-            'nik_pembuat' => 'required|string|max:255',
-            'tembusan_1' => 'nullable|string',
-            'tembusan_2' => 'nullable|string',
+            'nik_pembuat' => 'nullable|string|max:255',
+            'tembusan' => 'nullable|array',
         ]);
 
-        // Regenerate nomor jika bulan/tahun berubah
-        if ($letter->letter_date->format('Y-m') !== date('Y-m', strtotime($validated['letter_date']))) {
-            $nomorData = PersonalLetterMemo::generateNomor($validated['letter_date']);
-            $validated['nomor'] = $nomorData['nomor'];
-            $validated['nomor_urut'] = $nomorData['nomor_urut'];
+        // Sanitasi HTML
+        $validated['sehubungan_dengan'] = $this->sanitizeHtml($validated['sehubungan_dengan']);
+        $validated['alinea_isi'] = $this->sanitizeHtml($validated['alinea_isi']);
+        if (isset($validated['isi_penutup'])) {
+            $validated['isi_penutup'] = $this->sanitizeHtml($validated['isi_penutup']);
+        }
+
+        // Filter tembusan yang kosong
+        if (isset($validated['tembusan']) && is_array($validated['tembusan'])) {
+            $validated['tembusan'] = array_values(array_filter($validated['tembusan'], function($item) {
+                return $item !== null && $item !== false && trim((string)$item) !== '';
+            }));
+            if (empty($validated['tembusan'])) {
+                $validated['tembusan'] = null;
+            }
+        } else {
+            $validated['tembusan'] = null;
         }
 
         $letter->update($validated);
@@ -200,5 +222,23 @@ class SuratMemoController extends Controller
         }
 
         return $pdf->download($filename);
+    }
+
+    /**
+     * Sanitasi HTML untuk mencegah XSS
+     */
+    private function sanitizeHtml($html)
+    {
+        if (empty($html)) {
+            return $html;
+        }
+
+        $allowedTags = '<p><br><strong><em><u><s><h1><h2><h3><h4><h5><h6><ul><ol><li><a><blockquote>';
+        $cleaned = strip_tags($html, $allowedTags);
+        $cleaned = preg_replace('/<a[^>]*href=["\']javascript:[^"\']*["\'][^>]*>/i', '', $cleaned);
+        $cleaned = preg_replace('/<a[^>]*onclick=[^>]*>/i', '<a>', $cleaned);
+        $cleaned = preg_replace('/<([a-z]+)[^>]*class=["\']?(ql-align-[a-z]+)["\']?[^>]*>/i', '<$1 class="$2">', $cleaned);
+        
+        return $cleaned;
     }
 }

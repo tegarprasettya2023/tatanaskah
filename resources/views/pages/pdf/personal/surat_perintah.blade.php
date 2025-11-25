@@ -4,56 +4,52 @@
     <meta charset="UTF-8">
     <title>Surat Perintah/Tugas</title>
     <style>
-        @page { margin: 0; }
+        @page {
+            margin: 120px 40px 100px 40px;
+        }
+
         body {
-            font-family: 'Century Gothic', sans-serif ;
+            font-family: 'Century Gothic', sans-serif;
             font-size: 10px;
             line-height: 1.6;
             margin: 0;
             padding: 0;
         }
 
-        .header { 
+        .header {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 80px;
+            top: -120px;
+            left: -30px;
+            right: -30px;
+            width: 113%;
+            height: 100px;
             text-align: center;
-            z-index: 1000;
-        }
-        
-        .header img {
-            width: 100%;
-            height: 90px;
-            object-fit: cover;
-            display: block;
-        }
-        
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            height: 60px;
-            text-align: center;
-            z-index: 1000;
-        }
-        
-        .footer img {
-            width: 90%;
-            height: 40px;
-            object-fit: cover;
-            display: block;
         }
 
-        .content { 
-            margin-top: 120px; 
-            margin-bottom: 120px; 
-            margin-left: 20mm; 
-            margin-right: 20mm; 
+        .header img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: -80px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 40px;
+            text-align: center;
+        }
+
+        .footer img {
+            width: 100%;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .content {
+            margin: 0;
         }
 
         .title { 
@@ -102,17 +98,11 @@
         }
 
         .tembusan-flex {
-            position: fixed;
-            bottom: 50px;
-            left: 20mm;
-            right: 20mm;
+            margin-top: 20px;
             display: flex;
             align-items: flex-start;
             font-size: 12px;
             line-height: 1.6;
-            background: white;
-            padding: 5px 0;
-            z-index: 3000;
         }
 
         .tembusan-flex > div:nth-child(1) {
@@ -247,33 +237,33 @@
             <td style="width: 90px;">Kepada</td>
             <td style="width: 10px;">:</td>
             <td>
-                <table>
+                <table style="width: 100%; border-collapse: collapse;">
                     @if(!empty($letter->nama_penerima))
                     <tr>
-                        <td style="width:100px;">Nama</td>
-                        <td style="width:10px;">:</td>
-                        <td>{{ $letter->nama_penerima }}</td>
+                        <td style="width:120px; padding: 2px 0;">Nama</td>
+                        <td style="width:15px; padding: 2px 0;">:</td>
+                        <td style="padding: 2px 0;">{{ $letter->nama_penerima }}</td>
                     </tr>
                     @endif
                     
                     @if(!empty($letter->nik_penerima))
                     <tr>
-                        <td>NIK</td>
-                        <td>:</td>
-                        <td>{{ $letter->nik_penerima }}</td>
+                        <td style="width:120px; padding: 2px 0;">NIK</td>
+                        <td style="width:15px; padding: 2px 0;">:</td>
+                        <td style="padding: 2px 0;">{{ $letter->nik_penerima }}</td>
                     </tr>
                     @endif
                     
                     @if(!empty($letter->jabatan_penerima))
                     <tr>
-                        <td>Jabatan</td>
-                        <td>:</td>
-                        <td>{{ $letter->jabatan_penerima }}</td>
+                        <td style="width:120px; padding: 2px 0;">Jabatan</td>
+                        <td style="width:15px; padding: 2px 0;">:</td>
+                        <td style="padding: 2px 0;">{{ $letter->jabatan_penerima }}</td>
                     </tr>
                     @endif
                 </table>
                 @if(!empty($letter->nama_nama_terlampir)) 
-                    Atau nama-nama terlampir.
+                    <div style="margin-top: 5px;">Atau nama-nama terlampir.</div>
                 @endif
             </td>
         </tr>
@@ -282,8 +272,8 @@
         {{-- Untuk --}}
         @if(!empty($letter->untuk) && count($letter->untuk) > 0)
         <tr>
-            <td>Untuk</td>
-            <td>:</td>
+            <td style="width: 90px;">Untuk</td>
+            <td style="width: 10px;">:</td>
             <td>
                 @foreach($letter->untuk as $i => $item)
                     {{ $i + 1 }}. {{ $item }}<br>
@@ -294,7 +284,7 @@
     </table>
 
     {{-- Tanda Tangan --}}
-    <div class="signature">
+    <div class="signature" style="margin-bottom: 80px;">
         <div>{{ $letter->tempat ?? 'Surabaya' }}, {{ $letter->formatted_letter_date ?? '................' }}</div>
         <div>{{ $letter->jabatan_pembuat ?? 'Nama Jabatan' }},</div>
         <div class="signature-space"></div>
@@ -304,9 +294,9 @@
 
     {{-- Tembusan (Opsional) --}}
     @if(!empty($letter->tembusan) && count($letter->tembusan) > 0)
-    <div class="tembusan-flex">
+    <div class="tembusan-flex" style="clear: both;">
         <div>Tembusan:</div>
-        <div>
+        <div style="padding-left: 6px;">
             @foreach($letter->tembusan as $i => $item)
                 {{ $i + 1 }}. {{ $item }}<br>
             @endforeach

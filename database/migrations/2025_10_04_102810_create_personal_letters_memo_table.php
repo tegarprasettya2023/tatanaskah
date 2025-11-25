@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('personal_letters_memo', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('template_type')->default('internal_memo');
             $table->string('kop_type'); // klinik, lab, pt
             
-            // Nomor auto-generate (IM/001/bulan/tahun)
-            $table->string('nomor')->unique();
-            $table->integer('nomor_urut');
+            // Nomor manual input
+            $table->string('nomor');
             
             // Tanggal & Tempat
             $table->string('tempat_ttd');
@@ -25,19 +25,18 @@ return new class extends Migration
             $table->string('yth_nama');
             $table->string('hal');
             
-            // Isi Memo
+            // Isi Memo (dengan HTML dari editor)
             $table->text('sehubungan_dengan');
             $table->text('alinea_isi');
-            $table->text('isi_penutup')->default('Atas perhatian dan perkenan Bapak/Ibu/Saudara/I, kami mengucapkan terima kasih.');
+            $table->text('isi_penutup')->nullable();
             
             // Penandatangan
             $table->string('jabatan_pembuat');
             $table->string('nama_pembuat');
-            $table->string('nik_pembuat');
+            $table->string('nik_pembuat')->nullable();
             
-            // Tembusan
-            $table->text('tembusan_1')->nullable();
-            $table->text('tembusan_2')->nullable();
+            // Tembusan (JSON array)
+            $table->json('tembusan')->nullable();
             
             $table->string('generated_file')->nullable();
             $table->timestamps();

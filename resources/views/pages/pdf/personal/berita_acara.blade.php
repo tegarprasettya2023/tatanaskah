@@ -8,7 +8,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 1.6;
             margin: 0;
             padding: 0;
@@ -60,7 +60,7 @@
         .title {
             text-align: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
             margin-bottom: 5px;
             text-transform: uppercase;
         }
@@ -125,13 +125,12 @@
         }
 
         .sig-name {
-            font-weight: bold;
-            text-decoration: underline;
+            font-weight: normal;
             margin-top: 4px;
         }
 
         .sig-nik {
-            font-size: 11px;
+            font-size: 10px;
         }
         /* --------------------------------------------------------- */
 
@@ -157,7 +156,7 @@
         }
 
         .center-signature .sig-name {
-            font-weight: bold;
+            font-weight: normal;
         }
 
         .center-signature .sig-position {
@@ -166,7 +165,7 @@
 
         .center-signature .sig-nik {
             margin-top: 3px;
-            font-size: 11px;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -212,18 +211,18 @@
 
     <div class="paragraph">
         Pada hari ini, 
-        <strong>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('l') : '…..' }}</strong> 
+        <span>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('l') : '…..' }}</span> 
         tanggal 
-        <strong>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('d') : '….' }}</strong>, 
+        <span>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('d') : '….' }}</span>, 
         bulan 
-        <strong>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('F') : '….' }}</strong>, 
+        <span>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('F') : '….' }}</span>, 
         tahun 
-        <strong>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('Y') : '….' }}</strong>, 
+        <span>{{ $letter->tanggal_acara ? $letter->tanggal_acara->translatedFormat('Y') : '….' }}</span>, 
         kami masing-masing:
     </div>
 
     <div class="paragraph">
-        1. <strong>{{ $letter->nama_pihak_pertama ?? '…..(nama pejabat)' }}</strong>({{ $letter->nip_pihak_pertama ?? 'NIP' }} dan {{ $letter->jabatan_pihak_pertama ?? 'jabatan' }}), selanjutnya disebut <strong>PIHAK PERTAMA</strong>
+        1. <span>{{ $letter->nama_pihak_pertama ?? '…..(nama pejabat)' }}</span>({{ $letter->nip_pihak_pertama ?? 'NIP' }} dan {{ $letter->jabatan_pihak_pertama ?? 'jabatan' }}), selanjutnya disebut <span>PIHAK PERTAMA</span>
     </div>
 
     <div class="paragraph">
@@ -231,7 +230,7 @@
     </div>
 
     <div class="paragraph">
-        2. <strong>{{ $letter->pihak_kedua ?? '……(pihak lain)' }}</strong>, selanjutnya disebut <strong>PIHAK KEDUA</strong>, telah melaksanakan <strong>{{ $letter->telah_melaksanakan ?? '................................' }}</strong>
+        2. <span>{{ $letter->pihak_kedua ?? '……(pihak lain)' }}</span>, selanjutnya disebut <span>PIHAK KEDUA</span>, telah melaksanakan <span>{{ $letter->telah_melaksanakan ?? '................................' }}</span>
     </div>
 
     @if(!empty($letter->kegiatan) && is_array($letter->kegiatan))
@@ -269,13 +268,13 @@
                 <div>PIHAK KEDUA</div>
                 <div class="sig-space"></div> {{-- lebih panjang agar turun ke bawah --}}
                 <div class="sig-name">{{ $letter->pihak_kedua ?? 'Nama Lengkap' }}</div>
-                <div class="sig-nik">{{ $letter->nik_pihak_kedua ? 'NIKepegawaian: ' . $letter->nik_pihak_kedua : 'NIKepegawaian' }}</div>
+                <div class="sig-nik">{{ $letter->nik_pihak_kedua ? 'NIK. ' . $letter->nik_pihak_kedua : 'NIKepegawaian' }}</div>
             </td>
             <td class="sig-right" style="text-align: right;">
                 <div>PIHAK PERTAMA</div>
                 <div class="sig-space"></div> {{-- sama panjang agar sejajar --}}
                 <div class="sig-name">{{ $letter->nama_pihak_pertama ?? 'Nama Lengkap' }}</div>
-                <div class="sig-nik">{{ $letter->nip_pihak_pertama ? 'NIKepegawaian: ' . $letter->nip_pihak_pertama : 'NIKepegawaian' }}</div>
+                <div class="sig-nik">{{ $letter->nip_pihak_pertama ? 'NIK. ' . $letter->nip_pihak_pertama : 'NIKepegawaian' }}</div>
             </td>
         </tr>
     </table>
@@ -286,7 +285,7 @@
         <div class="sig-position">{{ $letter->jabatan_mengetahui ?? 'Nama Jabatan' }}</div>
         <div style="height: 70px;"></div>
         <div class="sig-name">{{ $letter->nama_mengetahui ?? 'Nama Lengkap' }}</div>
-        <div class="sig-nik">{{ $letter->nik_mengetahui ? 'NIKepegawaian: ' . $letter->nik_mengetahui : 'NIKepegawaian' }}</div>
+        <div class="sig-nik">{{ $letter->nik_mengetahui ? 'NIK. ' . $letter->nik_mengetahui : 'NIKepegawaian' }}</div>
     </div>
 
 </div>

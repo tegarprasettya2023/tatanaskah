@@ -1,6 +1,7 @@
 @extends('layout.dashboard-layout')
 
 @section('content')
+
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -163,7 +164,6 @@
                                     <th width="15%">Nomor Surat</th>
                                     <th width="30%">Perihal</th>
                                     <th width="15%">Tanggal</th>
-                                    <th width="15%">Pembuat</th>
                                     <th width="20%" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -176,26 +176,18 @@
                                                 {{ $item->nomor ?? '-' }}
                                             </span>
                                         </td>
-                                        <td>
-                                            <div class="text-truncate" style="max-width: 300px;" 
-                                                 title="{{ $item->perihal ?? $item->judul ?? $item->tentang ?? '-' }}">
-                                                {{ $item->perihal ?? $item->judul ?? $item->tentang ?? '-' }}
-                                            </div>
-                                        </td>
+<td>
+    <div class="text-truncate" style="max-width: 300px;"
+         title="{{ $item->perihal ?? $item->judul ?? $item->tentang ?? $item->hal ?? $item->isi_notulen ?? $item->judul_spo ?? '-' }}">
+        {{ $item->perihal ?? $item->judul ?? $item->tentang ?? $item->hal ?? $item->isi_notulen ?? $item->judul_spo ?? '-' }}
+    </div>
+</td>
+
                                         <td>
                                             <i class="bx bx-calendar me-1"></i>
                                             {{ \Carbon\Carbon::parse($item->letter_date ?? $item->tanggal_surat ?? $item->created_at)->format('d M Y') }}
                                         </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar avatar-xs me-2">
-                                                    <span class="avatar-initial rounded-circle bg-label-info">
-                                                        {{ substr($item->user->name ?? 'U', 0, 1) }}
-                                                    </span>
-                                                </div>
-                                                <span>{{ $item->user->name ?? '-' }}</span>
-                                            </div>
-                                        </td>
+
                                         <td class="text-center">
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route($previewRoute, $item->id) }}" 

@@ -10,7 +10,7 @@
 
         body {
             font-family: 'Century Gothic', sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             line-height: 1.4;
             margin: 0;
             padding: 0;
@@ -55,7 +55,7 @@
         .title {
             text-align: center;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
             margin-bottom: 25px;
         }
 
@@ -237,10 +237,10 @@
         <thead>
             <tr>
                 <th width="5%">NO.</th>
-                <th width="23%">PEMBICARA/URAIAN<br>MATERI</th>
-                <th width="23%">TANGGAPAN/PEMBERI<br>TANGGAPAN</th>
-                <th width="23%">KEPUTUSAN<br>PIMPINAN</th>
-                <th width="26%">KETERANGAN</th>
+                <th width="30%">PEMBICARA/URAIAN MATERI</th>
+                <th width="25%">TANGGAPAN/PEMBERI<br>TANGGAPAN</th>
+                <th width="20%">KEPUTUSAN<br>PIMPINAN</th>
+                <th width="20%">KETERANGAN</th>
             </tr>
         </thead>
         <tbody>
@@ -268,17 +268,17 @@
     <table class="signature-wrapper" style="margin-top:60px;">
         <tr>
             <td class="sig-left" style="text-align:left; padding-top: 3%;">
-                <div class="sig-role">Kepala Laboratorium</div>
+                <div class="sig-role">{{ $letter->ttd_jabatan_1 ?? 'Jabatan 1' }}</div>
                 <span class="sig-placeholder"></span>
-                <div class="sig-name">{{ $letter->kepala_lab ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_kepala_lab ? 'NIK. ' . $letter->nik_kepala_lab : 'NIK Pegawai' }}</div>
+                <div class="sig-name">{{ $letter->nama_ttd_jabatan_1 ?? '(Nama)' }}</div>
+                <div class="sig-nik">{{ $letter->nik_ttd_jabatan_1 ? 'NIK. ' . $letter->nik_ttd_jabatan_1 : 'NIK Pegawai' }}</div>
             </td>
             <td class="sig-right" style="width:20%; text-align:left;">
-                <div class="sig-role">{{ 'Surabaya' }}, {{ $letter->tanggal_rapat ? $letter->tanggal_rapat->translatedFormat('d F Y') : '..................' }}</div>
-                <div class="sig-role">Notulis</div>
+                <div class="sig-role">{{ 'Surabaya' }}, {{ $letter->tanggal_ttd ? $letter->tanggal_ttd->translatedFormat('d F Y') : '..................' }}</div>
+                <div class="sig-role">{{ $letter->ttd_jabatan_2 ?? 'Jabatan 2' }}</div>
                 <span class="sig-placeholder"></span>
-                <div class="sig-name">{{ $letter->notulis ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_notulis ? 'NIK. ' . $letter->nik_notulis : 'NIK Pegawai' }}</div>
+                <div class="sig-name">{{ $letter->nama_ttd_jabatan_2 ?? '(Nama)' }}</div>
+                <div class="sig-nik">{{ $letter->nik_ttd_jabatan_2 ? 'NIK. ' . $letter->nik_ttd_jabatan_2 : 'NIK Pegawai' }}</div>
             </td>
         </tr>
     </table>
@@ -323,17 +323,17 @@
     <table class="signature-wrapper" style="margin-top:60px;">
         <tr>
             <td class="sig-left" style="text-align:left; padding-top: 3%;">
-                <div class="sig-role">Kepala Laboratorium</div>
+                <div class="sig-role">{{ $letter->ttd_jabatan_1 ?? 'Jabatan 1' }}</div>
                 <span class="sig-placeholder"></span>
-                <div class="sig-name">{{ $letter->kepala_lab ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_kepala_lab ? 'NIK. ' . $letter->nik_kepala_lab : 'NIK Pegawai' }}</div>
+                <div class="sig-name">{{ $letter->nama_ttd_jabatan_1 ?? '(Nama)' }}</div>
+                <div class="sig-nik">{{ $letter->nik_ttd_jabatan_1 ? 'NIK. ' . $letter->nik_ttd_jabatan_1 : 'NIK Pegawai' }}</div>
             </td>
             <td class="sig-right" style="width:20%; text-align:left;">
-                <div class="sig-role">{{ 'Surabaya' }}, {{ $letter->tanggal_rapat ? $letter->tanggal_rapat->translatedFormat('d F Y') : '..................' }}</div>
-                <div class="sig-role">Notulis</div>
+                <div class="sig-role">{{ 'Surabaya' }}, {{ $letter->tanggal_ttd ? $letter->tanggal_ttd->translatedFormat('d F Y') : '..................' }}</div>
+                <div class="sig-role">{{ $letter->ttd_jabatan_2 ?? 'Jabatan 2' }}</div>
                 <span class="sig-placeholder"></span>
-                <div class="sig-name">{{ $letter->notulis ?? '(Nama)' }}</div>
-                <div class="sig-nik">{{ $letter->nik_notulis ? 'NIK. ' . $letter->nik_notulis : 'NIK Pegawai' }}</div>
+                <div class="sig-name">{{ $letter->nama_ttd_jabatan_2 ?? '(Nama)' }}</div>
+                <div class="sig-nik">{{ $letter->nik_ttd_jabatan_2 ? 'NIK. ' . $letter->nik_ttd_jabatan_2 : 'NIK Pegawai' }}</div>
             </td>
         </tr>
     </table>

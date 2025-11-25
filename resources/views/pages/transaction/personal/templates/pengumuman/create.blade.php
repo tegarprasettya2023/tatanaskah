@@ -16,7 +16,7 @@
 @endif
 
 <div class="card mb-4">
-    <form action="{{ route('transaction.personal.pengumuman.store') }}" method="POST">
+    <form action="{{ route('transaction.personal.pengumuman.store') }}" method="POST" id="formPengumuman">
         @csrf
         <input type="hidden" name="template_type" value="pengumuman">
 
@@ -25,21 +25,25 @@
         </div>
 
         <div class="card-body row">
-            {{-- Kop & Tanggal --}}
+            {{-- Kop --}}
             <div class="col-md-6 mb-3">
                 <label>Kop Surat <span class="text-danger">*</span></label>
                 <select name="kop_type" class="form-select" required>
                     <option value="">-- Pilih Kop --</option>
-                    <option value="klinik">Klinik</option>
-                    <option value="lab">Laboratorium</option>
-                    <option value="pt">PT</option>
+                    <option value="klinik" {{ old('kop_type') == 'klinik' ? 'selected' : '' }}>Klinik</option>
+                    <option value="lab" {{ old('kop_type') == 'lab' ? 'selected' : '' }}>Laboratorium</option>
+                    <option value="pt" {{ old('kop_type') == 'pt' ? 'selected' : '' }}>PT</option>
                 </select>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label>Tanggal Surat <span class="text-danger">*</span></label>
-                <input type="date" name="tanggal_surat" class="form-control" 
-                       value="{{ old('tanggal_surat', date('Y-m-d')) }}" required>
+            <div class="col-md-6 mb-3"></div>
+
+            {{-- Nomor Manual --}}
+            <div class="col-12 mb-3">
+                <label>Nomor Surat <span class="text-danger">*</span></label>
+                <input type="text" name="nomor" class="form-control" 
+                       placeholder="Contoh: UM/001/XII/2024" value="{{ old('nomor') }}" required>
+                <small class="text-muted">Format: UM/nomor/bulan(romawi)/tahun</small>
             </div>
 
             {{-- Tentang --}}
@@ -52,15 +56,15 @@
             {{-- Isi Pembuka --}}
             <div class="col-12 mb-3">
                 <label>Isi Pengumuman <span class="text-danger">*</span></label>
-                <textarea name="isi_pembuka" rows="6" class="form-control" 
-                          placeholder="Tuliskan isi utama pengumuman..." required>{{ old('isi_pembuka') }}</textarea>
+                <div class="quill-editor" id="editor-pembuka" style="height: 250px;"></div>
+                <input type="hidden" name="isi_pembuka" id="isi_pembuka" required>
             </div>
 
             {{-- Isi Penutup --}}
             <div class="col-12 mb-3">
                 <label>Isi Penutup</label>
-                <textarea name="isi_penutup" rows="4" class="form-control" 
-                          placeholder="Tuliskan penutup pengumuman (opsional)...">{{ old('isi_penutup') }}</textarea>
+                <div class="quill-editor" id="editor-penutup" style="height: 200px;"></div>
+                <input type="hidden" name="isi_penutup" id="isi_penutup">
             </div>
 
             <div class="col-12"><hr></div>
@@ -77,7 +81,7 @@
                        value="{{ old('tanggal_ttd', date('Y-m-d')) }}" required>
             </div>
 
-            {{-- Jabatan, Nama, dan NIK --}}
+            {{-- Jabatan, Nama, NIK --}}
             <div class="col-md-4 mb-3">
                 <label>Jabatan <span class="text-danger">*</span></label>
                 <input type="text" name="jabatan_pembuat" class="form-control" 
@@ -89,9 +93,9 @@
                        value="{{ old('nama_pembuat') }}" required>
             </div>
             <div class="col-md-4 mb-3">
-                <label>NIK Pegawai <span class="text-danger">*</span></label>
+                <label>NIK Pegawai</label>
                 <input type="text" name="nik_pegawai" class="form-control" 
-                       value="{{ old('nik_pegawai') }}" required>
+                       value="{{ old('nik_pegawai') }}">
             </div>
         </div>
 
@@ -106,3 +110,91 @@
     </form>
 </div>
 @endsection
+
+@push('style')
+<!-- Quill CSS -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+.quill-editor {
+    background: white;
+}
+.ql-editor {
+    min-height: 200px;
+    font-size: 14px;
+}
+</style>
+@endpush
+
+@push('scripts')
+<!-- Quill JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Inisialisasi Quill Editor untuk Isi Pembuka
+    const quillPembuka = new Quill('#editor-pembuka', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['link'],
+                ['clean']
+            ]
+        },
+        placeholder: 'Tuliskan isi pengumuman di sini...'
+    });
+
+    // Inisialisasi Quill Editor untuk Isi Penutup
+    const quillPenutup = new Quill('#editor-penutup', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['link'],
+                ['clean']
+            ]
+        },
+        placeholder: 'Tuliskan penutup pengumuman di sini (opsional)...'
+    });
+
+    // --- SOLUSI B: Aktifkan TAB sebagai indent ---
+    function enableTabIndent(quill) {
+        quill.keyboard.addBinding({
+            key: 9, // TAB
+            handler: function(range, context) {
+                quill.format('indent', '+1');
+            }
+        });
+    }
+
+    enableTabIndent(quillPembuka);
+    enableTabIndent(quillPenutup);
+    // --- END SOLUSI TAB ---
+
+    // Simpan HTML ke hidden input
+    quillPembuka.on('text-change', function() {
+        document.getElementById('isi_pembuka').value = quillPembuka.root.innerHTML;
+    });
+
+    quillPenutup.on('text-change', function() {
+        document.getElementById('isi_penutup').value = quillPenutup.root.innerHTML;
+    });
+
+    // Load old value jika ada validasi error
+    @if(old('isi_pembuka'))
+        quillPembuka.root.innerHTML = {!! json_encode(old('isi_pembuka')) !!};
+    @endif
+
+    @if(old('isi_penutup'))
+        quillPenutup.root.innerHTML = {!! json_encode(old('isi_penutup')) !!};
+    @endif
+});
+</script>
+@endpush

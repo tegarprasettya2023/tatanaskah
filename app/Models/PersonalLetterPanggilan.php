@@ -30,14 +30,14 @@ class PersonalLetterPanggilan extends Model
         'jabatan',
         'nama_pejabat',
         'nik',
-        'tembusan_1',
-        'tembusan_2',
+        'tembusan',
         'generated_file',
     ];
 
     protected $casts = [
         'letter_date' => 'date',
         'hari_tanggal' => 'date',
+        'tembusan' => 'array',
     ];
 
     public function user()

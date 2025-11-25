@@ -16,7 +16,7 @@ class PersonalLetterDisposisi extends Model
         'user_id',
         'kop_type',
         'logo_type',
-        'nomor_dokumen',
+        'nomor',
         'no_revisi',
         'halaman_dari',
         'bagian_pembuat',

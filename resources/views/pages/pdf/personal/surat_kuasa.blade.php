@@ -48,10 +48,18 @@
         .section { margin:20px 0; }
         .section table { width:100%; border-collapse:collapse; margin-left:5mm; }
         .section td { padding:3px 0; vertical-align:top; }
+        .section p {
+    margin: 0 0 0;
+}
+
         .label { width:90px; }
         .colon { width:15px; }
 
-        .isi { margin:20px 0; text-align:justify; }
+.isi {
+    margin: 0;
+    text-align: justify;
+}
+
 
         /* Blok tanda tangan */
         .signature-block {

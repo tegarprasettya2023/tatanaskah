@@ -1,0 +1,656 @@
+/* ===================================
+   CUSTOM MULTI-THEME STYLES - ENHANCED
+   =================================== */
+
+/* Global Font */
+* {
+    font-family: Arial, sans-serif !important;
+}
+
+/* ================== LIGHT MODE (DEFAULT) ================== */
+html.light-style {
+    color-scheme: light;
+}
+
+html.light-style body {
+    background-color: #f5f5f9 !important;
+    color: #697a8d !important;
+}
+
+html.light-style .bg-navbar-theme {
+    background-color: #fff !important;
+    border-bottom: 1px solid #d9dee3 !important;
+}
+
+html.light-style .bg-menu-theme {
+    background-color: #fff !important;
+    box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12) !important;
+}
+
+html.light-style .bg-footer-theme {
+    background-color: #fff !important;
+    border-top: 1px solid #d9dee3 !important;
+}
+
+html.light-style .card {
+    background-color: #fff !important;
+    color: #697a8d !important;
+}
+
+html.light-style .app-brand-text {
+    color: #566a7f !important;
+}
+
+/* Light Mode Buttons - Keep original colors */
+html.light-style .btn-outline-primary { color: #696cff; border-color: #696cff; }
+html.light-style .btn-outline-primary:hover { background-color: #696cff; color: #fff; }
+html.light-style .btn-primary { background-color: #696cff; border-color: #696cff; color: #fff; }
+
+/* ================== DARK MODE ================== */
+html.dark-style {
+    color-scheme: dark;
+}
+
+html.dark-style body {
+    background-color: #1a1d2e !important;
+    color: #d0d2d6 !important;
+}
+
+html.dark-style .bg-navbar-theme {
+    background-color: #232535 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark-style .bg-menu-theme {
+    background-color: #232535 !important;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark-style .bg-footer-theme {
+    background-color: #232535 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark-style .content-wrapper {
+    background-color: #1a1d2e !important;
+}
+
+html.dark-style .card {
+    background-color: #2b2f4a !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #d0d2d6 !important;
+}
+
+html.dark-style .card-header {
+    background-color: #232535 !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+    color: #d0d2d6 !important;
+}
+
+html.dark-style .menu-item.active > .menu-link {
+    background-color: rgba(105, 108, 255, 0.16) !important;
+    color: #8789ff !important;
+}
+
+html.dark-style .menu-link {
+    color: #d0d2d6 !important;
+}
+
+html.dark-style .menu-link:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #fff !important;
+}
+
+html.dark-style .menu-header-text {
+    color: #7e8299 !important;
+}
+
+html.dark-style .dropdown-menu {
+    background-color: #2b2f4a !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark-style .dropdown-item {
+    color: #d0d2d6 !important;
+}
+
+html.dark-style .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #fff !important;
+}
+
+html.dark-style .table {
+    color: #d0d2d6 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark-style .table thead th {
+    background-color: #232535 !important;
+    color: #d0d2d6 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark-style .form-control,
+html.dark-style .form-select {
+    background-color: #2b2f4a !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #d0d2d6 !important;
+}
+
+html.dark-style .form-control:focus {
+    background-color: #2b2f4a !important;
+    border-color: #8789ff !important;
+    color: #d0d2d6 !important;
+}
+
+html.dark-style .text-muted {
+    color: #7e8299 !important;
+}
+
+html.dark-style .app-brand-text {
+    color: #d0d2d6 !important;
+}
+
+html.dark-style h1, html.dark-style h2, html.dark-style h3, 
+html.dark-style h4, html.dark-style h5, html.dark-style h6 {
+    color: #d0d2d6 !important;
+}
+
+/* Dark Mode Buttons - Brighter colors */
+html.dark-style .btn-outline-primary { 
+    color: #8789ff !important; 
+    border-color: #8789ff !important; 
+    background-color: transparent !important;
+}
+html.dark-style .btn-outline-primary:hover { 
+    background-color: #8789ff !important; 
+    border-color: #8789ff !important;
+    color: #fff !important; 
+}
+html.dark-style .btn-primary { 
+    background-color: #8789ff !important; 
+    border-color: #8789ff !important; 
+    color: #fff !important; 
+}
+html.dark-style .btn-outline-warning { 
+    color: #ffc107 !important; 
+    border-color: #ffc107 !important; 
+}
+html.dark-style .btn-outline-danger { 
+    color: #ff6b6b !important; 
+    border-color: #ff6b6b !important; 
+}
+html.dark-style .btn-outline-success { 
+    color: #51cf66 !important; 
+    border-color: #51cf66 !important; 
+}
+
+/* Dark Mode Badges */
+html.dark-style .badge {
+    color: #fff !important;
+}
+
+/* ================== BLUE OCEAN THEME ================== */
+html.blue-style {
+    color-scheme: dark;
+}
+
+html.blue-style body {
+    background-color: #0a1929 !important;
+    color: #b2bac2 !important;
+}
+
+html.blue-style .bg-navbar-theme {
+    background-color: #0d2847 !important;
+    border-bottom: 1px solid rgba(52, 152, 219, 0.3) !important;
+}
+
+html.blue-style .bg-menu-theme {
+    background-color: #0d2847 !important;
+    box-shadow: 0 2px 8px 0 rgba(52, 152, 219, 0.2) !important;
+}
+
+html.blue-style .bg-footer-theme {
+    background-color: #0d2847 !important;
+    border-top: 1px solid rgba(52, 152, 219, 0.3) !important;
+}
+
+html.blue-style .content-wrapper {
+    background-color: #0a1929 !important;
+}
+
+html.blue-style .card {
+    background-color: #132f4c !important;
+    border-color: rgba(52, 152, 219, 0.3) !important;
+    color: #b2bac2 !important;
+}
+
+html.blue-style .card-header {
+    background-color: #0d2847 !important;
+    border-bottom-color: rgba(52, 152, 219, 0.3) !important;
+    color: #b2bac2 !important;
+}
+
+html.blue-style .menu-item.active > .menu-link {
+    background-color: rgba(52, 152, 219, 0.25) !important;
+    color: #5dade2 !important;
+}
+
+html.blue-style .menu-link {
+    color: #b2bac2 !important;
+}
+
+html.blue-style .menu-link:hover {
+    background-color: rgba(52, 152, 219, 0.15) !important;
+    color: #5dade2 !important;
+}
+
+html.blue-style .menu-header-text {
+    color: #7e8fa8 !important;
+}
+
+html.blue-style .app-brand-text {
+    color: #b2bac2 !important;
+}
+
+html.blue-style .table thead th {
+    background-color: #0d2847 !important;
+    color: #b2bac2 !important;
+}
+
+html.blue-style h1, html.blue-style h2, html.blue-style h3, 
+html.blue-style h4, html.blue-style h5, html.blue-style h6 {
+    color: #b2bac2 !important;
+}
+
+/* Blue Theme Buttons */
+html.blue-style .btn-outline-primary { 
+    color: #5dade2 !important; 
+    border-color: #5dade2 !important; 
+}
+html.blue-style .btn-outline-primary:hover { 
+    background-color: #5dade2 !important; 
+    color: #fff !important; 
+}
+html.blue-style .btn-primary { 
+    background-color: #3498db !important; 
+    border-color: #3498db !important; 
+}
+
+/* ================== NATURE GREEN THEME ================== */
+html.green-style {
+    color-scheme: dark;
+}
+
+html.green-style body {
+    background-color: #0a1612 !important;
+    color: #c8d6cf !important;
+}
+
+html.green-style .bg-navbar-theme {
+    background-color: #10261e !important;
+    border-bottom: 1px solid rgba(39, 174, 96, 0.3) !important;
+}
+
+html.green-style .bg-menu-theme {
+    background-color: #10261e !important;
+    box-shadow: 0 2px 8px 0 rgba(39, 174, 96, 0.2) !important;
+}
+
+html.green-style .bg-footer-theme {
+    background-color: #10261e !important;
+    border-top: 1px solid rgba(39, 174, 96, 0.3) !important;
+}
+
+html.green-style .content-wrapper {
+    background-color: #0a1612 !important;
+}
+
+html.green-style .card {
+    background-color: #163529 !important;
+    border-color: rgba(39, 174, 96, 0.3) !important;
+    color: #c8d6cf !important;
+}
+
+html.green-style .card-header {
+    background-color: #10261e !important;
+    border-bottom-color: rgba(39, 174, 96, 0.3) !important;
+    color: #c8d6cf !important;
+}
+
+html.green-style .menu-item.active > .menu-link {
+    background-color: rgba(39, 174, 96, 0.25) !important;
+    color: #2ecc71 !important;
+}
+
+html.green-style .menu-link {
+    color: #c8d6cf !important;
+}
+
+html.green-style .menu-link:hover {
+    background-color: rgba(39, 174, 96, 0.15) !important;
+    color: #2ecc71 !important;
+}
+
+html.green-style .app-brand-text {
+    color: #c8d6cf !important;
+}
+
+html.green-style .table thead th {
+    background-color: #10261e !important;
+    color: #c8d6cf !important;
+}
+
+html.green-style h1, html.green-style h2, html.green-style h3, 
+html.green-style h4, html.green-style h5, html.green-style h6 {
+    color: #c8d6cf !important;
+}
+
+/* Green Theme Buttons */
+html.green-style .btn-outline-primary { 
+    color: #2ecc71 !important; 
+    border-color: #2ecc71 !important; 
+}
+html.green-style .btn-outline-primary:hover { 
+    background-color: #2ecc71 !important; 
+    color: #fff !important; 
+}
+html.green-style .btn-primary { 
+    background-color: #27ae60 !important; 
+    border-color: #27ae60 !important; 
+}
+
+/* ================== ROYAL PURPLE THEME ================== */
+html.purple-style {
+    color-scheme: dark;
+}
+
+html.purple-style body {
+    background-color: #1a0a29 !important;
+    color: #d4c5e8 !important;
+}
+
+html.purple-style .bg-navbar-theme {
+    background-color: #2d1447 !important;
+    border-bottom: 1px solid rgba(142, 68, 173, 0.3) !important;
+}
+
+html.purple-style .bg-menu-theme {
+    background-color: #2d1447 !important;
+    box-shadow: 0 2px 8px 0 rgba(142, 68, 173, 0.2) !important;
+}
+
+html.purple-style .bg-footer-theme {
+    background-color: #2d1447 !important;
+    border-top: 1px solid rgba(142, 68, 173, 0.3) !important;
+}
+
+html.purple-style .content-wrapper {
+    background-color: #1a0a29 !important;
+}
+
+html.purple-style .card {
+    background-color: #3d1f5c !important;
+    border-color: rgba(142, 68, 173, 0.3) !important;
+    color: #d4c5e8 !important;
+}
+
+html.purple-style .card-header {
+    background-color: #2d1447 !important;
+    border-bottom-color: rgba(142, 68, 173, 0.3) !important;
+    color: #d4c5e8 !important;
+}
+
+html.purple-style .menu-item.active > .menu-link {
+    background-color: rgba(142, 68, 173, 0.25) !important;
+    color: #bb8fce !important;
+}
+
+html.purple-style .menu-link {
+    color: #d4c5e8 !important;
+}
+
+html.purple-style .menu-link:hover {
+    background-color: rgba(142, 68, 173, 0.15) !important;
+    color: #bb8fce !important;
+}
+
+html.purple-style .app-brand-text {
+    color: #d4c5e8 !important;
+}
+
+html.purple-style .table thead th {
+    background-color: #2d1447 !important;
+    color: #d4c5e8 !important;
+}
+
+html.purple-style h1, html.purple-style h2, html.purple-style h3, 
+html.purple-style h4, html.purple-style h5, html.purple-style h6 {
+    color: #d4c5e8 !important;
+}
+
+/* Purple Theme Buttons */
+html.purple-style .btn-outline-primary { 
+    color: #bb8fce !important; 
+    border-color: #bb8fce !important; 
+}
+html.purple-style .btn-outline-primary:hover { 
+    background-color: #bb8fce !important; 
+    color: #fff !important; 
+}
+html.purple-style .btn-primary { 
+    background-color: #9b59b6 !important; 
+    border-color: #9b59b6 !important; 
+}
+
+/* ================== PASSION RED THEME ================== */
+html.red-style {
+    color-scheme: dark;
+}
+
+html.red-style body {
+    background-color: #1f0a0a !important;
+    color: #e8c5c5 !important;
+}
+
+html.red-style .bg-navbar-theme {
+    background-color: #3d1414 !important;
+    border-bottom: 1px solid rgba(192, 57, 43, 0.3) !important;
+}
+
+html.red-style .bg-menu-theme {
+    background-color: #3d1414 !important;
+    box-shadow: 0 2px 8px 0 rgba(192, 57, 43, 0.2) !important;
+}
+
+html.red-style .bg-footer-theme {
+    background-color: #3d1414 !important;
+    border-top: 1px solid rgba(192, 57, 43, 0.3) !important;
+}
+
+html.red-style .content-wrapper {
+    background-color: #1f0a0a !important;
+}
+
+html.red-style .card {
+    background-color: #521f1f !important;
+    border-color: rgba(192, 57, 43, 0.3) !important;
+    color: #e8c5c5 !important;
+}
+
+html.red-style .card-header {
+    background-color: #3d1414 !important;
+    border-bottom-color: rgba(192, 57, 43, 0.3) !important;
+    color: #e8c5c5 !important;
+}
+
+html.red-style .menu-item.active > .menu-link {
+    background-color: rgba(192, 57, 43, 0.25) !important;
+    color: #ec7063 !important;
+}
+
+html.red-style .menu-link {
+    color: #e8c5c5 !important;
+}
+
+html.red-style .menu-link:hover {
+    background-color: rgba(192, 57, 43, 0.15) !important;
+    color: #ec7063 !important;
+}
+
+html.red-style .app-brand-text {
+    color: #e8c5c5 !important;
+}
+
+html.red-style .table thead th {
+    background-color: #3d1414 !important;
+    color: #e8c5c5 !important;
+}
+
+html.red-style h1, html.red-style h2, html.red-style h3, 
+html.red-style h4, html.red-style h5, html.red-style h6 {
+    color: #e8c5c5 !important;
+}
+
+/* Red Theme Buttons */
+html.red-style .btn-outline-primary { 
+    color: #ec7063 !important; 
+    border-color: #ec7063 !important; 
+}
+html.red-style .btn-outline-primary:hover { 
+    background-color: #ec7063 !important; 
+    color: #fff !important; 
+}
+html.red-style .btn-primary { 
+    background-color: #e74c3c !important; 
+    border-color: #e74c3c !important; 
+}
+
+/* ================== COMMON DARK THEME ELEMENTS ================== */
+html.dark-style .dropdown-menu,
+html.blue-style .dropdown-menu,
+html.green-style .dropdown-menu,
+html.purple-style .dropdown-menu,
+html.red-style .dropdown-menu {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark-style .dropdown-item,
+html.blue-style .dropdown-item,
+html.green-style .dropdown-item,
+html.purple-style .dropdown-item,
+html.red-style .dropdown-item {
+    color: inherit !important;
+}
+
+html.dark-style .form-control,
+html.blue-style .form-control,
+html.green-style .form-control,
+html.purple-style .form-control,
+html.red-style .form-control {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark-style .btn-close,
+html.blue-style .btn-close,
+html.green-style .btn-close,
+html.purple-style .btn-close,
+html.red-style .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+
+/* Action Buttons for all dark themes */
+html.dark-style .btn-outline-warning,
+html.blue-style .btn-outline-warning,
+html.green-style .btn-outline-warning,
+html.purple-style .btn-outline-warning,
+html.red-style .btn-outline-warning {
+    color: #ffc107 !important;
+    border-color: #ffc107 !important;
+}
+
+html.dark-style .btn-outline-danger,
+html.blue-style .btn-outline-danger,
+html.green-style .btn-outline-danger,
+html.purple-style .btn-outline-danger,
+html.red-style .btn-outline-danger {
+    color: #ff6b6b !important;
+    border-color: #ff6b6b !important;
+}
+
+html.dark-style .btn-outline-success,
+html.blue-style .btn-outline-success,
+html.green-style .btn-outline-success,
+html.purple-style .btn-outline-success,
+html.red-style .btn-outline-success {
+    color: #51cf66 !important;
+    border-color: #51cf66 !important;
+}
+
+/* ================== THEME TRANSITIONS ================== */
+html,
+body,
+.card,
+.card-header,
+.menu-link,
+.dropdown-menu,
+.dropdown-item,
+.form-control,
+.form-select,
+.modal-content,
+.bg-navbar-theme,
+.bg-menu-theme,
+.bg-footer-theme,
+.content-wrapper,
+.btn,
+.table,
+.app-brand-text,
+.menu-header-text,
+h1, h2, h3, h4, h5, h6 {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* ================== SCROLLBAR STYLING ================== */
+.scrollable-container {
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.scrollable-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+html.light-style .scrollable-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+html.light-style .scrollable-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+html.dark-style .scrollable-container::-webkit-scrollbar-track,
+html.blue-style .scrollable-container::-webkit-scrollbar-track,
+html.green-style .scrollable-container::-webkit-scrollbar-track,
+html.purple-style .scrollable-container::-webkit-scrollbar-track,
+html.red-style .scrollable-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+html.dark-style .scrollable-container::-webkit-scrollbar-thumb,
+html.blue-style .scrollable-container::-webkit-scrollbar-thumb,
+html.green-style .scrollable-container::-webkit-scrollbar-thumb,
+html.purple-style .scrollable-container::-webkit-scrollbar-thumb,
+html.red-style .scrollable-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+html.dark-style .scrollable-container::-webkit-scrollbar-thumb:hover,
+html.blue-style .scrollable-container::-webkit-scrollbar-thumb:hover,
+html.green-style .scrollable-container::-webkit-scrollbar-thumb:hover,
+html.purple-style .scrollable-container::-webkit-scrollbar-thumb:hover,
+html.red-style .scrollable-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

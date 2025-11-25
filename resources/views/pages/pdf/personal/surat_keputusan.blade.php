@@ -435,23 +435,23 @@
 
     {{-- Mengingat --}}
     @if(!empty($data->mengingat) && count($data->mengingat) > 0)
-    <div class="section-wrapper">
-        <div class="section-row">
-            <div class="section-label">Mengingat</div>
-            <div class="section-colon">:</div>
-            <div class="section-content">
-                @foreach($data->mengingat as $i => $item)
-                <div class="list-item">
-                    <div class="list-item-row">
-                        <div class="list-item-label">{{ chr(97 + $i) }}.</div>
-                        <div class="list-item-content">{{ $item }}</div>
-                    </div>
+<div class="section-wrapper">
+    <div class="section-row">
+        <div class="section-label">Mengingat</div>
+        <div class="section-colon">:</div>
+        <div class="section-content">
+            @foreach($data->mengingat as $i => $item)
+            <div class="list-item">
+                <div class="list-item-row">
+                    <div class="list-item-label">{{ $i + 1 }}.</div>
+                    <div class="list-item-content">{{ $item }}</div>
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
     </div>
-    @endif
+</div>
+@endif
 
     <div class="memutuskan">
         <span>MEMUTUSKAN:</span>

@@ -4,59 +4,122 @@
     <meta charset="UTF-8">
     <title>Surat Panggilan</title>
     <style>
-        @page { margin: 0; }
+        @page { 
+            margin: 120px 40px 100px 40px;
+        }
 
         body {
             font-family: 'CenturyGothic', sans-serif;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 1.6;
             margin: 0;
             padding: 0;
         }
 
         .header { 
-            position: fixed; top:0; left:0; right:0;
-            width:100%; height:90px; text-align:center; z-index:1000;
+            position: fixed; 
+            top: -120px; 
+            left: -40px; 
+            right: -40px;
+            width: 113%;
+            height: 100px; 
+            text-align: center; 
+            z-index: 1000;
         }
-        .header img { width:100%; height:90px; object-fit:cover; display:block; }
+        .header img { 
+            width: 100%; 
+            height: 100px; 
+            object-fit: contain; 
+            display: block; 
+        }
 
         .footer {
-            position: fixed; bottom:0; left:0; right:0;
-            width:100%; height:60px; text-align:center; z-index:1000;
+            position: fixed; 
+            bottom: -80px; 
+            left: 0; 
+            right: 0;
+            width: 100%; 
+            height: 40px; 
+            text-align: center; 
+            z-index: 1000;
         }
-        .footer img { width:90%; height:40px; object-fit:cover; display:block; }
+        .footer img { 
+            width: 100%; 
+            height: 40px; 
+            object-fit: contain; 
+            display: block; 
+        }
 
         .content {
-            margin-top:110px;   /* supaya tidak tabrakan header */
-            margin-bottom:120px;/* supaya tidak tabrakan footer */
-            margin-left:20mm;
-            margin-right:20mm;
+            position: relative;
+            z-index: 1;
         }
 
         .title {
-            text-align:center;
-            font-weight:bold;
-            font-size:14px;
-            margin-bottom:25px;
-            text-transform:uppercase;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
         }
 
-        .header-table { width:100%; margin-bottom:25px; }
-        .header-table td { padding:3px 0; vertical-align:top; }
-        .label { width:150px; }
-        .colon { width:15px; text-align:center; }
+        .header-table { 
+            width: 100%; 
+            margin-bottom: 25px; 
+        }
+        .header-table td { 
+            padding: 3px 0; 
+            vertical-align: top; 
+        }
+        .label { 
+            width: 150px; 
+        }
+        .colon { 
+            width: 15px; 
+            text-align: center; 
+        }
 
-        .detail-section { margin:20px 0; line-height:1.8; }
-        .detail-section td { padding:3px 0; vertical-align:top; }
+        .detail-section { 
+            margin: 20px 0; 
+            line-height: 1.8; 
+        }
+        .detail-section td { 
+            padding: 3px 0; 
+            vertical-align: top; 
+        }
 
-        .closing { margin-top:20px; margin-bottom:15px; }
-        .signature-block { width:100%; margin-top:80px; }
-        .signature-space { height:60px; }
-        .signature-name { font-weight:bold; }
+        .closing { 
+            margin-top: 20px; 
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .signature-block { 
+            width: 100%; 
+            margin-top: 80px; 
+        }
+        .signature-space { 
+            height: 60px; 
+        }
+        .signature-name { 
+            font-weight: bold; 
+        }
 
-        .tembusan { margin-top:50px; }
-        .tembusan strong { font-weight:bold; }
-        .tembusan span { font-weight:normal; }
+        .tembusan { 
+            margin-top: 50px; 
+        }
+        .tembusan strong { 
+            font-weight: bold; 
+        }
+        .tembusan span { 
+            font-weight: normal; 
+        }
+        
+        /* Text Justify untuk isi pembuka */
+        .text-justify {
+            text-align: justify;
+            text-justify: inter-word;
+        }
     </style>
 </head>
 <body>
@@ -110,7 +173,8 @@
         <tr><td class="label">Kepada</td><td class="colon">:</td><td colspan="2"><span class="dots">{{ $letter->kepada }}</span></td></tr>
     </table>
 
-<p style="margin-bottom:15px;">&nbsp;&nbsp;&nbsp;Sehubungan dengan {{ $letter->isi_pembuka }}</p>
+    {{-- Isi Pembuka dengan justify dan indentasi --}}
+    <p class="text-justify" style="margin-bottom:15px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sehubungan dengan {{ $letter->isi_pembuka }}</p>
 
     <div class="detail-section">
         <table>
@@ -122,7 +186,8 @@
         </table>
     </div>
 
-<p class="closing">&nbsp;&nbsp;&nbsp;Atas perhatian dan perkenan Bapak/Ibu/Saudara/i, kami mengucapkan terima kasih.</p>
+    {{-- Closing dengan justify dan indentasi --}}
+    <p class="closing">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Atas perhatian dan perkenan Bapak/Ibu/Saudara/i, kami mengucapkan terima kasih.</p>
 
     {{-- Tanda Tangan --}}
     <div class="signature-block">
@@ -131,18 +196,28 @@
         </div>
         <div class="signature-space"></div>
         <div style="text-align:right;">
-            <span style="font-weight:bold;">{{ $letter->nama_pejabat }}</span><br>
+            <span style="font-weight:normal;">{{ $letter->nama_pejabat }}</span><br>
             NIK. {{ $letter->nik }}
         </div>
     </div>
 
-    {{-- Tembusan --}}
-    @if($letter->tembusan_1 || $letter->tembusan_2)
+    {{-- Tembusan - hanya tampil jika ada isi yang tidak kosong --}}
+    @php
+        $tembusanFiltered = [];
+        if (!empty($letter->tembusan) && is_array($letter->tembusan)) {
+            $tembusanFiltered = array_filter($letter->tembusan, function($item) {
+                return !empty(trim($item));
+            });
+        }
+    @endphp
+    
+    @if(!empty($tembusanFiltered) && count($tembusanFiltered) > 0)
     <div class="tembusan">
-        Tembusan:<br>
+        <strong>Tembusan:</strong><br>
         <span>
-            @if($letter->tembusan_1) 1. {{ $letter->tembusan_1 }}<br>@endif
-            @if($letter->tembusan_2) 2. {{ $letter->tembusan_2 }} @endif
+            @foreach($tembusanFiltered as $index => $item)
+                {{ $index + 1 }}. {{ $item }}<br>
+            @endforeach
         </span>
     </div>
     @endif

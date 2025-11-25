@@ -4,7 +4,7 @@
 <x-breadcrumb :values="[__('menu.transaction.menu'), 'Surat Pribadi', 'Buat Internal Memo']" />
 
 @if ($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show">
         <strong>Terjadi Kesalahan!</strong>
         <ul class="mb-0">
             @foreach ($errors->all() as $error)
@@ -16,163 +16,133 @@
 @endif
 
 <div class="card mb-4">
-    <form action="{{ route('transaction.personal.memo.store') }}" method="POST">
+    <form action="{{ route('transaction.personal.memo.store') }}" method="POST" id="formMemo">
         @csrf
         <input type="hidden" name="template_type" value="internal_memo">
 
         <div class="card-header">
-            <h5>Buat Internal Memo</h5>
-            <small class="text-muted">Nomor akan di-generate otomatis: IM/001/bulan/tahun</small>
+            <h5><i class="bi bi-envelope"></i> Buat Internal Memo</h5>
         </div>
 
         <div class="card-body row">
-            {{-- Informasi Dasar --}}
-            <div class="col-12 mb-4">
-                <h6 class="border-bottom pb-2">Informasi Dasar</h6>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="kop_type" class="form-label">Pilih Kop Surat <span class="text-danger">*</span></label>
-                <select class="form-select @error('kop_type') is-invalid @enderror" id="kop_type" name="kop_type" required>
+            {{-- Kop --}}
+            <div class="col-md-6 mb-3">
+                <label>Kop Surat <span class="text-danger">*</span></label>
+                <select name="kop_type" class="form-select" required>
+                    <option value="">-- Pilih Kop --</option>
                     <option value="klinik" {{ old('kop_type') == 'klinik' ? 'selected' : '' }}>Klinik</option>
                     <option value="lab" {{ old('kop_type') == 'lab' ? 'selected' : '' }}>Laboratorium</option>
                     <option value="pt" {{ old('kop_type') == 'pt' ? 'selected' : '' }}>PT</option>
                 </select>
-                @error('kop_type')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
             </div>
 
-            <div class="col-md-4 mb-3">
-                <label for="tempat_ttd" class="form-label">Tempat <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('tempat_ttd') is-invalid @enderror" 
-                       id="tempat_ttd" name="tempat_ttd" value="{{ old('tempat_ttd', 'Surabaya') }}" required>
-                @error('tempat_ttd')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-md-6 mb-3"></div>
+
+            {{-- Nomor Manual --}}
+            <div class="col-12 mb-3">
+                <label>Nomor Surat <span class="text-danger">*</span></label>
+                <input type="text" name="nomor" class="form-control" 
+                       placeholder="IM/001/X/2025" value="{{ old('nomor') }}" required>
+                <small class="text-muted">Format: IM/nomor/bulan(romawi)/tahun</small>
             </div>
 
-            <div class="col-md-4 mb-3">
-                <label for="letter_date" class="form-label">Tanggal <span class="text-danger">*</span></label>
-                <input type="date" class="form-control @error('letter_date') is-invalid @enderror" 
-                       id="letter_date" name="letter_date" value="{{ old('letter_date', date('Y-m-d')) }}" required>
-                <small class="text-muted">Untuk nomor & tanggal di surat</small>
-                @error('letter_date')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            {{-- Tanggal --}}
+            <div class="col-md-6 mb-3">
+                <label>Tempat Dikeluarkan <span class="text-danger">*</span></label>
+                <input type="text" name="tempat_ttd" class="form-control" 
+                       value="{{ old('tempat_ttd', 'Surabaya') }}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Tanggal Surat <span class="text-danger">*</span></label>
+                <input type="date" name="letter_date" class="form-control" 
+                       value="{{ old('letter_date', date('Y-m-d')) }}" required>
             </div>
 
             {{-- Penerima --}}
-            <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Penerima Memo</h6>
-            </div>
-
             <div class="col-md-6 mb-3">
-                <label for="yth_nama" class="form-label">Yth. <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('yth_nama') is-invalid @enderror" 
-                       id="yth_nama" name="yth_nama" value="{{ old('yth_nama') }}" required>
-                @error('yth_nama')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label>Yth. (Penerima) <span class="text-danger">*</span></label>
+                <input type="text" name="yth_nama" class="form-control" 
+                       placeholder="Nama penerima" value="{{ old('yth_nama') }}" required>
             </div>
-
             <div class="col-md-6 mb-3">
-                <label for="hal" class="form-label">Hal <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('hal') is-invalid @enderror" 
-                       id="hal" name="hal" value="{{ old('hal') }}" required>
-                @error('hal')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label>Hal <span class="text-danger">*</span></label>
+                <input type="text" name="hal" class="form-control" 
+                       placeholder="Perihal surat" value="{{ old('hal') }}" required>
             </div>
 
-            {{-- Isi Memo --}}
-            <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Isi Memo</h6>
+            <div class="col-12"><hr></div>
+
+            {{-- Isi Memo dengan Rich Text Editor --}}
+            <div class="col-12 mb-3">
+                <label>Sehubungan Dengan <span class="text-danger">*</span></label>
+                <div class="quill-editor" id="editor-sehubungan" style="height: 200px;"></div>
+                <input type="hidden" name="sehubungan_dengan" id="sehubungan_dengan" required>
+                <small class="text-muted">Awali dengan "Sehubungan dengan..."</small>
             </div>
 
             <div class="col-12 mb-3">
-                <label for="sehubungan_dengan" class="form-label">Sehubungan dengan <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('sehubungan_dengan') is-invalid @enderror" 
-                          id="sehubungan_dengan" name="sehubungan_dengan" rows="3" 
-                          placeholder="Isi melanjutkan kalimat 'Sehubungan dengan...'" required>{{ old('sehubungan_dengan') }}</textarea>
-                <small class="text-muted">Akan otomatis ada spasi di awal paragraf</small>
-                @error('sehubungan_dengan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label>Isi Memo <span class="text-danger">*</span></label>
+                <div class="quill-editor" id="editor-alinea" style="height: 250px;"></div>
+                <input type="hidden" name="alinea_isi" id="alinea_isi" required>
             </div>
 
             <div class="col-12 mb-3">
-                <label for="alinea_isi" class="form-label">Alinea Isi <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('alinea_isi') is-invalid @enderror" 
-                          id="alinea_isi" name="alinea_isi" rows="5" 
-                          placeholder="Isi alinea" required>{{ old('alinea_isi') }}</textarea>
-                <small class="text-muted">Akan otomatis ada spasi di awal paragraf</small>
-                @error('alinea_isi')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label>Isi Penutup</label>
+                <div class="quill-editor" id="editor-penutup" style="height: 150px;"></div>
+                <input type="hidden" name="isi_penutup" id="isi_penutup">
+                <small class="text-muted">Jika kosong, akan menggunakan penutup default</small>
             </div>
+
+            <div class="col-12"><hr></div>
 
             {{-- Penandatangan --}}
-            <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Penandatangan</h6>
-            </div>
-
             <div class="col-md-4 mb-3">
-                <label for="jabatan_pembuat" class="form-label">Jabatan <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('jabatan_pembuat') is-invalid @enderror" 
-                       id="jabatan_pembuat" name="jabatan_pembuat" value="{{ old('jabatan_pembuat') }}" required>
-                @error('jabatan_pembuat')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label>Jabatan <span class="text-danger">*</span></label>
+                <input type="text" name="jabatan_pembuat" class="form-control" 
+                       value="{{ old('jabatan_pembuat') }}" required>
             </div>
-
             <div class="col-md-4 mb-3">
-                <label for="nama_pembuat" class="form-label">Nama <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('nama_pembuat') is-invalid @enderror" 
-                       id="nama_pembuat" name="nama_pembuat" value="{{ old('nama_pembuat') }}" required>
-                @error('nama_pembuat')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label>Nama Lengkap <span class="text-danger">*</span></label>
+                <input type="text" name="nama_pembuat" class="form-control" 
+                       value="{{ old('nama_pembuat') }}" required>
             </div>
-
             <div class="col-md-4 mb-3">
-                <label for="nik_pembuat" class="form-label">NIKepegawaian <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('nik_pembuat') is-invalid @enderror" 
-                       id="nik_pembuat" name="nik_pembuat" value="{{ old('nik_pembuat') }}" required>
-                @error('nik_pembuat')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label>NIK Pegawai</label>
+                <input type="text" name="nik_pembuat" class="form-control" 
+                       value="{{ old('nik_pembuat') }}">
             </div>
 
             {{-- Tembusan --}}
             <div class="col-12 mb-4 mt-3">
-                <h6 class="border-bottom pb-2">Tembusan <small class="text-muted">(Opsional)</small></h6>
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <h6 class="mb-0">Tembusan (Opsional)</h6>
+                    <button type="button" id="add-tembusan" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-plus-circle"></i> Tambah Tembusan
+                    </button>
+                </div>
             </div>
 
-            <div class="col-12 mb-3">
-                <label for="tembusan_1" class="form-label">1.</label>
-                <input type="text" class="form-control @error('tembusan_1') is-invalid @enderror" 
-                       id="tembusan_1" name="tembusan_1" value="{{ old('tembusan_1') }}">
-                @error('tembusan_1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="col-12 mb-3">
-                <label for="tembusan_2" class="form-label">2.</label>
-                <input type="text" class="form-control @error('tembusan_2') is-invalid @enderror" 
-                       id="tembusan_2" name="tembusan_2" value="{{ old('tembusan_2') }}">
-                @error('tembusan_2')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-12">
+                <div id="tembusan-wrapper">
+                    <div class="tembusan-item card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <strong>Tembusan 1</strong>
+                            </div>
+                            <input type="text" name="tembusan[]" class="form-control" 
+                                   placeholder="Contoh: Kepala Divisi HR" value="{{ old('tembusan.0') }}">
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">Kosongkan jika tidak ada tembusan</small>
             </div>
         </div>
 
-        <div class="card-footer">
+        <div class="card-footer d-flex gap-2">
             <button type="submit" class="btn btn-primary">
                 <i class="bi bi-save"></i> Simpan Surat
             </button>
-            <a href="{{ route('transaction.personal.templates') }}" class="btn btn-secondary">
+            <a href="{{ route('transaction.personal.memo.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>
@@ -181,9 +151,160 @@
 @endsection
 
 @push('style')
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
-.border-bottom {
-    border-bottom: 2px solid #dee2e6 !important;
-}
+.quill-editor { background: white; }
+.ql-editor { min-height: 150px; font-size: 14px; }
+.tembusan-item { background-color: #f8f9fa; }
 </style>
+@endpush
+
+@push('scripts')
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Inisialisasi Quill Editors
+    const quillSehubungan = new Quill('#editor-sehubungan', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['clean']
+            ],
+            keyboard: {
+                bindings: {
+                    tab: {
+                        key: 9,
+                        handler: function(range, context) {
+                            this.quill.format('indent', '+1', 'user');
+                            return false;
+                        }
+                    },
+                    shiftTab: {
+                        key: 9,
+                        shiftKey: true,
+                        handler: function(range, context) {
+                            this.quill.format('indent', '-1', 'user');
+                            return false;
+                        }
+                    }
+                }
+            }
+        },
+        placeholder: 'Sehubungan dengan...'
+    });
+
+    const quillAlinea = new Quill('#editor-alinea', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['clean']
+            ]
+        },
+        placeholder: 'Isi memo...'
+    });
+
+    const quillPenutup = new Quill('#editor-penutup', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['clean']
+            ]
+        },
+        placeholder: 'Penutup memo (opsional)...'
+    });
+
+    // Enable TAB for indent
+    function enableTabIndent(quill) {
+        quill.keyboard.addBinding({
+            key: 9,
+            handler: function() {
+                quill.format('indent', '+1');
+            }
+        });
+    }
+
+    enableTabIndent(quillSehubungan);
+    enableTabIndent(quillAlinea);
+    enableTabIndent(quillPenutup);
+
+    // Sync ke hidden input
+    quillSehubungan.on('text-change', function() {
+        document.getElementById('sehubungan_dengan').value = quillSehubungan.root.innerHTML;
+    });
+
+    quillAlinea.on('text-change', function() {
+        document.getElementById('alinea_isi').value = quillAlinea.root.innerHTML;
+    });
+
+    quillPenutup.on('text-change', function() {
+        document.getElementById('isi_penutup').value = quillPenutup.root.innerHTML;
+    });
+
+    // Load old values
+    @if(old('sehubungan_dengan'))
+        quillSehubungan.root.innerHTML = {!! json_encode(old('sehubungan_dengan')) !!};
+    @endif
+
+    @if(old('alinea_isi'))
+        quillAlinea.root.innerHTML = {!! json_encode(old('alinea_isi')) !!};
+    @endif
+
+    @if(old('isi_penutup'))
+        quillPenutup.root.innerHTML = {!! json_encode(old('isi_penutup')) !!};
+    @endif
+
+    // Tembusan Dynamic
+    const tembusanWrapper = document.getElementById("tembusan-wrapper");
+    const addTembusan = document.getElementById("add-tembusan");
+    let tembusanIndex = 1;
+
+    addTembusan.addEventListener("click", function () {
+        const div = document.createElement("div");
+        div.classList.add("tembusan-item", "card", "mb-3");
+        div.innerHTML = `
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Tembusan ${tembusanIndex + 1}</strong>
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-tembusan">
+                        <i class="bi bi-trash"></i> Hapus
+                    </button>
+                </div>
+                <input type="text" name="tembusan[]" class="form-control" placeholder="Contoh: Kepala Divisi...">
+            </div>
+        `;
+        tembusanWrapper.appendChild(div);
+        tembusanIndex++;
+    });
+
+    tembusanWrapper.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-tembusan') || e.target.closest('.remove-tembusan')) {
+            e.target.closest('.tembusan-item').remove();
+            reindexTembusan();
+        }
+    });
+
+    function reindexTembusan() {
+        const items = tembusanWrapper.querySelectorAll('.tembusan-item');
+        tembusanIndex = items.length;
+        items.forEach((item, idx) => {
+            item.querySelector('strong').textContent = `Tembusan ${idx + 1}`;
+        });
+    }
+});
+</script>
 @endpush

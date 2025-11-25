@@ -59,7 +59,7 @@
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="tanggal_rapat" class="form-label">Hari, Tanggal <span class="text-danger">*</span></label>
+                <label for="tanggal_rapat" class="form-label">Hari, Tanggal Rapat <span class="text-danger">*</span></label>
                 <input type="date" class="form-control @error('tanggal_rapat') is-invalid @enderror" 
                        id="tanggal_rapat" name="tanggal_rapat" 
                        value="{{ old('tanggal_rapat', $data->tanggal_rapat?->format('Y-m-d')) }}" required>
@@ -137,20 +137,15 @@
                                     @endif
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6 mb-2">
-                                        <label class="form-label">Pembicara/Uraian Materi <span class="text-danger">*</span></label>
-                                        <input type="text" name="kegiatan_rapat[{{ $i }}][pembicara]" 
-                                               class="form-control" value="{{ $kegiatan['pembicara'] ?? '' }}" required>
-                                    </div>
-                                    <div class="col-md-6 mb-2">
-                                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
-                                        <input type="text" name="kegiatan_rapat[{{ $i }}][tanggapan]" 
-                                               class="form-control" value="{{ $kegiatan['tanggapan'] ?? '' }}">
+                                    <div class="col-md-12 mb-2">
+                                        <label class="form-label">Pembicara/Uraian <span class="text-danger">*</span></label>
+                                        <textarea name="kegiatan_rapat[{{ $i }}][pembicara]" 
+                                                  class="form-control" rows="2" required>{{ $kegiatan['pembicara'] ?? '' }}</textarea>
                                     </div>
                                     <div class="col-md-12 mb-2">
-                                        <label class="form-label">Materi <span class="text-danger">*</span></label>
-                                        <textarea name="kegiatan_rapat[{{ $i }}][materi]" 
-                                                  class="form-control" rows="2" required>{{ $kegiatan['materi'] ?? '' }}</textarea>
+                                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
+                                        <textarea name="kegiatan_rapat[{{ $i }}][tanggapan]" 
+                                                  class="form-control" rows="2">{{ $kegiatan['tanggapan'] ?? '' }}</textarea>
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <label class="form-label">Keputusan Pimpinan</label>
@@ -167,27 +162,21 @@
                         </div>
                         @endforeach
                     @else
-                        {{-- Default 1 kegiatan jika tidak ada data --}}
                         <div class="kegiatan-item card mb-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between mb-2">
                                     <strong>Kegiatan 1</strong>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6 mb-2">
-                                        <label class="form-label">Pembicara/Uraian Materi <span class="text-danger">*</span></label>
-                                        <input type="text" name="kegiatan_rapat[0][pembicara]" 
-                                               class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6 mb-2">
-                                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
-                                        <input type="text" name="kegiatan_rapat[0][tanggapan]" 
-                                               class="form-control">
+                                    <div class="col-md-12 mb-2">
+                                        <label class="form-label">Pembicara/Uraian <span class="text-danger">*</span></label>
+                                        <textarea name="kegiatan_rapat[0][pembicara]" 
+                                                  class="form-control" rows="2" required></textarea>
                                     </div>
                                     <div class="col-md-12 mb-2">
-                                        <label class="form-label">Materi <span class="text-danger">*</span></label>
-                                        <textarea name="kegiatan_rapat[0][materi]" 
-                                                  class="form-control" rows="2" required></textarea>
+                                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
+                                        <textarea name="kegiatan_rapat[0][tanggapan]" 
+                                                  class="form-control" rows="2"></textarea>
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <label class="form-label">Keputusan Pimpinan</label>
@@ -211,42 +200,72 @@
                 <h6 class="border-bottom pb-2">Penandatangan</h6>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="kepala_lab" class="form-label">Kepala Laboratorium <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('kepala_lab') is-invalid @enderror" 
-                       id="kepala_lab" name="kepala_lab" 
-                       value="{{ old('kepala_lab', $data->kepala_lab) }}" required>
-                @error('kepala_lab')
+            <div class="col-md-12 mb-3">
+                <label for="tanggal_ttd" class="form-label">Tanggal Penandatanganan <span class="text-danger">*</span></label>
+                <input type="date" class="form-control @error('tanggal_ttd') is-invalid @enderror" 
+                       id="tanggal_ttd" name="tanggal_ttd" 
+                       value="{{ old('tanggal_ttd', $data->tanggal_ttd?->format('Y-m-d')) }}" required>
+                @error('tanggal_ttd')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="nik_kepala_lab" class="form-label">NIK Kepegawaian</label>
-                <input type="text" class="form-control @error('nik_kepala_lab') is-invalid @enderror" 
-                       id="nik_kepala_lab" name="nik_kepala_lab" 
-                       value="{{ old('nik_kepala_lab', $data->nik_kepala_lab) }}">
-                @error('nik_kepala_lab')
+            <div class="col-md-4 mb-3">
+                <label for="ttd_jabatan_1" class="form-label">TTD Jabatan 1 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('ttd_jabatan_1') is-invalid @enderror" 
+                       id="ttd_jabatan_1" name="ttd_jabatan_1" 
+                       value="{{ old('ttd_jabatan_1', $data->ttd_jabatan_1) }}" required>
+                @error('ttd_jabatan_1')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="notulis" class="form-label">Notulis <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('notulis') is-invalid @enderror" 
-                       id="notulis" name="notulis" 
-                       value="{{ old('notulis', $data->notulis) }}" required>
-                @error('notulis')
+            <div class="col-md-4 mb-3">
+                <label for="nama_ttd_jabatan_1" class="form-label">Nama <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('nama_ttd_jabatan_1') is-invalid @enderror" 
+                       id="nama_ttd_jabatan_1" name="nama_ttd_jabatan_1" 
+                       value="{{ old('nama_ttd_jabatan_1', $data->nama_ttd_jabatan_1) }}" required>
+                @error('nama_ttd_jabatan_1')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="nik_notulis" class="form-label">NIK Kepegawaian</label>
-                <input type="text" class="form-control @error('nik_notulis') is-invalid @enderror" 
-                       id="nik_notulis" name="nik_notulis" 
-                       value="{{ old('nik_notulis', $data->nik_notulis) }}">
-                @error('nik_notulis')
+            <div class="col-md-4 mb-3">
+                <label for="nik_ttd_jabatan_1" class="form-label">NIK Kepegawaian</label>
+                <input type="text" class="form-control @error('nik_ttd_jabatan_1') is-invalid @enderror" 
+                       id="nik_ttd_jabatan_1" name="nik_ttd_jabatan_1" 
+                       value="{{ old('nik_ttd_jabatan_1', $data->nik_ttd_jabatan_1) }}">
+                @error('nik_ttd_jabatan_1')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="ttd_jabatan_2" class="form-label">TTD Jabatan 2 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('ttd_jabatan_2') is-invalid @enderror" 
+                       id="ttd_jabatan_2" name="ttd_jabatan_2" 
+                       value="{{ old('ttd_jabatan_2', $data->ttd_jabatan_2) }}" required>
+                @error('ttd_jabatan_2')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="nama_ttd_jabatan_2" class="form-label">Nama <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('nama_ttd_jabatan_2') is-invalid @enderror" 
+                       id="nama_ttd_jabatan_2" name="nama_ttd_jabatan_2" 
+                       value="{{ old('nama_ttd_jabatan_2', $data->nama_ttd_jabatan_2) }}" required>
+                @error('nama_ttd_jabatan_2')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="nik_ttd_jabatan_2" class="form-label">NIK Kepegawaian</label>
+                <input type="text" class="form-control @error('nik_ttd_jabatan_2') is-invalid @enderror" 
+                       id="nik_ttd_jabatan_2" name="nik_ttd_jabatan_2" 
+                       value="{{ old('nik_ttd_jabatan_2', $data->nik_ttd_jabatan_2) }}">
+                @error('nik_ttd_jabatan_2')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -266,9 +285,7 @@
                 @enderror
             </div>
 
-            {{-- FIX: Dokumentasi dengan icon sampah yang berfungsi --}}
             @php
-                // Decode dokumentasi dengan benar
                 $dokumentasiRaw = $data->dokumentasi;
                 
                 if (is_string($dokumentasiRaw)) {
@@ -279,7 +296,6 @@
                     $dokumentasiArray = [];
                 }
                 
-                // Filter hanya yang valid
                 $dokumentasiArray = array_filter($dokumentasiArray, function($item) {
                     return !empty($item) && is_string($item) && strlen($item) > 0;
                 });
@@ -303,7 +319,6 @@
                                     <i class="bi bi-image text-white" style="font-size: 2rem;"></i>
                                 </div>
                             @endif
-                            {{-- Tombol hapus dengan icon sampah --}}
                             <button type="button" 
                                     class="btn btn-danger btn-sm position-absolute delete-existing-image" 
                                     style="top: 5px; right: 5px; padding: 4px 8px; z-index: 10;"
@@ -311,7 +326,6 @@
                                     title="Hapus gambar">
                                 <i class="bi bi-trash"></i>
                             </button>
-                            {{-- Hidden input untuk tandai yang akan dihapus --}}
                             <input type="hidden" class="mark-delete" name="hapus_dokumentasi[]" value="{{ $index }}" disabled>
                         </div>
                         <small class="text-muted d-block text-center mt-1">Foto {{ $index + 1 }}</small>
@@ -388,7 +402,6 @@
 @push('scripts')
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // ===== KEGIATAN RAPAT =====
     const wrapper = document.getElementById("kegiatan-wrapper");
     const addBtn = document.getElementById("add-kegiatan");
     let kegiatanIndex = {{ !empty($kegiatanArray) ? count($kegiatanArray) : 1 }};
@@ -405,20 +418,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     </button>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Pembicara/Uraian Materi <span class="text-danger">*</span></label>
-                        <input type="text" name="kegiatan_rapat[${kegiatanIndex}][pembicara]" 
-                               class="form-control" required>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
-                        <input type="text" name="kegiatan_rapat[${kegiatanIndex}][tanggapan]" 
-                               class="form-control">
+                    <div class="col-md-12 mb-2">
+                        <label class="form-label">Pembicara/Uraian <span class="text-danger">*</span></label>
+                        <textarea name="kegiatan_rapat[${kegiatanIndex}][pembicara]" 
+                                  class="form-control" rows="2" required></textarea>
                     </div>
                     <div class="col-md-12 mb-2">
-                        <label class="form-label">Materi <span class="text-danger">*</span></label>
-                        <textarea name="kegiatan_rapat[${kegiatanIndex}][materi]" 
-                                  class="form-control" rows="2" required></textarea>
+                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
+                        <textarea name="kegiatan_rapat[${kegiatanIndex}][tanggapan]" 
+                                  class="form-control" rows="2"></textarea>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label class="form-label">Keputusan Pimpinan</label>
@@ -453,12 +461,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ===== HAPUS DOKUMENTASI EXISTING =====
     const existingImagesContainer = document.getElementById('existing-images');
     
     if (existingImagesContainer) {
         existingImagesContainer.addEventListener('click', function(e) {
-            // Cari tombol delete yang diklik
             const deleteBtn = e.target.closest('.delete-existing-image');
             
             if (deleteBtn) {
@@ -468,16 +474,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 const container = deleteBtn.closest('.image-container');
                 const hiddenInput = container.querySelector('.mark-delete');
                 
-                // Toggle status hapus
                 if (container.classList.contains('marked-delete')) {
-                    // Batalkan hapus
                     container.classList.remove('marked-delete');
                     hiddenInput.disabled = true;
                     deleteBtn.classList.remove('btn-warning');
                     deleteBtn.classList.add('btn-danger');
                     deleteBtn.setAttribute('title', 'Hapus gambar');
                 } else {
-                    // Tandai untuk dihapus
                     container.classList.add('marked-delete');
                     hiddenInput.disabled = false;
                     deleteBtn.classList.remove('btn-danger');
@@ -488,7 +491,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ===== PREVIEW GAMBAR BARU =====
     document.getElementById('dokumentasi').addEventListener('change', function(e) {
         const preview = document.getElementById('preview-images');
         preview.innerHTML = '';

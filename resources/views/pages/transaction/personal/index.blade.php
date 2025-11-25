@@ -51,9 +51,24 @@
                             </td>
                             <td><strong>{{ $item->nomor ?: '-' }}</strong></td>
                             <td>
-                                <small class="text-muted">
-                                    {{ $item->letter_date ? \Carbon\Carbon::parse($item->letter_date)->format('d/m/Y') : '-' }}
-                                </small>
+<small class="text-muted">
+    {{ ($item->letter_date 
+        ?? $item->tanggal_surat 
+        ?? $item->tanggal_penetapan 
+        ?? $item->tanggal_acara
+        ?? $item->tanggal_ttd
+        ?? $item->tanggal_pembuatan)
+        ? \Carbon\Carbon::parse(
+            $item->letter_date
+            ?? $item->tanggal_surat
+            ?? $item->tanggal_penetapan
+            ?? $item->tanggal_acara
+            ?? $item->tanggal_ttd
+            ?? $item->tanggal_pembuatan
+        )->format('d/m/Y')
+        : '-' }}
+</small>
+ 
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">

@@ -80,9 +80,21 @@ class SuratPanggilanController extends Controller
             'jabatan' => 'required|string',
             'nama_pejabat' => 'required|string',
             'nik' => 'required|string',
-            'tembusan_1' => 'nullable|string',
-            'tembusan_2' => 'nullable|string',
+            'tembusan' => 'nullable|array',
+            'tembusan.*' => 'nullable|string',
         ]);
+
+        // Filter tembusan yang kosong
+        if (isset($validated['tembusan']) && is_array($validated['tembusan'])) {
+            $validated['tembusan'] = array_values(array_filter($validated['tembusan'], function($item) {
+                return $item !== null && $item !== false && trim((string)$item) !== '';
+            }));
+            if (empty($validated['tembusan'])) {
+                $validated['tembusan'] = null;
+            }
+        } else {
+            $validated['tembusan'] = null;
+        }
 
         // Generate nomor otomatis
         $month = Carbon::parse($validated['letter_date'])->format('m');
@@ -133,9 +145,21 @@ class SuratPanggilanController extends Controller
             'jabatan' => 'required|string',
             'nama_pejabat' => 'required|string',
             'nik' => 'required|string',
-            'tembusan_1' => 'nullable|string',
-            'tembusan_2' => 'nullable|string',
+            'tembusan' => 'nullable|array',
+            'tembusan.*' => 'nullable|string',
         ]);
+
+        // Filter tembusan yang kosong
+        if (isset($validated['tembusan']) && is_array($validated['tembusan'])) {
+            $validated['tembusan'] = array_values(array_filter($validated['tembusan'], function($item) {
+                return $item !== null && $item !== false && trim((string)$item) !== '';
+            }));
+            if (empty($validated['tembusan'])) {
+                $validated['tembusan'] = null;
+            }
+        } else {
+            $validated['tembusan'] = null;
+        }
 
         $letter->update($validated);
 

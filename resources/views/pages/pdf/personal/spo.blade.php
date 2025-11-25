@@ -104,8 +104,8 @@
     }
 
     .logo-cell img {
-        max-width: 100px;
-        max-height: 70px;
+        max-width: 150px;
+        max-height: 100px;
     }
 
     .spo-label {
@@ -178,6 +178,10 @@
     .content-table {
         margin-top: 10px;
     }
+.content-table td {
+    text-align: justify;
+    text-justify: inter-word;
+}
 
     .content-table .label-cell {
         width: 25%;

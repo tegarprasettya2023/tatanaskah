@@ -25,10 +25,10 @@ class SuratPengumumanController extends Controller
         }
 
         if ($request->filled('date_from')) {
-            $query->whereDate('tanggal_surat', '>=', $request->date_from);
+            $query->whereDate('created_at', '>=', $request->date_from);
         }
         if ($request->filled('date_to')) {
-            $query->whereDate('tanggal_surat', '<=', $request->date_to);
+            $query->whereDate('created_at', '<=', $request->date_to);
         }
 
         $data = $query->paginate(10)->withQueryString();
@@ -66,7 +66,7 @@ class SuratPengumumanController extends Controller
     {
         $validated = $request->validate([
             'kop_type'        => 'required|string|in:klinik,lab,pt',
-            'tanggal_surat'   => 'required|date',
+            'nomor'           => 'required|string|max:100',
             'tentang'         => 'required|string|max:255',
             'isi_pembuka'     => 'required|string',
             'isi_penutup'     => 'nullable|string',
@@ -77,13 +77,6 @@ class SuratPengumumanController extends Controller
             'nik_pegawai'     => 'nullable|string|max:50',
         ]);
 
-        // Generate Nomor Otomatis
-        $month = Carbon::parse($validated['tanggal_surat'])->format('m');
-        $year = Carbon::parse($validated['tanggal_surat'])->format('Y');
-        $lastNumber = PersonalLetterPengumuman::whereMonth('tanggal_surat', $month)
-                        ->whereYear('tanggal_surat', $year)
-                        ->count() + 1;
-        $validated['nomor'] = 'UM/' . str_pad($lastNumber, 3, '0', STR_PAD_LEFT) . '/' . $month . '/' . $year;
         $validated['user_id'] = auth()->id();
 
         $letter = PersonalLetterPengumuman::create($validated);
@@ -110,7 +103,7 @@ class SuratPengumumanController extends Controller
 
         $validated = $request->validate([
             'kop_type'        => 'required|string|in:klinik,lab,pt',
-            'tanggal_surat'   => 'required|date',
+            'nomor'           => 'required|string|max:100',
             'tentang'         => 'required|string|max:255',
             'isi_pembuka'     => 'required|string',
             'isi_penutup'     => 'nullable|string',

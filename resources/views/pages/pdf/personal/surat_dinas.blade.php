@@ -10,7 +10,7 @@
         
         body { 
             font-family: 'Montserrat', sans-serif;
-            font-size: 12px; 
+            font-size: 10px; 
             line-height: 1.6; 
             margin: 0;
             padding: 0;
@@ -63,7 +63,7 @@
         .title {
             text-align: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
             margin-bottom: 20px;
         }
         

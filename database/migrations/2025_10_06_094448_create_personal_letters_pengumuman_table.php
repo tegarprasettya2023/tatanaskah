@@ -10,16 +10,16 @@ return new class extends Migration
     {
         Schema::create('personal_letters_pengumuman', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('kop_type')->default('klinik');
-            $table->string('nomor')->nullable();
+            $table->string('nomor', 100)->nullable();
             $table->string('tentang')->nullable();
-            $table->date('tanggal_surat')->nullable();
             $table->text('isi_pembuka')->nullable();
             $table->text('isi_penutup')->nullable();
             $table->string('tempat_ttd')->default('Surabaya');
             $table->date('tanggal_ttd')->nullable();
             $table->string('nama_pembuat')->nullable();
-            $table->string('nik_pegawai')->nullable();
+            $table->string('nik_pegawai', 50)->nullable();
             $table->string('jabatan_pembuat')->nullable();
             $table->string('generated_file')->nullable();
             $table->timestamps();

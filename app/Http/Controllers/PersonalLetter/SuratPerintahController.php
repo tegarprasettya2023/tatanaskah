@@ -97,10 +97,10 @@ class SuratPerintahController extends Controller
             'nama_pembuat' => 'required|string|max:255',
             'nik_pembuat' => 'required|string|max:255',
             
-            // Lampiran - opsional
+            // Lampiran - opsional, validasi diubah
             'lampiran' => 'nullable|array',
-            'lampiran.*.nama' => 'required_with:lampiran|string|max:255',
-            'lampiran.*.nik' => 'required_with:lampiran|string|max:255',
+            'lampiran.*.nama' => 'nullable|string|max:255',
+            'lampiran.*.nik' => 'nullable|string|max:255',
             'lampiran.*.jabatan' => 'nullable|string|max:255',
             'lampiran.*.keterangan' => 'nullable|string|max:255',
         ]);
@@ -112,6 +112,16 @@ class SuratPerintahController extends Controller
             }));
             if (empty($validated['tembusan'])) {
                 $validated['tembusan'] = null;
+            }
+        }
+
+        // Filter lampiran yang kosong - hanya simpan jika minimal nama atau nik terisi
+        if (!empty($validated['lampiran'])) {
+            $validated['lampiran'] = array_values(array_filter($validated['lampiran'], function($item) {
+                return !empty(trim($item['nama'] ?? '')) || !empty(trim($item['nik'] ?? ''));
+            }));
+            if (empty($validated['lampiran'])) {
+                $validated['lampiran'] = null;
             }
         }
 
@@ -166,9 +176,10 @@ class SuratPerintahController extends Controller
             'nama_pembuat' => 'required|string|max:255',
             'nik_pembuat' => 'required|string|max:255',
             
+            // Validasi lampiran diubah
             'lampiran' => 'nullable|array',
-            'lampiran.*.nama' => 'required_with:lampiran|string|max:255',
-            'lampiran.*.nik' => 'required_with:lampiran|string|max:255',
+            'lampiran.*.nama' => 'nullable|string|max:255',
+            'lampiran.*.nik' => 'nullable|string|max:255',
             'lampiran.*.jabatan' => 'nullable|string|max:255',
             'lampiran.*.keterangan' => 'nullable|string|max:255',
         ]);
@@ -180,6 +191,16 @@ class SuratPerintahController extends Controller
             }));
             if (empty($validated['tembusan'])) {
                 $validated['tembusan'] = null;
+            }
+        }
+
+        // Filter lampiran yang kosong
+        if (!empty($validated['lampiran'])) {
+            $validated['lampiran'] = array_values(array_filter($validated['lampiran'], function($item) {
+                return !empty(trim($item['nama'] ?? '')) || !empty(trim($item['nik'] ?? ''));
+            }));
+            if (empty($validated['lampiran'])) {
+                $validated['lampiran'] = null;
             }
         }
 

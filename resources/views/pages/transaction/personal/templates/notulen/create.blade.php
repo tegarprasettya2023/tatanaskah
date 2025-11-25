@@ -59,7 +59,7 @@
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="tanggal_rapat" class="form-label">Hari, Tanggal <span class="text-danger">*</span></label>
+                <label for="tanggal_rapat" class="form-label">Hari, Tanggal Rapat <span class="text-danger">*</span></label>
                 <input type="date" class="form-control @error('tanggal_rapat') is-invalid @enderror" 
                        id="tanggal_rapat" name="tanggal_rapat" 
                        value="{{ old('tanggal_rapat', date('Y-m-d')) }}" required>
@@ -128,20 +128,15 @@
                                 <strong>Kegiatan 1</strong>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label">Pembicara/Uraian Materi <span class="text-danger">*</span></label>
-                                    <input type="text" name="kegiatan_rapat[0][pembicara]" 
-                                           class="form-control" placeholder="Nama Pembicara" required>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
-                                    <input type="text" name="kegiatan_rapat[0][tanggapan]" 
-                                           class="form-control" placeholder="Nama Pemberi Tanggapan">
+                                <div class="col-md-12 mb-2">
+                                    <label class="form-label">Pembicara/Uraian <span class="text-danger">*</span></label>
+                                    <textarea name="kegiatan_rapat[0][pembicara]" 
+                                              class="form-control" rows="2" placeholder="Nama pembicara dan uraian materi" required></textarea>
                                 </div>
                                 <div class="col-md-12 mb-2">
-                                    <label class="form-label">Materi <span class="text-danger">*</span></label>
-                                    <textarea name="kegiatan_rapat[0][materi]" 
-                                              class="form-control" rows="2" placeholder="Isi materi" required></textarea>
+                                    <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
+                                    <textarea name="kegiatan_rapat[0][tanggapan]" 
+                                              class="form-control" rows="2" placeholder="Tanggapan dan nama pemberi tanggapan"></textarea>
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label class="form-label">Keputusan Pimpinan</label>
@@ -164,46 +159,78 @@
                 <h6 class="border-bottom pb-2">Penandatangan</h6>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="kepala_lab" class="form-label">Kepala Laboratorium <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('kepala_lab') is-invalid @enderror" 
-                       id="kepala_lab" name="kepala_lab" 
-                       placeholder="Nama Kepala Lab" 
-                       value="{{ old('kepala_lab') }}" required>
-                @error('kepala_lab')
+            <div class="col-md-12 mb-3">
+                <label for="tanggal_ttd" class="form-label">Tanggal Penandatanganan <span class="text-danger">*</span></label>
+                <input type="date" class="form-control @error('tanggal_ttd') is-invalid @enderror" 
+                       id="tanggal_ttd" name="tanggal_ttd" 
+                       value="{{ old('tanggal_ttd', date('Y-m-d')) }}" required>
+                @error('tanggal_ttd')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="nik_kepala_lab" class="form-label">NIK Kepegawaian</label>
-                <input type="text" class="form-control @error('nik_kepala_lab') is-invalid @enderror" 
-                       id="nik_kepala_lab" name="nik_kepala_lab" 
+            <div class="col-md-4 mb-3">
+                <label for="ttd_jabatan_1" class="form-label">TTD Jabatan 1 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('ttd_jabatan_1') is-invalid @enderror" 
+                       id="ttd_jabatan_1" name="ttd_jabatan_1" 
+                       placeholder="Contoh: Kepala Laboratorium" 
+                       value="{{ old('ttd_jabatan_1') }}" required>
+                @error('ttd_jabatan_1')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="nama_ttd_jabatan_1" class="form-label">Nama <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('nama_ttd_jabatan_1') is-invalid @enderror" 
+                       id="nama_ttd_jabatan_1" name="nama_ttd_jabatan_1" 
+                       placeholder="Nama Lengkap" 
+                       value="{{ old('nama_ttd_jabatan_1') }}" required>
+                @error('nama_ttd_jabatan_1')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="nik_ttd_jabatan_1" class="form-label">NIK Kepegawaian</label>
+                <input type="text" class="form-control @error('nik_ttd_jabatan_1') is-invalid @enderror" 
+                       id="nik_ttd_jabatan_1" name="nik_ttd_jabatan_1" 
                        placeholder="NIK" 
-                       value="{{ old('nik_kepala_lab') }}">
-                @error('nik_kepala_lab')
+                       value="{{ old('nik_ttd_jabatan_1') }}">
+                @error('nik_ttd_jabatan_1')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="notulis" class="form-label">Notulis <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('notulis') is-invalid @enderror" 
-                       id="notulis" name="notulis" 
-                       placeholder="Nama Notulis" 
-                       value="{{ old('notulis') }}" required>
-                @error('notulis')
+            <div class="col-md-4 mb-3">
+                <label for="ttd_jabatan_2" class="form-label">TTD Jabatan 2 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('ttd_jabatan_2') is-invalid @enderror" 
+                       id="ttd_jabatan_2" name="ttd_jabatan_2" 
+                       placeholder="Contoh: Notulis" 
+                       value="{{ old('ttd_jabatan_2') }}" required>
+                @error('ttd_jabatan_2')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="nik_notulis" class="form-label">NIK Kepegawaian</label>
-                <input type="text" class="form-control @error('nik_notulis') is-invalid @enderror" 
-                       id="nik_notulis" name="nik_notulis" 
+            <div class="col-md-4 mb-3">
+                <label for="nama_ttd_jabatan_2" class="form-label">Nama <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('nama_ttd_jabatan_2') is-invalid @enderror" 
+                       id="nama_ttd_jabatan_2" name="nama_ttd_jabatan_2" 
+                       placeholder="Nama Lengkap" 
+                       value="{{ old('nama_ttd_jabatan_2') }}" required>
+                @error('nama_ttd_jabatan_2')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="nik_ttd_jabatan_2" class="form-label">NIK Kepegawaian</label>
+                <input type="text" class="form-control @error('nik_ttd_jabatan_2') is-invalid @enderror" 
+                       id="nik_ttd_jabatan_2" name="nik_ttd_jabatan_2" 
                        placeholder="NIK" 
-                       value="{{ old('nik_notulis') }}">
-                @error('nik_notulis')
+                       value="{{ old('nik_ttd_jabatan_2') }}">
+                @error('nik_ttd_jabatan_2')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -241,7 +268,7 @@
             <button type="submit" class="btn btn-primary">
                 <i class="bi bi-save"></i> Simpan Notulen
             </button>
-            <a href="{{ route('transaction.personal.index') }}" class="btn btn-secondary">
+            <a href="{{ url()->previous() }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>
@@ -279,20 +306,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     </button>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Pembicara/Uraian Materi <span class="text-danger">*</span></label>
-                        <input type="text" name="kegiatan_rapat[${kegiatanIndex}][pembicara]" 
-                               class="form-control" placeholder="Nama Pembicara" required>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
-                        <input type="text" name="kegiatan_rapat[${kegiatanIndex}][tanggapan]" 
-                               class="form-control" placeholder="Nama Pemberi Tanggapan">
+                    <div class="col-md-12 mb-2">
+                        <label class="form-label">Pembicara/Uraian <span class="text-danger">*</span></label>
+                        <textarea name="kegiatan_rapat[${kegiatanIndex}][pembicara]" 
+                                  class="form-control" rows="2" placeholder="Nama pembicara dan uraian materi" required></textarea>
                     </div>
                     <div class="col-md-12 mb-2">
-                        <label class="form-label">Materi <span class="text-danger">*</span></label>
-                        <textarea name="kegiatan_rapat[${kegiatanIndex}][materi]" 
-                                  class="form-control" rows="2" placeholder="Isi materi" required></textarea>
+                        <label class="form-label">Tanggapan/Pemberi Tanggapan</label>
+                        <textarea name="kegiatan_rapat[${kegiatanIndex}][tanggapan]" 
+                                  class="form-control" rows="2" placeholder="Tanggapan dan nama pemberi tanggapan"></textarea>
                     </div>
                     <div class="col-md-6 mb-2">
                         <label class="form-label">Keputusan Pimpinan</label>

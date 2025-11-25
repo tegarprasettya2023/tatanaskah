@@ -290,8 +290,6 @@
             <h5 class="card-title">Standar Prosedur Operasional (SPO)</h5>
             <ul class="list-unstyled text-start small">
                 <li><i class="bi bi-check-circle text-success"></i> Header & Footer Otomatis</li>
-                <li><i class="bi bi-check-circle text-success"></i> 2 Logo (Kiri & Kanan)</li>
-                <li><i class="bi bi-check-circle text-success"></i> 10 Section dengan Label Edit</li>
                 <li><i class="bi bi-check-circle text-success"></i> Upload Bagan Alir</li>
                 <li><i class="bi bi-check-circle text-success"></i> Rekaman Histori Perubahan</li>
             </ul>

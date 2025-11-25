@@ -16,15 +16,18 @@ class PersonalLetterNotulen extends Model
         'kop_type',
         'isi_notulen',
         'tanggal_rapat',
+        'tanggal_ttd', // TAMBAHAN BARU
         'waktu',
         'tempat',
         'pimpinan_rapat',
         'peserta_rapat',
         'kegiatan_rapat',
-        'kepala_lab',
-        'nik_kepala_lab',
-        'notulis',
-        'nik_notulis',
+        'ttd_jabatan_1', // Ganti kepala_lab
+        'nama_ttd_jabatan_1', // TAMBAHAN BARU
+        'nik_ttd_jabatan_1', // Ganti nik_kepala_lab
+        'ttd_jabatan_2', // Ganti notulis
+        'nama_ttd_jabatan_2', // TAMBAHAN BARU
+        'nik_ttd_jabatan_2', // Ganti nik_notulis
         'judul_dokumentasi',
         'dokumentasi',
         'generated_file',
@@ -32,13 +35,16 @@ class PersonalLetterNotulen extends Model
 
     protected $casts = [
         'tanggal_rapat' => 'date',
+        'tanggal_ttd' => 'date', // TAMBAHAN BARU
         'kegiatan_rapat' => 'array',
         'dokumentasi' => 'array',
     ];
-public function user()
-{
-    return $this->belongsTo(\App\Models\User::class);
-}
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
     public function scopeSearch($query, $term)
     {
         return $query->where(function ($q) use ($term) {
@@ -48,9 +54,6 @@ public function user()
         });
     }
 
-    /**
-     * Generate nomor notulen otomatis
-     */
     public static function generateNomor()
     {
         $count = self::count();

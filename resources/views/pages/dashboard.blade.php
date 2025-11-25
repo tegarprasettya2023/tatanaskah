@@ -2,6 +2,100 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('sneat/vendor/libs/apex-charts/apex-charts.css') }}" />
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('logoglen.ico') }}" type="image/x-icon">
+    
+    <style>
+        /* Dashboard Text Colors for Dark Themes */
+        html.dark-style .card-body,
+        html.dark-style .card-header,
+        html.dark-style .table,
+        html.dark-style .card-title,
+        html.dark-style h1, html.dark-style h2, html.dark-style h3, 
+        html.dark-style h4, html.dark-style h5, html.dark-style h6,
+        html.dark-style p, html.dark-style span, html.dark-style small,
+        html.dark-style td, html.dark-style th,
+        html.dark-style .text-muted {
+            color: #ffffff !important;
+        }
+
+        html.blue-style .card-body,
+        html.blue-style .card-header,
+        html.blue-style .table,
+        html.blue-style .card-title,
+        html.blue-style h1, html.blue-style h2, html.blue-style h3, 
+        html.blue-style h4, html.blue-style h5, html.blue-style h6,
+        html.blue-style p, html.blue-style span, html.blue-style small,
+        html.blue-style td, html.blue-style th,
+        html.blue-style .text-muted {
+            color: #ffffff !important;
+        }
+
+        html.green-style .card-body,
+        html.green-style .card-header,
+        html.green-style .table,
+        html.green-style .card-title,
+        html.green-style h1, html.green-style h2, html.green-style h3, 
+        html.green-style h4, html.green-style h5, html.green-style h6,
+        html.green-style p, html.green-style span, html.green-style small,
+        html.green-style td, html.green-style th,
+        html.green-style .text-muted {
+            color: #ffffff !important;
+        }
+
+        html.purple-style .card-body,
+        html.purple-style .card-header,
+        html.purple-style .table,
+        html.purple-style .card-title,
+        html.purple-style h1, html.purple-style h2, html.purple-style h3, 
+        html.purple-style h4, html.purple-style h5, html.purple-style h6,
+        html.purple-style p, html.purple-style span, html.purple-style small,
+        html.purple-style td, html.purple-style th,
+        html.purple-style .text-muted {
+            color: #ffffff !important;
+        }
+
+        html.red-style .card-body,
+        html.red-style .card-header,
+        html.red-style .table,
+        html.red-style .card-title,
+        html.red-style h1, html.red-style h2, html.red-style h3, 
+        html.red-style h4, html.red-style h5, html.red-style h6,
+        html.red-style p, html.red-style span, html.red-style small,
+        html.red-style td, html.red-style th,
+        html.red-style .text-muted {
+            color: #ffffff !important;
+        }
+
+        /* Light Mode - Keep Dark Text */
+        html.light-style .card-body,
+        html.light-style .card-header,
+        html.light-style .table,
+        html.light-style .card-title,
+        html.light-style h1, html.light-style h2, html.light-style h3, 
+        html.light-style h4, html.light-style h5, html.light-style h6,
+        html.light-style p, html.light-style span, html.light-style small,
+        html.light-style td, html.light-style th {
+            color: #697a8d !important;
+        }
+
+        html.light-style .text-muted {
+            color: #a1acb8 !important;
+        }
+
+        /* ApexCharts Labels Color Fix */
+        html.dark-style .apexcharts-text,
+        html.blue-style .apexcharts-text,
+        html.green-style .apexcharts-text,
+        html.purple-style .apexcharts-text,
+        html.red-style .apexcharts-text {
+            fill: #ffffff !important;
+        }
+
+        html.light-style .apexcharts-text {
+            fill: #697a8d !important;
+        }
+    </style>
 @endpush
 
 @push('script')
@@ -226,7 +320,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">Grafik Distribusi Jenis Surat</h5>
-                    <span class="badge bg-label-primary">Total: {{ $totalPersonalLetters }}</span>
+<span>Total: {{ $totalPersonalLetters }}</span>
                 </div>
                 <div class="card-body">
                     <div id="letter-type-chart"></div>
@@ -239,7 +333,8 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">Grafik Pembuatan Surat</h5>
-                    <span class="badge bg-label-success">Tahun {{ date('Y') }}</span>
+<span>Tahun {{ date('Y') }}</span>
+
                 </div>
                 <div class="card-body">
                     <div id="monthly-trend-chart"></div>
@@ -291,7 +386,7 @@
                                             <i class="bx bx-file me-2"></i>{{ $type['name'] }}
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge bg-label-primary">{{ $type['count'] }}</span>
+                                            <span>{{ $type['count'] }}</span>
                                         </td>
 
                                         <td class="text-center">
@@ -308,34 +403,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Quick Actions -->
-    <!-- <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Aksi Cepat</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <a href="{{ route('transaction.personal.templates') }}" class="btn btn-primary w-100">
-                                <i class="bx bx-plus-circle me-2"></i>Buat Surat Baru
-                            </a>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <a href="{{ route('transaction.personal.index') }}" class="btn btn-outline-primary w-100">
-                                <i class="bx bx-list-ul me-2"></i>Lihat Semua Surat
-                            </a>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <a href="{{ route('transaction.personal.templates') }}" class="btn btn-outline-secondary w-100">
-                                <i class="bx bx-file me-2"></i>Template Surat
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 @endsection

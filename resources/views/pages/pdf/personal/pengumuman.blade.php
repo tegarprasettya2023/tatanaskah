@@ -5,42 +5,57 @@
 <title>Surat Pengumuman</title>
 <style>
     @page {
-        margin: 0;
-        padding: 0;
+        margin: 120px 40px 100px 40px;
     }
 
     body { 
-        font-family: 'CenturyGothic', sans-serif; 
-        font-size: 12px; 
+        font-family: 'Century Gothic', sans-serif; 
+        font-size: 10px; 
         line-height: 1.6; 
         margin: 0;
         padding: 0;
     }
 
-      /* HEADER FIX DI SETIAP HALAMAN */
-      .header { 
-            position: fixed; top:0; left:0; right:0;
-            width:100%; height:80px; text-align:center; z-index:1000;
-        }
-        .header img { width:100%; height:90px; object-fit:cover; display:block; }
+    /* HEADER FIX DI SETIAP HALAMAN */
+    .header { 
+        position: fixed;
+        top: -120px;
+        left: -30px;
+        right: 30px;
+        width: 113%;
+        height: 100px;
+        text-align: center;
+    }
+    .header img { 
+        width: 100%; 
+        height: 100px; 
+        object-fit: contain;
+    }
 
-        .footer {
-            position: fixed; bottom:0; left:0; right:0;
-            width:100%; height:60px; text-align:center; z-index:1000;
-        }
-        .footer img { width:90%; height:40px; object-fit:cover; display:block; }
+    .footer {
+        position: fixed;
+        bottom: -80px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 40px;
+        text-align: center;
+    }
+    .footer img { 
+        width: 100%; 
+        height: 40px; 
+        object-fit: contain;
+    }
 
     /* KONTEN */
     .content {
-        margin: 0 40px;
-        padding-top: 100px; /* biar tidak ketutup header */
-        padding-bottom: 80px;
+        margin: 0;
     }
 
     .title {
         text-align: center;
         font-weight: bold;
-        font-size: 16px;
+        font-size: 12px;
         margin-top: 10px;
         margin-bottom: 0;
     }
@@ -49,6 +64,7 @@
         text-align: center;
         margin: -1px 0 15px 0;
         font-weight: bold;
+        font-size: 10px;
     }
 
     .tentang-label {
@@ -56,31 +72,173 @@
         font-weight: bold;
         text-transform: uppercase;
         margin-top: 30px;
+        margin-bottom: 5px;
     }
 
     .tentang {
         text-align: center;
         margin-top: 5px;
-        margin-bottom: 45px; /* jarak lebih jauh dari isi pembuka */
+        margin-bottom: 45px;
     }
 
     .isi {
         text-align: justify;
-        margin: 0 10px 40px 10px; /* beri ruang kiri-kanan */
+        margin: 0 10px 40px 10px;
+        line-height: 1.6;
+    }
+
+    /* Styling untuk konten HTML dari Rich Text Editor */
+    .isi p {
+        margin: 0 0 10px 0;
+        text-align: justify;
+        text-indent: 0; /* TIDAK ADA auto indent, harus pakai Tab manual */
+    }
+
+    .isi h1 {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 15px 0 10px 0;
+    }
+
+    .isi h2 {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 12px 0 8px 0;
+    }
+
+    .isi h3 {
+        font-size: 12px;
+        font-weight: bold;
+        margin: 10px 0 6px 0;
+    }
+
+    .isi h4,
+    .isi h5,
+    .isi h6 {
+        font-size: 11px;
+        font-weight: bold;
+        margin: 8px 0 5px 0;
+    }
+
+    .isi ul,
+    .isi ol {
+        margin: 10px 0;
+        padding-left: 25px;
+    }
+
+    .isi li {
+        margin-bottom: 5px;
+    }
+
+    .isi strong {
+        font-weight: bold;
+    }
+
+    .isi em {
+        font-style: italic;
+    }
+
+    .isi u {
+        text-decoration: underline;
+    }
+
+    .isi s {
+        text-decoration: line-through;
+    }
+
+    /* Alignment classes dari Quill */
+    .isi .ql-align-center {
+        text-align: center;
+    }
+
+    .isi .ql-align-right {
+        text-align: right;
+    }
+
+    .isi .ql-align-justify {
+        text-align: justify;
+    }
+
+    /* Indentasi dari Quill - gunakan margin-left */
+    .isi .ql-indent-1 {
+        margin-left: 3em !important;
+        padding-left: 0;
+    }
+
+    .isi .ql-indent-2 {
+        margin-left: 6em !important;
+        padding-left: 0;
+    }
+
+    .isi .ql-indent-3 {
+        margin-left: 9em !important;
+        padding-left: 0;
+    }
+
+    .isi .ql-indent-4 {
+        margin-left: 12em !important;
+        padding-left: 0;
+    }
+
+    .isi .ql-indent-5 {
+        margin-left: 15em !important;
+        padding-left: 0;
+    }
+
+    .isi .ql-indent-6 {
+        margin-left: 18em !important;
+        padding-left: 0;
+    }
+
+    .isi .ql-indent-7 {
+        margin-left: 21em !important;
+        padding-left: 0;
+    }
+
+    .isi .ql-indent-8 {
+        margin-left: 24em !important;
+        padding-left: 0;
+    }
+
+    .isi a {
+        color: #0066cc;
+        text-decoration: underline;
+    }
+
+    .isi blockquote {
+        border-left: 3px solid #ccc;
+        padding-left: 15px;
+        margin-left: 0;
+        font-style: italic;
     }
 
     /* tanda tangan kanan bawah */
-    .signature {
-        position: absolute;
-        bottom: 90px;
-        right: -30px; /* geser lebih kanan */
-        text-align: left;
-        width: 320px;
+    .signature-wrapper {
+        width: 100%;
+        margin-top: 40px;
     }
 
-    .signature td {
-        vertical-align: top;
-        padding: 3px 0;
+    .signature-right {
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .sig-role {
+        margin-bottom: 1px;
+    }
+
+    .sig-placeholder {
+        display: block;
+        height: 50px;
+    }
+
+    .sig-name {
+        margin-top: 10px;
+    }
+
+    .sig-nik {
+        margin-top: 4px;
+        font-size: 10px;
     }
 </style>
 </head>
@@ -130,28 +288,42 @@
 {{-- KONTEN --}}
 <div class="content">
     <div class="title">PENGUMUMAN</div>
-    <div class="nomor">NOMOR: {{ $letter->nomor ?? 'UM/nomor/bulan/tahun' }}</div>
+    <div class="nomor">NOMOR: {{ $letter->nomor ?? 'UM/001/XII/2024' }}</div>
     <div class="tentang-label">TENTANG</div>
     <div class="tentang">{{ strtoupper($letter->tentang ?? '......................................................') }}</div>
 
+    {{-- Isi Pembuka (HTML dari Rich Text Editor) --}}
     <div class="isi">
-        &nbsp;&nbsp;&nbsp;&nbsp;{!! nl2br(e($letter->isi_pembuka ?? '.............................................................................')) !!}
-        <br><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;{!! nl2br(e($letter->isi_penutup ?? '')) !!}
+        {!! $letter->isi_pembuka ?? '..............................................................................' !!}
     </div>
 
-    {{-- tanda tangan kanan bawah --}}
-    <div class="signature">
-        <table>
-            <tr><td>Dikeluarkan di {{ $letter->tempat_ttd ?? '..................' }}</td></tr>
-            <tr><td>pada tanggal {{ \Carbon\Carbon::parse($letter->tanggal_ttd ?? now())->translatedFormat('d F Y') }}</td></tr>
-            <tr><td style="height:10px;"></td></tr>
-            <tr><td>{{ $letter->jabatan_pembuat ?? 'Nama Jabatan' }},</td></tr>
-            <tr><td style="height:60px;"></td></tr>
-            <tr><td>{{ $letter->nama_pembuat ?? 'Nama Lengkap' }}</td></tr>
-            <tr><td>NIK Pegawai: {{ $letter->nik_pegawai ?? '..................' }}</td></tr>
-        </table>
+    {{-- Isi Penutup (HTML dari Rich Text Editor) --}}
+    @if(!empty($letter->isi_penutup))
+    <div class="isi" style="margin-top: 20px;">
+        {!! $letter->isi_penutup !!}
     </div>
+    @endif
+
+    {{-- Tanda tangan --}}
+    <table class="signature-wrapper">
+        <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">
+                <div class="signature-right">
+                    <div class="sig-role">Dikeluarkan di {{ $letter->tempat_ttd ?? '..................' }}</div>
+                    <div class="sig-role">pada tanggal {{ \Carbon\Carbon::parse($letter->tanggal_ttd ?? now())->translatedFormat('d F Y') }}</div>
+                    <div class="sig-role">{{ $letter->jabatan_pembuat ?? 'Nama Jabatan' }},</div>
+                    <span class="sig-placeholder"></span>
+                    <div class="sig-name">{{ $letter->nama_pembuat ?? 'Nama Lengkap' }}</div>
+                    @if($letter->nik_pegawai)
+                    <div class="sig-nik">NIK Pegawai: {{ $letter->nik_pegawai }}</div>
+                    @else
+                    <div class="sig-nik">NIK Pegawai: ..................</div>
+                    @endif
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ class PersonalLetterPengumuman extends Model
         'tanggal_surat',
         'isi_pembuka',
         'isi_penutup',
-        'tempat_ttd',
+        'tempat_ttd', 
         'tanggal_ttd',
         'nama_pembuat',
         'nik_pegawai',

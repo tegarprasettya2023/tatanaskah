@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
-<!-- beautify ignore:start -->
 <html
     lang="id"
     class="light-style layout-menu-fixed"
@@ -42,20 +29,22 @@
         rel="stylesheet"
     />
 
-    <!-- Icons. Uncomment required icon fonts -->
+    <!-- Icons -->
     <link rel="stylesheet" href="{{asset('sneat/vendor/fonts/boxicons.css')}}"/>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
 
     <!-- Core CSS -->
     <link rel="stylesheet" class="template-customizer-core-css" href="{{asset('sneat/vendor/css/core.css')}}"/>
-    <link rel="stylesheet" class="template-customizer-theme-css"
-          href="{{asset('sneat/vendor/css/theme-default.css')}}"/>
+    <link rel="stylesheet" class="template-customizer-theme-css" href="{{asset('sneat/vendor/css/theme-default.css')}}"/>
     <link rel="stylesheet" href="{{asset('sneat/css/demo.css')}}"/>
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{asset('sneat/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}"/>
     <link rel="stylesheet" href="{{asset('sneat/vendor/libs/sweetalert2/sweetalert2.min.css')}}"/>
+
+    <!-- Custom Theme CSS -->
+<link rel="stylesheet" href="{{asset('css/theme-custom.css')}}"/>
+
 
     <!-- Page CSS -->
     @stack('style')
@@ -63,19 +52,47 @@
     <!-- Helpers -->
     <script src="{{ asset('sneat/vendor/js/helpers.js') }}"></script>
 
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-        <script src="{{ asset('sneat/js/config.js') }}"></script>
+    <!-- Theme Config -->
+    <script src="{{ asset('sneat/js/config.js') }}"></script>
+    
+    <!-- Initialize Theme Before Page Load -->
+<!-- Initialize Theme Before Page Load -->
+<script>
+    (function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const htmlElement = document.documentElement;
+        
+        htmlElement.classList.remove('light-style', 'dark-style', 'blue-style', 'green-style', 'purple-style', 'red-style');
+        
+        if (savedTheme === 'system') {
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            htmlElement.classList.add(systemTheme + '-style');
+        } else {
+            htmlElement.classList.add(savedTheme + '-style');
+        }
+    })();
+</script>
+    
     <style>
         #avatarprofil {
             margin-top: 10px;
         }
         body, * {
-            font-family: 'Century Gothic' sans-serif !important;
+    font-family: Arial, sans-serif !important;
+        }
+        
+        /* Smooth theme transitions */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Theme dropdown scrollable */
+        .scrollable-container {
+            max-height: 250px;
+            overflow-y: auto;
         }
     </style>
 </head>
-
 
 <body>
 <!-- Layout wrapper -->
@@ -115,16 +132,12 @@
 </div>
 <!-- / Layout wrapper -->
 
-
 <!-- Core JS -->
-<!-- build:js assets/vendor/js/core.js -->
 <script src="{{ asset('sneat/vendor/libs/jquery/jquery.js')}}"></script>
 <script src="{{ asset('sneat/vendor/libs/popper/popper.js')}}"></script>
 <script src="{{ asset('sneat/vendor/js/bootstrap.js')}}"></script>
 <script src="{{ asset('sneat/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
-
 <script src="{{ asset('sneat/vendor/js/menu.js')}}"></script>
-<!-- endbuild -->
 
 <!-- Vendors JS -->
 <script src="{{ asset('sneat/vendor/libs/masonry/masonry.js')}}"></script>
@@ -132,6 +145,22 @@
 
 <!-- Main JS -->
 <script src="{{ asset('sneat/js/main.js')}}"></script>
+
+<!-- Toast Configuration -->
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+</script>
+
 <script>
     $(document).on('click', '.btn-delete', function (req) {
         Swal.fire({
@@ -139,7 +168,7 @@
             text: "{{ __('menu.general.delete_warning') }}",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '31318B',
+            confirmButtonColor: '#31318B',
             confirmButtonText: '{{ __('menu.general.delete') }}',
             cancelButtonText: '{{ __('menu.general.cancel') }}'
         }).then((result) => {
@@ -176,7 +205,6 @@
     </script>
 @endif
 
-<!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>

@@ -111,15 +111,40 @@
                        value="{{ old('nik', $data->nik) }}" required>
             </div>
 
-            <div class="col-12 mb-3">
-                <label>Tembusan 1</label>
-                <input type="text" name="tembusan_1" class="form-control" 
-                       value="{{ old('tembusan_1', $data->tembusan_1) }}">
+            <div class="col-12"><hr></div>
+            <!-- TEMBUSAN DYNAMIC -->
+            <div class="col-12 mb-4 mt-3">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <h6 class="text-primary mb-0">Tembusan (Opsional)</h6>
+                    <button type="button" id="add-tembusan" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-plus-circle"></i> Tambah Tembusan
+                    </button>
+                </div>
             </div>
-            <div class="col-12 mb-3">
-                <label>Tembusan 2</label>
-                <input type="text" name="tembusan_2" class="form-control" 
-                       value="{{ old('tembusan_2', $data->tembusan_2) }}">
+
+            <div class="col-12">
+                <div id="tembusan-wrapper">
+                    @php
+                        $tembusanData = old('tembusan', $data->tembusan ?? []);
+                        $tembusanData = is_array($tembusanData) && count($tembusanData) > 0 ? $tembusanData : [''];
+                    @endphp
+                    @foreach($tembusanData as $index => $temb)
+                    <div class="tembusan-item card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <strong>Tembusan {{ $index + 1 }}</strong>
+                                @if($index > 0)
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-tembusan">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                                @endif
+                            </div>
+                            <input type="text" name="tembusan[]" class="form-control" 
+                                   placeholder="Contoh: Kepala Bagian HRD" value="{{ $temb }}">
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -130,3 +155,57 @@
     </form>
 </div>
 @endsection
+
+@push('style')
+<style>
+.border-bottom {
+    border-bottom: 2px solid #dee2e6 !important;
+}
+.tembusan-item {
+    background-color: #f8f9fa;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tembusanWrapper = document.getElementById("tembusan-wrapper");
+    const addTembusan = document.getElementById("add-tembusan");
+    let tembusanIndex = tembusanWrapper.querySelectorAll('.tembusan-item').length;
+
+    addTembusan.addEventListener("click", function () {
+        const div = document.createElement("div");
+        div.classList.add("tembusan-item", "card", "mb-3");
+        div.innerHTML = `
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Tembusan ${tembusanIndex + 1}</strong>
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-tembusan">
+                        <i class="bi bi-trash"></i> Hapus
+                    </button>
+                </div>
+                <input type="text" name="tembusan[]" class="form-control" placeholder="Contoh: Kepala Divisi ...">
+            </div>
+        `;
+        tembusanWrapper.appendChild(div);
+        tembusanIndex++;
+    });
+
+    tembusanWrapper.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-tembusan') || e.target.closest('.remove-tembusan')) {
+            e.target.closest('.tembusan-item').remove();
+            reindexTembusan();
+        }
+    });
+
+    function reindexTembusan() {
+        const items = tembusanWrapper.querySelectorAll('.tembusan-item');
+        tembusanIndex = items.length;
+        items.forEach((item, idx) => {
+            item.querySelector('strong').textContent = `Tembusan ${idx + 1}`;
+        });
+    }
+});
+</script>
+@endpush

@@ -61,23 +61,30 @@
             margin-bottom: 10px;
             table-layout: fixed;
         }
-        .header-table td {
-            border: 1px solid #000;
-            padding: 4px;
-            vertical-align: middle;
-            font-size: 8px;
-        }
-        .logo-cell {
-            text-align: center;
-            vertical-align: middle;
-            padding: 8px;
-        }
-        .logo-cell img {
-            max-width: 150px;
-            max-height: 50px;
-            display: block;
-            margin: 0 auto;
-        }
+.header-table td {
+    border: 1px solid #000;
+    padding: 2px 4px;
+    vertical-align: middle;
+    font-size: 9px;
+    height: 20px; /* tambah ini untuk menjaga proporsi */
+}
+
+.logo-cell {
+    width: 220px;
+    height: 120px; /* tinggi header fix */
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.logo-cell img {
+    width: 120px;          /* atur besar logo */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
         .title-cell {
             text-align: center;
             font-weight: bold;

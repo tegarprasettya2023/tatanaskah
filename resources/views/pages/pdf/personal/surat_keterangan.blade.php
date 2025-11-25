@@ -10,7 +10,7 @@
         
         body { 
             font-family: 'Century Gothic' sans-serif;
-            font-size: 12px; 
+            font-size: 10px; 
             line-height: 1.6; 
             margin: 0;
             padding: 0;
