@@ -35,13 +35,17 @@ class UpdateUserRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-            'email' => ['required', Rule::unique('users')->ignore($this->id)],
-            'phone' => ['nullable'],
-            'is_active' => ['nullable'],
-        ];
-    }
+public function rules(): array
+{
+    $userId = $this->route('user') ? $this->route('user')->id : auth()->id();
+    
+    return [
+        'name' => ['required'],
+        'email' => ['required', 'email', Rule::unique('users')->ignore($userId)],
+        'phone' => ['nullable'],
+        'is_active' => ['nullable'],
+        // UPDATE: Max size jadi 5MB (5120 KB)
+        'profile_picture' => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:5120'],
+    ];
+}
 }

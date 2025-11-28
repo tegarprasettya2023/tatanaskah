@@ -33,12 +33,12 @@ Route::middleware(['auth'])->group(function () {
         ->except(['show', 'edit', 'create'])
         ->middleware(['role:admin']);
 
-    Route::get('profile', [\App\Http\Controllers\PageController::class, 'profile'])
-        ->name('profile.show');
-    Route::put('profile', [\App\Http\Controllers\PageController::class, 'profileUpdate'])
-        ->name('profile.update');
-    Route::put('profile/password', [\App\Http\Controllers\PageController::class, 'passwordUpdate'])
-        ->name('profile.password.update');
+Route::get('profile', [\App\Http\Controllers\PageController::class, 'profile'])
+    ->name('profile.show');
+Route::put('profile', [\App\Http\Controllers\PageController::class, 'profileUpdate'])
+    ->name('profile.update');
+Route::put('profile/password', [\App\Http\Controllers\PageController::class, 'passwordUpdate'])
+    ->name('profile.password.update');
 
     Route::put('profile/deactivate', [\App\Http\Controllers\PageController::class, 'deactivate'])
         ->name('profile.deactivate')

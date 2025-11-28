@@ -199,62 +199,77 @@ class PageController extends Controller
         ]);
     }
 
-    /**
-     * @param UpdateUserRequest $request
-     * @return RedirectResponse
-     */
-    public function profileUpdate(UpdateUserRequest $request): RedirectResponse
-    {
-        try {
-            $newProfile = $request->validated();
+/**
+ * Update profile dengan upload/ganti gambar
+ * @param UpdateUserRequest $request
+ * @return RedirectResponse
+ */
+public function profileUpdate(UpdateUserRequest $request): RedirectResponse
+{
+    try {
+        $user = auth()->user();
+        $newProfile = $request->validated();
 
-            // Cek jika ada file foto profil yang diupload
-            if ($request->hasFile('profile_picture')) {
-                // Hapus foto lama jika ada
-                $oldPicture = auth()->user()->profile_picture;
-                if ($oldPicture && str_contains($oldPicture, '/storage/avatars/')) {
-                    $url = parse_url($oldPicture, PHP_URL_PATH); // Dapatkan path relatif
-                    Storage::delete(str_replace('/storage', 'public', $url)); // Hapus dari storage
-                }
+        // Hapus profile_picture dari array dulu
+        unset($newProfile['profile_picture']);
 
-                // Upload foto baru
-                $file = $request->file('profile_picture');
-                $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-                // Simpan ke storage/app/public/avatars
-                $file->storeAs('public/avatars', $filename);
-
-                // Simpan URL agar bisa digunakan di view
-                $newProfile['profile_picture'] = asset('storage/avatars/' . $filename);
+        // Proses upload foto baru
+        if ($request->hasFile('profile_picture')) {
+            // Hapus foto lama jika ada
+            $oldValue = $user->getAttributes()['profile_picture'] ?? null;
+            if (!empty($oldValue)) {
+                $filename = basename($oldValue);
+                Storage::delete('public/avatars/' . $filename);
             }
 
-            // Update data user
-            auth()->user()->update($newProfile);
+            // Upload foto baru
+            $file = $request->file('profile_picture');
+            $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/avatars', $filename);
 
-            return back()->with('success', __('menu.general.success'));
-        } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            // Simpan FULL URL ke database
+            $newProfile['profile_picture'] = asset('storage/avatars/' . $filename);
         }
-    }
 
-    public function passwordUpdate(Request $request): RedirectResponse
+        // Update user
+        $user->update($newProfile);
+
+        return back()->with('success', 'Profil berhasil diperbarui!');
+    } catch (\Throwable $exception) {
+        return back()->with('error', $exception->getMessage());
+    }
+}
+
+ public function passwordUpdate(Request $request): RedirectResponse
     {
         try {
             $validated = $request->validate([
                 'current_password' => ['required', 'current_password'],
-                'new_password' => ['required', 'confirmed', 'min:8'], // minimal 8 karakter
+                'new_password' => ['required', 'confirmed', 'min:8'],
+            ], [
+                // 👇 TAMBAHKAN CUSTOM MESSAGES INI
+                'current_password.current_password' => 'Password lama yang Anda masukkan salah!',
+                'new_password.required' => 'Password baru wajib diisi!',
+                'new_password.min' => 'Password baru minimal 8 karakter!',
+                'new_password.confirmed' => 'Konfirmasi password tidak cocok!',
             ]);
 
             $user = auth()->user();
 
-            // Update password
             $user->update([
-                'password' => Hash::make($request->new_password), // Enkripsi password baru
+                'password' => Hash::make($request->new_password),
             ]);
 
-            return back()->with('success', __('Password Berhasil dirubah'));
+            return back()->with('success', 'Password berhasil diperbarui! 🔒');
+            
+        } catch (\Illuminate\Validation\ValidationException $exception) {
+            // 👇 TAMBAHKAN CATCH BLOCK INI
+            return back()
+                ->withErrors($exception->validator)
+                ->withInput()
+                ->with('error', 'Gagal memperbarui password. Periksa kembali input Anda.');
         } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $exception->getMessage());
         }
     }
 

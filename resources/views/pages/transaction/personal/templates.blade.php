@@ -295,7 +295,7 @@
             </ul>
             <a href="{{ route('transaction.personal.spo.create') }}" 
                class="btn btn-primary">
-               <i class="bi bi-plus-circle"></i> Buat SPO
+               <i class="bi bi-plus-circle"></i> Buat Surat
             </a>
         </div>
     </div>

@@ -1,11 +1,13 @@
 <?php
+// ============================================
+// FILE: app/Models/User.php - SIMPLIFIED
+// ============================================
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\ConfigEnum;
 use App\Enums\Role;
-use App\Enums\Config as ConfigEnum;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Config;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,56 +17,39 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
-        'password',
         'phone',
+        'password',
         'role',
         'is_active',
         'profile_picture',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
     ];
 
     /**
-     * Get the user's profile picture
-     *
-     * @return Attribute
+     * Accessor untuk default avatar
      */
-    public function profilePicture(): Attribute
+    public function getProfilePictureAttribute($value)
     {
-        return Attribute::make(
-            get: function ($value) {
-                if ($value) return $value;
-
-                $url = 'https://ui-avatars.com/api/?background=6D67E4&color=fff&name=';
-                return $url . urlencode($this->name);
-            },
-        );
+        // Jika ada foto custom
+        if (!empty($value)) {
+            return $value;
+        }
+        
+        // Default: avatar dengan initial nama (seperti Google)
+        return "https://ui-avatars.com/api/?name=" . urlencode($this->name) . 
+               "&color=fff&background=696cff&size=120&bold=true";
     }
 
     public function scopeActive($query)
@@ -101,3 +86,4 @@ class User extends Authenticatable
             ]);
     }
 }
+

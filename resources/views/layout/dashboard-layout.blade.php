@@ -19,7 +19,7 @@
     <meta name="description" content=""/>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('logo.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('logoglen.ico') }}" type="image/x-icon">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -31,6 +31,7 @@
 
     <!-- Icons -->
     <link rel="stylesheet" href="{{asset('sneat/vendor/fonts/boxicons.css')}}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
 
     <!-- Core CSS -->
     <link rel="stylesheet" class="template-customizer-core-css" href="{{asset('sneat/vendor/css/core.css')}}"/>
@@ -41,9 +42,6 @@
     <link rel="stylesheet" href="{{asset('sneat/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}"/>
     <link rel="stylesheet" href="{{asset('sneat/vendor/libs/sweetalert2/sweetalert2.min.css')}}"/>
 
-    <!-- Custom Theme CSS -->
-    <link rel="stylesheet" href="{{asset('css/theme-custom.css')}}"/>
-
     <!-- Page CSS -->
     @stack('style')
 
@@ -52,38 +50,9 @@
 
     <!-- Theme Config -->
     <script src="{{ asset('sneat/js/config.js') }}"></script>
-    
-    <!-- Initialize Theme Before Page Load -->
-    <script>
-        (function() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            const htmlElement = document.documentElement;
-            
-            htmlElement.classList.remove('light-style', 'dark-style', 'blue-style', 'green-style', 'purple-style', 'red-style');
-            
-            if (savedTheme === 'system') {
-                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                htmlElement.classList.add(systemTheme + '-style');
-            } else {
-                htmlElement.classList.add(savedTheme + '-style');
-            }
-        })();
-    </script>
-
     <style>
         #avatarprofil {
-            margin-top: 10px;
-        }
-        
-        /* Smooth theme transitions */
-        * {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-        
-        /* Theme dropdown scrollable */
-        .scrollable-container {
-            max-height: 380px;
-            overflow-y: auto;
+            margin-top: 10px,
         }
     </style>
 </head>
@@ -98,8 +67,8 @@
 
         <!-- Layout container -->
         <div class="layout-page">
-            <!-- Navbar - UNIFIED -->
-            @include('components.navbar')
+            <!-- Navbar -->
+            @include('components.navbardashboard')
             <!-- / Navbar -->
 
             <!-- Content wrapper -->
